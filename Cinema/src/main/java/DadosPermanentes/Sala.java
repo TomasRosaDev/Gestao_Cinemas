@@ -21,7 +21,10 @@ public class Sala {
 
     @Override
     public String toString(){
-        return String.valueOf(this.numero);
+        String aux = "";
+        aux += this.numero;
+
+        return aux;
     }
 
 }
