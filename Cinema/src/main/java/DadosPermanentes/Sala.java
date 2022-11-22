@@ -55,9 +55,9 @@ public class Sala {
         for(int i=0;i<filmes.length; i++) {
             //no ultimo filme nao colocar virgula a seguir
             if (i == filmes.length - 1) {
-                aux += filmes[i].getTitulo();
+                //  aux += filmes[i].getTitulo(); falta adicionar o getTitulo
             } else {
-                aux += filmes[i].getTitulo() + ", ";
+                // aux += filmes[i].getTitulo() + ", ";
             }
         }
 
