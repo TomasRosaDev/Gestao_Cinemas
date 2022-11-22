@@ -61,7 +61,7 @@ public class Sala {
         }
 
         aux+= "\n";
-        for(int i=0;i<=lugares.length; i++){
+        for(i=0;i<lugares.length; i++){
             if(i==lugares.length-1){
                 aux+=lugares[i].toString();
             } else{
