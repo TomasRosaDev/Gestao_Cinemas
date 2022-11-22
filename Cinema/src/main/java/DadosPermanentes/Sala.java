@@ -52,25 +52,23 @@ public class Sala {
         String aux = "";
 
         aux += this.numero + "\n";
-        for(int i=0;i<filmes.length; i++){
+        for(int i=0;i<filmes.length; i++) {
             //no ultimo filme nao colocar virgula a seguir
-            if(i==filmes.length-1){
-                aux+=filmes[i].getTitulo();
-            } else{
-            aux+=filmes[i].getTitulo()+", ";
+            if (i == filmes.length - 1) {
+                aux += filmes[i].getTitulo();
+            } else {
+                aux += filmes[i].getTitulo() + ", ";
+            }
         }
 
         aux+= "\n";
-        for(i=0;i<lugares.length; i++){
+        for(int i=0;i<lugares.length; i++){
             if(i==lugares.length-1){
                 aux+=lugares[i].toString();
             } else{
                 aux+=lugares[i].toString() + ", ";
             }
         }
-
-        }
-
         return aux;
     }
 
