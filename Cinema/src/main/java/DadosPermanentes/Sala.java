@@ -28,4 +28,15 @@ public class Sala {
         }
     }
 
+    public String toString(){
+        String aux="Numero: "+getNumeroSala()+"\nLugares:";
+        for (int i=0;i<lugares.length;i++){
+            for (int j=0;j<lugares[i].length;j++){
+                aux+="\n"+lugares[i][j].toString();
+            }
+        }
+
+        return aux;
+    }
+
 }
