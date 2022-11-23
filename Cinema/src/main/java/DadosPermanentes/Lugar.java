@@ -2,9 +2,8 @@ package DadosPermanentes;
 
 public class Lugar {
     // Campos
-    private String posicao;
+    private String nome;
     public TipoLugar tipo;
-    private Sala sala;
     public enum TipoLugar{
         Normal,
         Deficiente,
@@ -12,26 +11,21 @@ public class Lugar {
     }
 
     //Construtor
-    public Lugar(Sala sala, String posicao, TipoLugar lugar){
-        this.sala = sala;
-        this.posicao = posicao;
+    public Lugar(String nome, TipoLugar lugar){
+        this.nome = nome;
         this.tipo = lugar;
     }
 
     //Getters
-    public String getPosicao() {
-        return posicao;
+    public String getNome() {
+        return this.nome;
     }
 
     public TipoLugar getTipo() {
         return tipo;
     }
 
-    public static void main(String[] args) {
-        Lugar novoLugar = new Lugar(new Sala(1, 10, 10), "A1", TipoLugar.Normal);
-
-        System.out.println(novoLugar.tipo);
+    public String toString(){
+        return "Nome: "+getNome()+"\nTipo: "+getTipo();
     }
-
-
 }

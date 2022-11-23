@@ -21,7 +21,7 @@ public class Sessao {
     public String toString() {
         String aux="";
         aux+="Filme\n"+filme.toString();
-        aux+="\nSala\n " +sala.toString();
+        aux+="\nSala\n" +sala.toString();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
         aux+="\nHora: "+sdf.format(horaInicio.getTime());
     return aux;

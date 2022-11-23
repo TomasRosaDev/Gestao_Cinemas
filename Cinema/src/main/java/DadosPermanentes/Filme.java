@@ -40,7 +40,7 @@ public class Filme {
         this.atores = atores;
         this.distribuidor = distribuidor;
         this.pais = pais;
-        this.ano = ano;
+        this.ano = dataEstreia.getWeekYear();
         this.duracao = duracao;
         this.descricao = descricao;
     }
