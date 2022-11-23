@@ -1,4 +1,4 @@
-<h1>Cinemas Noz<h1>
+<h1>Gestão Cinemas<h1>
 <h2 align="left">Repositório para o desenvolvimento do projeto temático em desenvolvimento de aplicações do Grupo 4.</h2>
 
 <h3 align="left">Membros da equipa:</h3>
