@@ -1,46 +1,36 @@
 package DadosPermanentes;
 
 public class Lugar {
-    private int numero;
-    private TipoLugar tipo;
+    // Campos
+    private String posicao;
+    public TipoLugar tipo;
+    private Sala sala;
     public enum TipoLugar{
         Normal,
         Deficiente,
         VIP
     }
-    private String[][] posicao;
-    private Sala sala;
 
-    public Lugar(){
-
+    //Construtor
+    public Lugar(Sala sala, String posicao, TipoLugar lugar){
+        this.sala = sala;
+        this.posicao = posicao;
+        this.tipo = lugar;
     }
 
-    public int getNumero() {
-        return numero;
+    //Getters
+    public String getPosicao() {
+        return posicao;
     }
 
     public TipoLugar getTipo() {
         return tipo;
     }
 
-    public Sala getSala() {
-        return sala;
-    }
+    public static void main(String[] args) {
+        Lugar novoLugar = new Lugar(new Sala(1, 10, 10), "A1", TipoLugar.Normal);
 
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public void setTipo(TipoLugar tipo) {
-        this.tipo = tipo;
-    }
-
-    public void setPosicao(String[][] posicao) {
-        this.posicao = posicao;
-    }
-
-    public void setSala(Sala sala) {
-        this.sala = sala;
+        System.out.println(novoLugar.tipo);
     }
 
 

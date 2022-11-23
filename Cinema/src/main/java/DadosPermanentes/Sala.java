@@ -3,73 +3,80 @@ package DadosPermanentes;
 import java.util.Arrays;
 
 public class Sala {
-    private int numero;
-    private Filme[] filmes;
-    private Lugar[] lugares;
+    //Campos
+    private int numeroSala;
+    private Lugar[][] lugares;
+    private int numeroFilas, numeroColunas;
 
-    public Sala(int numero, Filme[] filmes, Lugar[] lugares){
-        this.numero = numero;
-        this.filmes = filmes;
-        this.lugares = lugares;
+    //Construtor
+    public Sala(int numeroSala, int nFilas, int nColunas) {
+        setNumeroSala(numeroSala); // Verifica o se o numero é válido.
+        setNumeroFilasColunas(nFilas, nColunas); // Verifica se ambos são válidos
+        this.lugares = new Lugar[numeroFilas][numeroColunas];
+
+        //gerar todos os lugares automaticamente consoante o numero de filas e colunas
+
     }
 
-    public Sala(int numero){
-        this.numero = numero;
-        this.filmes = null;
-        this.lugares = null;
+    //Getters
+    public int getNumeroSala() {
+        return numeroSala;
     }
 
-    public int getNumero() {
-        return numero;
-    }
-
-    public Filme[] getFilmes() {
-        return filmes;
-    }
-
-    public Lugar[] getLugares() {
-        return lugares;
-    }
-
-    public void setNumero(int numero) throws Exception {
-        if(numero>0) {
-            this.numero = numero;
-        } else{
-            throw new Exception("O numero da sala tem de ser maior que zero.");
+    //Setters
+    private void setNumeroSala(int numeroSala) {
+        if(numeroSala>0){
+            this.numeroSala = numeroSala;
+        }else{
+            throw new IllegalArgumentException("O numero de sala tem de ser positivo.");
         }
     }
 
-    public void setFilmes(Filme[] filmes) {
-        this.filmes = filmes;
+    public void setNumeroFilasColunas(int numeroFilas, int numeroColunas) {
+        if(numeroFilas >0 && numeroColunas > 0){
+            this.numeroFilas = numeroFilas;
+            this.numeroColunas = numeroColunas;
+        }else{
+            throw new IllegalArgumentException("O numero de filas e colunas tem de ser positivo.");
+        }
+
     }
 
-    public void setLugares(Lugar[] lugares) {
-        this.lugares = lugares;
-    }
+    public static void main(String[] args) {
+        Sala sala1 = new Sala(1,10,14);
 
-    @Override
-    public String toString(){
-        String aux = "Sala: ";
-
-        aux += this.numero + "\n";
-        //for(int i=0;i<filmes.length; i++) {
-            //no ultimo filme nao colocar virgula a seguir
-            if (i == filmes.length - 1) {
-                //  aux += filmes[i].getTitulo(); falta adicionar o getTitulo
-            } else {
-                // aux += filmes[i].getTitulo() + ", ";
+        //Mostra a sala toda.
+        for (int i = sala1.numeroFilas - 1; i >= 0; i--) {
+            for(int j = 0; j < sala1.numeroColunas; j++){
+                System.out.print("|F:"+ i + " L:" + j + "| ");
+                // this.lugares[i][j] = new Lugar(); //Sala, Posicao A1/A2, tipo
             }
+            System.out.println("");
         }
+        System.out.println("\t\t\t\t\t\tECRÃ");
 
-        aux+= "\n";
-        for(int i=0;i<lugares.length; i++){
-            if(i==lugares.length-1){
-                aux+=lugares[i].toString();
-            } else{
-                aux+=lugares[i].toString() + ", ";
+
+        //Código para tentar criar corredores... Alterar o código para haver um minimo de filas e colunas
+        for (int i = sala1.numeroFilas - 1; i >= 0; i--) {
+            for(int j = 0; j < sala1.numeroColunas; j++){
+
+                if( (j==(sala1.numeroColunas/2)/2) || (j==( (sala1.numeroColunas)/2)+2 )){
+                    System.out.print("CC");
+                    //sala1.lugares[i][j] = new Lugar(); //Sala, Posicao A1/A2 tipo=null
+
+                }else{
+                    System.out.print("|"+i+""+j+"|");
+                }
             }
+            System.out.println("");
         }
-        return aux;
+        System.out.println("\t\t\t\t\t\tECRÃ");
+
+        //Mostra a sala
+
+        System.out.println("------");
+        System.out.println(sala1.numeroSala);
+
     }
 
 }
