@@ -28,7 +28,7 @@ public class mainAuxSessao {
         Sala sala = new Sala(1, lugares);
 
         Calendar dataInicio= new GregorianCalendar(2022,11,25,23,30, 00);
-        Calendar dataFim= new GregorianCalendar(2022,11,26,2,00);;
+        Calendar dataFim= new GregorianCalendar(2022,11,26,2,00);
         Sessao sessao=new Sessao(filme,sala,dataInicio,dataFim);
         System.out.println(sessao.toString());
     }

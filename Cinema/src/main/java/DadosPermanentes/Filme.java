@@ -45,6 +45,18 @@ public class Filme {
         this.descricao = descricao;
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+    public String getAnoString() {
+        return Integer.toString(ano);
+    }
+
     @Override
     public String toString() {
         String aux="Genero: "+generos[0].toString();
