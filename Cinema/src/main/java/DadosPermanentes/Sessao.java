@@ -10,6 +10,10 @@ public class Sessao {
     private Filme filme;
     private Sala sala;
 
+    public Sala getSala() {
+        return sala;
+    }
+
     public Sessao(Filme filme, Sala sala, Calendar horaInicio, Calendar horaFim) {
         this.filme=filme;
         this.sala=sala;

@@ -26,6 +26,6 @@ public class Lugar {
     }
 
     public String toString(){
-        return "Nome: "+getNome()+"\nTipo: "+getTipo();
+        return "\nNome: "+getNome()+"\nTipo: "+getTipo();
     }
 }
