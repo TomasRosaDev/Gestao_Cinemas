@@ -5,8 +5,8 @@ import java.util.Calendar;
 
 public class Sessao {
 
-    private Calendar horaInicio;
-    private Calendar horaFim;
+    private Calendar dataHoraInicio;
+    private Calendar dataHoraFim;
     private Filme filme;
     private Sala sala;
 
@@ -14,11 +14,11 @@ public class Sessao {
         return sala;
     }
 
-    public Sessao(Filme filme, Sala sala, Calendar horaInicio, Calendar horaFim) {
+    public Sessao(Filme filme, Sala sala, Calendar dataHoraInicio, Calendar dataHoraFim) {
         this.filme=filme;
         this.sala=sala;
-        this.horaInicio=horaInicio;
-        this.horaFim = horaFim;
+        this.dataHoraInicio=dataHoraInicio;
+        this.dataHoraFim=dataHoraFim;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Sessao {
         aux+="Filme\n"+filme.toString();
         aux+="\nSala\n" +sala.toString();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        aux+="\nHora: "+sdf.format(horaInicio.getTime());
+        aux+="\nHora: "+sdf.format(dataHoraInicio.getTime());
     return aux;
     }
 }
