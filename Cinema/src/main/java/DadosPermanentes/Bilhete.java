@@ -1,6 +1,6 @@
 package DadosPermanentes;
 
-public class LugarDaSessao {
+public class Bilhete {
     private Lugar lugar;
     private Sessao sessao;
 
@@ -31,7 +31,7 @@ public class LugarDaSessao {
 
     public Estado estado;
 
-    public LugarDaSessao(Lugar lugar, Sessao sessao, int preco, Estado estado){
+    public Bilhete(Lugar lugar, Sessao sessao, int preco, Estado estado){
         this.lugar = lugar;
         this.sessao = sessao;
         this.preco = preco;

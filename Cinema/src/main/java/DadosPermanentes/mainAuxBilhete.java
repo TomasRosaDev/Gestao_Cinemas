@@ -3,7 +3,7 @@ package DadosPermanentes;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class mainAuxLugarDaSessao {
+public class mainAuxBilhete {
     public static void main(String[] args) {
         Realizador rea=new Realizador("Steven Spilberge");
         Ator raul=new Ator("Raul Silva");
@@ -33,7 +33,7 @@ public class mainAuxLugarDaSessao {
         //System.out.println(sessao.toString());
 
 
-        LugarDaSessao obj = new LugarDaSessao(l1, sessao, 10, LugarDaSessao.Estado.Livre);
+        Bilhete obj = new Bilhete(l1, sessao, 10, Bilhete.Estado.Livre);
 
         System.out.println(obj.toString());
     }
