@@ -5,5 +5,15 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://C:/Program Files (x86)/MySQL/Connector J 8.0" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://C:/Program Files (x86)/MySQL/Connector J 8.0" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>
