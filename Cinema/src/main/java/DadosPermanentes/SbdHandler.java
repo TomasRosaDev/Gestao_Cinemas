@@ -51,20 +51,19 @@ public class SbdHandler {
         return listaFilmes;
     }
 
-    /*
-               Statement stmt = conn.createStatement();
-            ResultSet rs;
-            String query = "SELECT nome FROM aluno WHERE numero = " + nAluno;
-
-            if(stmt.execute(query)){
-                rs = stmt.getResultSet();
-
-                while (rs.next()){
-                    String nome = rs.getNString("nome");
-                    System.out.println(nome);
+    public Genero[] getGeneros(String titulo, String ano) {
+        Genero[] generos={};
+        ResultSet resultQueryGeneros;
+        String queryGenero = "";//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
+        try {
+            if (stmt.execute(queryGenero)) {
+                resultQueryGeneros = stmt.getResultSet();
+                int i=0;
+                while (resultQueryGeneros.next()) {
+                    String genero = resultQueryGeneros.getString("genero");
+                    generos[i]=Genero.valueOf(genero);
+                    i++;
                 }
-
-
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
