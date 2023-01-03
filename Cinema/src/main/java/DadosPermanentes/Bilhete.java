@@ -3,25 +3,29 @@ package DadosPermanentes;
 public class Bilhete {
     private Lugar lugar;
     private Sessao sessao;
+    private String preco;
+    private SbdHandler sbdHandler;
 
-    private int preco;
+    public Bilhete(Lugar lugar, Sessao sessao, SbdHandler sbdHandler){
+        this.lugar = lugar;
+        this.sessao = sessao;
+        this.sbdHandler=sbdHandler;
+    }
 
     public Estado getEstado() {
+        if(estado==null){
+            estado=sbdHandler.getEstadoBilhete(lugar.getPosicao(),sessao);
+        }
         return estado;
     }
 
-    public int getPreco() {
+    public String getPreco() {
+        if(preco==null){
+            preco=sbdHandler.getPrecoBilhete(lugar.getPosicao(),sessao);
+        }
         return preco;
     }
 
-    public void setPreco(int preco) {
-        if(preco>=0){
-            this.preco = preco;
-        }
-        else{
-            throw new IllegalArgumentException("O preco tem de ser maior ou igual a 0.");
-        }
-    }
 
     public enum Estado{
         Ocupado,
@@ -31,12 +35,6 @@ public class Bilhete {
 
     public Estado estado;
 
-    public Bilhete(Lugar lugar, Sessao sessao, int preco, Estado estado){
-        this.lugar = lugar;
-        this.sessao = sessao;
-        this.preco = preco;
-        this.estado = estado;
-    }
 
     public String toString() {
         String auxLugarDaSessao = "";

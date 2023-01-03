@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;/**
  * @author Jorge Vieira
  */
 public class mainAuxFilme {
-    public static void main( String[] args) {
+    public static void main( String[] args) {/*
         Realizador rea=new Realizador("Steven Spilberge");
         Ator raul=new Ator("Raul Silva");
         Ator fabio=new Ator("Fabio Simoes");
@@ -27,6 +27,6 @@ public class mainAuxFilme {
         int ano=Integer.parseInt(datas[2]);
         Calendar dataEstreia =new GregorianCalendar(ano, mes, dia);
         Filme filme=new Filme("Labregos in da Street", "Labregation in the Street", generos, dataEstreia, rea, atores, distribuidor, "Portugal", 360, "Labregos a fazerem um trabalho");
-        System.out.println(filme.toString());
+        System.out.println(filme.toString());*/
     }
 }

@@ -6,12 +6,13 @@ public class Sala {
     //Campos
     private int numeroSala;
     private Lugar[][] lugares;
+    private SbdHandler sbdHandler;
 
 
     //Construtor
-    public Sala(int numeroSala, Lugar[][] lugares) {
+    public Sala(int numeroSala, SbdHandler sbdHandler) {
         setNumeroSala(numeroSala); // Verifica o se o numero é válido.
-        this.lugares=lugares;
+        this.sbdHandler=sbdHandler;
     }
 
     //Getters
@@ -21,11 +22,14 @@ public class Sala {
 
     //Setters
     private void setNumeroSala(int numeroSala) {
-        if(numeroSala>0){
-            this.numeroSala = numeroSala;
-        }else{
-            throw new IllegalArgumentException("O numero de sala tem de ser positivo.");
+        this.numeroSala = numeroSala;
+    }
+
+    public Lugar[][] getLugares() {
+        if(lugares==null){
+            lugares=sbdHandler.getLugares(""+numeroSala);
         }
+        return lugares;
     }
 
     public String toString(){

@@ -28,7 +28,8 @@ public class SbdHandler {
                 resultQueryFilmes = stmt.getResultSet();
                 while (resultQueryFilmes.next()) {
                     String titulo = resultQueryFilmes.getString("titulo");
-                    String tituloOriginal = resultQueryFilmes.getString("titulo_original");
+                    String ano =  resultQueryFilmes.getString("ano");
+                    /*String tituloOriginal = resultQueryFilmes.getString("titulo_original");
                     Calendar dataEstreia = convertCalendarFromString(resultQueryFilmes.getString("data_estreia"));
                     String descricao = resultQueryFilmes.getString("descricao");
                     int duracao = Integer.parseInt(resultQueryFilmes.getString("duracao"));
@@ -38,9 +39,9 @@ public class SbdHandler {
                     Realizador realizador = getRealizador(titulo, ano);
                     Ator[] atores = getAtores(titulo, ano);
                     Distribuidor distribuidor = getDistribuidor(titulo, ano);
-
-                    listaFilmes.add(new Filme(titulo, tituloOriginal, generos, dataEstreia, realizador, atores,
-                            distribuidor, pais, duracao, descricao));
+                    */
+                    listaFilmes.add(new Filme(titulo, ano,this));// tituloOriginal, generos, dataEstreia, realizador, atores,
+                            //distribuidor, pais, duracao, descricao));
                 }
 
             }
@@ -149,7 +150,7 @@ public class SbdHandler {
                     Sala sala=getSala(resultQuerySessao.getString("n_sala"));
                     Calendar dataInicio=convertCalendarFromString(resultQuerySessao.getString("data_inicio"));
                     Calendar dataFim=convertCalendarFromString(resultQuerySessao.getString("data_fim"));
-                    return new Sessao(filme,sala,dataInicio, dataFim);
+                    return new Sessao(filme,sala,dataInicio, this);
                 }
             }
         } catch (SQLException e) {
@@ -165,7 +166,7 @@ public class SbdHandler {
             if (stmt.execute(queryAtor)) {
                 String nSala = resultQuerySala.getString("numero");
                 Lugar[][] lugares = getLugares(n_sala);
-                return new Sala( Integer.parseInt(nSala) , lugares);
+                return new Sala( Integer.parseInt(nSala),this);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -180,7 +181,7 @@ public class SbdHandler {
             if (stmt.execute(queryLugar)) {
                 int i=0;
                 while (resultQueryLugar.next()) {
-                    String posicao = resultQuerySala.getString("numero");
+                    String posicao = resultQueryLugar.getString("numero");
 
                     i++;
                 }

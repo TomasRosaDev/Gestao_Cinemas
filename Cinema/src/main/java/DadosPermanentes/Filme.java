@@ -15,6 +15,9 @@ import java.util.Locale;
  */
 public class Filme {
     private String titulo;
+    private int ano;
+
+    private SbdHandler sbdHandler;
     private String tituloOriginal;
     private Genero[] generos;
     private Calendar dataEstreia;
@@ -22,27 +25,14 @@ public class Filme {
     private Ator[] atores;
     private Distribuidor distribuidor;
     private String pais;
-    private int ano;
-    private int duracao;
+
+    private String duracao;
     private String descricao;
 
-    public Filme(String titulo, String tituloOriginal, Genero[] generos, Calendar dataEstreia, Realizador realizador, Ator[] atores, Distribuidor distribuidor, String pais, int duracao, String descricao) {
+    public Filme(String titulo,String ano,SbdHandler sbdHandler) {
         this.titulo = titulo;
-        this.tituloOriginal = tituloOriginal;
-        this.generos=generos;
-        //String[] datas=dataEstreia.split("/");
-        //int dia=Integer.parseInt(datas[0]);
-        //int mes=Integer.parseInt(datas[1]);
-        //int ano=Integer.parseInt(datas[2]);
-        //this.dataEstreia =new GregorianCalendar(ano, mes, dia);
-        this.dataEstreia=dataEstreia;
-        this.realizador = realizador;
-        this.atores = atores;
-        this.distribuidor = distribuidor;
-        this.pais = pais;
-        this.ano = dataEstreia.getWeekYear();
-        this.duracao = duracao;
-        this.descricao = descricao;
+        this.ano = Integer.parseInt(ano);
+        this.sbdHandler=sbdHandler;
     }
 
     public String getTitulo() {
@@ -71,7 +61,67 @@ public class Filme {
         aux+="\nDistribuidor: "+distribuidor.getNome()+"\nPais: "+pais+"\nAno: "+ano+"\nDuração: "+duracao+"\nDescrição: "+descricao;
         return aux;
     }
-    
-    
-    
+
+    public String getTituloOriginal() {
+        if(tituloOriginal==null){
+            tituloOriginal=sbdHandler.getTituloOriginal(titulo,getAnoString());
+        }
+        return tituloOriginal;
+    }
+
+    public Genero[] getGeneros() {
+        if(generos==null){
+            generos=sbdHandler.getGeneros(titulo,getAnoString());
+        }
+        return generos;
+    }
+
+    public Calendar getDataEstreia() {
+        if(dataEstreia==null){
+            dataEstreia=sbdHandler.getDataEstreia(titulo,getAnoString());
+        }
+        return dataEstreia;
+    }
+
+    public Realizador getRealizador() {
+        if(realizador==null){
+            realizador=sbdHandler.getRealizador(titulo,getAnoString());
+        }
+        return realizador;
+    }
+
+    public Ator[] getAtores() {
+        if(atores==null){
+            atores=sbdHandler.getAtores(titulo,getAnoString());
+        }
+        return atores;
+    }
+
+    public Distribuidor getDistribuidor() {
+        if(distribuidor==null){
+            distribuidor=sbdHandler.getDistribuidor(titulo,getAnoString());
+        }
+        return distribuidor;
+    }
+
+    public String getPais() {
+        if(pais==null){
+            pais=sbdHandler.getPais(titulo,getAnoString());
+        }
+        return pais;
+    }
+
+    public String getDuracao() {
+        if(duracao==null){
+            duracao=sbdHandler.getDuracao(titulo,getAnoString());
+        }
+        return duracao;
+    }
+
+    public String getDescricao() {
+        if(descricao==null){
+            descricao=sbdHandler.getDescricao(titulo,getAnoString());
+        }
+        return descricao;
+    }
 }

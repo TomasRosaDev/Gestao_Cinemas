@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class mainAuxBilhete {
-    public static void main(String[] args) {
+    public static void main(String[] args) {/*
         Realizador rea=new Realizador("Steven Spilberge");
         Ator raul=new Ator("Raul Silva");
         Ator fabio=new Ator("Fabio Simoes");
@@ -35,7 +35,7 @@ public class mainAuxBilhete {
 
         Bilhete obj = new Bilhete(l1, sessao, 10, Bilhete.Estado.Livre);
 
-        System.out.println(obj.toString());
+        System.out.println(obj.toString());*/
     }
 
 

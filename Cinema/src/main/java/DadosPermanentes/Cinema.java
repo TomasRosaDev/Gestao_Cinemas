@@ -7,13 +7,13 @@ import java.util.Iterator;
 
 public class Cinema {
     private SbdHandler sbdHandler;
-    private ArrayList <Sala> salas;
-    private ArrayList <Realizador> realizadores;
-    private ArrayList <Ator> atores;
-    private ArrayList <Filme> filmes;
-    private ArrayList <Distribuidor> distribuidores;
-    private ArrayList <Sessao> sessoes;
-
+    private ArrayList<Sala> salas;
+    private ArrayList<Realizador> realizadores;
+    private ArrayList<Ator> atores;
+    private ArrayList<Filme> filmes;
+    private ArrayList<Distribuidor> distribuidores;
+    private ArrayList<Sessao> sessoes;
+/*
     public Cinema(SbdHandler sbdHandler) {
         this.sbdHandler = sbdHandler;
         getSalas();
@@ -193,3 +193,4 @@ public class Cinema {
         }
     }
      */
+}

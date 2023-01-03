@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class mainAuxSessao {
-    public static void main(String[] args) {
+    public static void main(String[] args) {/*
         Realizador rea=new Realizador("Steven Spilberge");
         Ator raul=new Ator("Raul Silva");
         Ator fabio=new Ator("Fabio Simoes");
@@ -30,6 +30,6 @@ public class mainAuxSessao {
         Calendar dataInicio= new GregorianCalendar(2022,11,25,23,30, 00);
         Calendar dataFim= new GregorianCalendar(2022,11,26,2,00);
         Sessao sessao=new Sessao(filme,sala,dataInicio,dataFim);
-        System.out.println(sessao.toString());
+        System.out.println(sessao.toString());*/
     }
 }

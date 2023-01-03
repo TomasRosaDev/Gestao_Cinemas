@@ -9,16 +9,24 @@ public class Sessao {
     private Calendar dataHoraFim;
     private Filme filme;
     private Sala sala;
+    private SbdHandler sbdHandler;
 
     public Sala getSala() {
         return sala;
     }
 
-    public Sessao(Filme filme, Sala sala, Calendar dataHoraInicio, Calendar dataHoraFim) {
+    public Sessao(Filme filme, Sala sala, Calendar dataHoraInicio, SbdHandler sbdHandler) {
         this.filme=filme;
         this.sala=sala;
         this.dataHoraInicio=dataHoraInicio;
-        this.dataHoraFim=dataHoraFim;
+        this.sbdHandler=sbdHandler;
+    }
+
+    public Calendar getDataHoraFim() {
+        if(dataHoraFim==null){
+            dataHoraFim=sbdHandler.getDataHoraFim(filme,sala,dataHoraInicio);
+        }
+        return dataHoraFim;
     }
 
     @Override
