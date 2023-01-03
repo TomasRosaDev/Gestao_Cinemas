@@ -24,7 +24,7 @@ public class Sessao {
 
     public Calendar getDataHoraFim() {
         if(dataHoraFim==null){
-            dataHoraFim=sbdHandler.getDataHoraFim(filme,sala,dataHoraInicio);
+            dataHoraFim=sbdHandler.getDataHoraFim(filme.getTitulo(),filme.getAnoString(),sala.getNumeroSala()+"",dataHoraInicio);
         }
         return dataHoraFim;
     }

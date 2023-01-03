@@ -191,9 +191,118 @@ public class SbdHandler {
         }
         return null;
     }
-    
-    
-    
+
+    public Calendar getDataHoraFim(String titulo,String ano,String nSala,Calendar dataHoraInicio){
+        ResultSet resultQueryDaraHoraFimSessao;
+        String queryDaraHoraFimSessao = "";
+        try {
+            if (stmt.execute(queryDaraHoraFimSessao)) {
+                resultQueryDaraHoraFimSessao = stmt.getResultSet();
+                return convertCalendarFromString(resultQueryDaraHoraFimSessao.getString("DaraHoraFim"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public String getTituloOriginal(String titulo,String ano){
+        ResultSet resultQueryTituloOriginalFilmes;
+        String queryTituloOriginalFilme = "";
+        try {
+            if (stmt.execute(queryTituloOriginalFilme)) {
+                resultQueryTituloOriginalFilmes = stmt.getResultSet();
+                return resultQueryTituloOriginalFilmes.getString("tituloOriginal");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Calendar getDataEstreia(String titulo,String ano){
+        ResultSet resultQueryDataEstreiaFilmes;
+        String queryDataEstreiaFilme = "";
+        try {
+            if (stmt.execute(queryDataEstreiaFilme)) {
+                resultQueryDataEstreiaFilmes = stmt.getResultSet();
+                return convertCalendarFromString(resultQueryDataEstreiaFilmes.getString("DataEstreia"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public String getPais(String titulo,String ano){
+        ResultSet resultQueryPaisFilmes;
+        String queryPaisFilme = "";
+        try {
+            if (stmt.execute(queryPaisFilme)) {
+                resultQueryPaisFilmes = stmt.getResultSet();
+                return resultQueryPaisFilmes.getString("DataEstreia");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public String getDuracao(String titulo,String ano){
+        ResultSet resultQueryDuracaoFilmes;
+        String queryDuracaoFilme = "";
+        try {
+            if (stmt.execute(queryDuracaoFilme)) {
+                resultQueryDuracaoFilmes = stmt.getResultSet();
+                return resultQueryDuracaoFilmes.getString("DataEstreia");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public String getDescricao(String titulo,String ano){
+        ResultSet resultQueryDescricaoFilmes;
+        String queryDescricaoFilme = "";
+        try {
+            if (stmt.execute(queryDescricaoFilme)) {
+                resultQueryDescricaoFilmes = stmt.getResultSet();
+                return resultQueryDescricaoFilmes.getString("DataEstreia");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Bilhete.Estado getEstadoBilhete(String posicao,Sessao sessao){
+        ResultSet resultQueryEstadoBilhete;
+        String queryEstadoBilhete = "";
+        try {
+            if (stmt.execute(queryEstadoBilhete)) {
+                resultQueryEstadoBilhete = stmt.getResultSet();
+                return Bilhete.Estado.valueOf(resultQueryEstadoBilhete.getString("Estado"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public String getPrecoBilhete(String posicao,Sessao sessao){
+        ResultSet resultQueryPrecoBilhete;
+        String queryPrecoBilhete = "";
+        try {
+            if (stmt.execute(queryPrecoBilhete)) {
+                resultQueryPrecoBilhete = stmt.getResultSet();
+                return resultQueryPrecoBilhete.getString("Preco");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
     
     public Calendar convertCalendarFromString(String date){
         String[] date1=date.split("/");

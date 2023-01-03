@@ -17,7 +17,7 @@ public class Cinema extends javax.swing.JPanel {
         // TODO code application logic here
        //ImageIcon segundoFilme = new ImageIcon();
        //ImageIcon terceiroFilme = new ImageIcon();
-        frame.setVisible
+        //frame.setVisible;
     }
     
     /**

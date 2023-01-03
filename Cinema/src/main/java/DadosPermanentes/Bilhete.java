@@ -4,6 +4,7 @@ public class Bilhete {
     private Lugar lugar;
     private Sessao sessao;
     private String preco;
+    public Estado estado;
     private SbdHandler sbdHandler;
 
     public Bilhete(Lugar lugar, Sessao sessao, SbdHandler sbdHandler){
@@ -33,7 +34,7 @@ public class Bilhete {
         Reservado
     }
 
-    public Estado estado;
+
 
 
     public String toString() {
