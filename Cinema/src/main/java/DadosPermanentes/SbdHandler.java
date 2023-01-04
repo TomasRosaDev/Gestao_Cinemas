@@ -29,12 +29,12 @@ public class SbdHandler {
         try {
             if (stmt.execute(queryFilmeDetails)) {
                 resultQueryFilmeDetails = stmt.getResultSet();
-                filme.setTituloOriginal(resultQueryFilmeDetails.getString("tituloOriginal"));
+                filme.setTituloOriginal(resultQueryFilmeDetails.getString("titulo_original"));
                 filme.setPais(resultQueryFilmeDetails.getString("pais"));
-                filme.setDataEstreia(convertCalendarFromString(resultQueryFilmeDetails.getString("dataEstreia")));
+                filme.setDataEstreia(convertCalendarFromString(resultQueryFilmeDetails.getString("data_estreia")));
                 filme.setDescricao(resultQueryFilmeDetails.getString("descricao"));
-                filme.setDistribuidor(new Distribuidor(resultQueryFilmeDetails.getString("distribuidor")));
-                filme.setRealizador(new Realizador(resultQueryFilmeDetails.getString("realizador")));
+                filme.setDistribuidor(new Distribuidor(resultQueryFilmeDetails.getString("nome_distribuidor")));
+                filme.setRealizador(new Realizador(resultQueryFilmeDetails.getString("nome_realizador")));
                 filme.setDuracao(resultQueryFilmeDetails.getString("duracao"));
             }
             if (stmt.execute(queryFilmeGeneros)){
@@ -106,7 +106,7 @@ public class SbdHandler {
 
     public Sessao getSessaoFilme(Filme filme, String dataHoraInicio) {
         ResultSet resultQuerySessao;
-        String querySessao = "";//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
+        String querySessao = "";
         try {
             if (stmt.execute(querySessao)) {
                 resultQuerySessao = stmt.getResultSet();
@@ -129,7 +129,6 @@ public class SbdHandler {
         try {
             if (stmt.execute(queryAtor)) {
                 String nSala = resultQuerySala.getString("numero");
-                Lugar[][] lugares = getLugares(n_sala);
                 return new Sala( Integer.parseInt(nSala),this);
             }
         } catch (SQLException e) {
@@ -143,17 +142,18 @@ public class SbdHandler {
         String queryLugar = "";
         try {
             if (stmt.execute(queryLugar)) {
-                int i=0;
                 while (resultQueryLugar.next()) {
-                    String posicao = resultQueryLugar.getString("numero");
-
-                    i++;
+                    String nome = resultQueryLugar.getString("nome");
+                    TipoLugar tipo=TipoLugar.valueOf(resultQueryLugar.getString("tipo"));
+                    int linha =resultQueryLugar.getInt("posicao_linha");
+                    int coluna =resultQueryLugar.getInt("posicao_coluna");
+                    lugares[linha][coluna]=new Lugar(nome,tipo);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return lugares;
     }
 
     public Calendar getDataHoraFim(String titulo,String ano,String nSala,Calendar dataHoraInicio){
@@ -170,13 +170,13 @@ public class SbdHandler {
         return null;
     }
 
-    public Bilhete.Estado getEstadoBilhete(String posicao,Sessao sessao){
+    public Estado getEstadoBilhete(String posicao,Sessao sessao){
         ResultSet resultQueryEstadoBilhete;
         String queryEstadoBilhete = "";
         try {
             if (stmt.execute(queryEstadoBilhete)) {
                 resultQueryEstadoBilhete = stmt.getResultSet();
-                return Bilhete.Estado.valueOf(resultQueryEstadoBilhete.getString("Estado"));
+                return Estado.valueOf(resultQueryEstadoBilhete.getString("Estado"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

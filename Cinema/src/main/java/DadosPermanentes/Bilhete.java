@@ -4,7 +4,7 @@ public class Bilhete {
     private Lugar lugar;
     private Sessao sessao;
     private String preco;
-    public Estado estado;
+    private Estado estado;
     private SbdHandler sbdHandler;
 
     public Bilhete(Lugar lugar, Sessao sessao, SbdHandler sbdHandler){
@@ -15,24 +15,18 @@ public class Bilhete {
 
     public Estado getEstado() {
         if(estado==null){
-            estado=sbdHandler.getEstadoBilhete(lugar.getPosicao(),sessao);
+            estado=sbdHandler.getEstadoBilhete(lugar.getNome(),sessao);
         }
         return estado;
     }
 
     public String getPreco() {
         if(preco==null){
-            preco=sbdHandler.getPrecoBilhete(lugar.getPosicao(),sessao);
+            preco=sbdHandler.getPrecoBilhete(lugar.getNome(),sessao);
         }
         return preco;
     }
 
-
-    public enum Estado{
-        Ocupado,
-        Livre,
-        Reservado
-    }
 
 
 

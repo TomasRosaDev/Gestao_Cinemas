@@ -25,7 +25,6 @@ public class Filme {
     private Ator[] atores;
     private Distribuidor distribuidor;
     private String pais;
-
     private String duracao;
     private String descricao;
 

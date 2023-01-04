@@ -2,23 +2,18 @@ package DadosPermanentes;
 
 public class Lugar {
     // Campos
-    private String posicao;
-    public TipoLugar tipo;
-    public enum TipoLugar{
-        Normal,
-        Deficiente,
-        VIP
-    }
+    private String nome;
+    private TipoLugar tipo;
 
     //Construtor
     public Lugar(String posicao, TipoLugar lugar){
-        this.posicao = posicao;
+        this.nome = posicao;
         this.tipo = lugar;
     }
 
     //Getters
-    public String getPosicao() {
-        return this.posicao;
+    public String getNome() {
+        return this.nome;
     }
 
     public TipoLugar getTipo() {
@@ -26,6 +21,6 @@ public class Lugar {
     }
 
     public String toString(){
-        return "\nPosicao: "+getPosicao()+"\nTipo: "+getTipo();
+        return "\nPosicao: "+getNome()+"\nTipo: "+getTipo();
     }
 }
