@@ -62,65 +62,101 @@ public class Filme {
         return aux;
     }
 
+    public void setTituloOriginal(String tituloOriginal) {
+        this.tituloOriginal = tituloOriginal;
+    }
+
+    public void setGeneros(Genero[] generos) {
+        this.generos = generos;
+    }
+
+    public void setDataEstreia(Calendar dataEstreia) {
+        this.dataEstreia = dataEstreia;
+    }
+
+    public void setRealizador(Realizador realizador) {
+        this.realizador = realizador;
+    }
+
+    public void setAtores(Ator[] atores) {
+        this.atores = atores;
+    }
+
+    public void setDistribuidor(Distribuidor distribuidor) {
+        this.distribuidor = distribuidor;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public void setDuracao(String duracao) {
+        this.duracao = duracao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     public String getTituloOriginal() {
         if(tituloOriginal==null){
-            tituloOriginal=sbdHandler.getTituloOriginal(titulo,getAnoString());
+            sbdHandler.setFilmeDetails(this);
         }
         return tituloOriginal;
     }
 
     public Genero[] getGeneros() {
         if(generos==null){
-            generos=sbdHandler.getGeneros(titulo,getAnoString());
+            sbdHandler.setFilmeDetails(this);
         }
         return generos;
     }
 
     public Calendar getDataEstreia() {
         if(dataEstreia==null){
-            dataEstreia=sbdHandler.getDataEstreia(titulo,getAnoString());
+            sbdHandler.setFilmeDetails(this);
         }
         return dataEstreia;
     }
 
     public Realizador getRealizador() {
         if(realizador==null){
-            realizador=sbdHandler.getRealizador(titulo,getAnoString());
+            sbdHandler.setFilmeDetails(this);
         }
         return realizador;
     }
 
     public Ator[] getAtores() {
         if(atores==null){
-            atores=sbdHandler.getAtores(titulo,getAnoString());
+            sbdHandler.setFilmeDetails(this);
         }
         return atores;
     }
 
     public Distribuidor getDistribuidor() {
         if(distribuidor==null){
-            distribuidor=sbdHandler.getDistribuidor(titulo,getAnoString());
+            sbdHandler.setFilmeDetails(this);
         }
         return distribuidor;
     }
 
     public String getPais() {
         if(pais==null){
-            pais=sbdHandler.getPais(titulo,getAnoString());
+            sbdHandler.setFilmeDetails(this);
         }
         return pais;
     }
 
     public String getDuracao() {
         if(duracao==null){
-            duracao=sbdHandler.getDuracao(titulo,getAnoString());
+            sbdHandler.setFilmeDetails(this);
         }
         return duracao;
     }
 
     public String getDescricao() {
         if(descricao==null){
-            descricao=sbdHandler.getDescricao(titulo,getAnoString());
+            sbdHandler.setFilmeDetails(this);
         }
         return descricao;
     }

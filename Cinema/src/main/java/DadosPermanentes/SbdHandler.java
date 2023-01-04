@@ -6,17 +6,61 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class SbdHandler {
-    Connection con = null;
+    Connection con;
     Statement stmt = null;
 
     public SbdHandler() {
         try {
-            con = DriverManager.getConnection("jdbc:mysql://estga-dev.ua.pt/PTDA_BD_04?", "PTDA_4", "Kiut684h");
+            con = DriverManager.getConnection("jdbc:mysql://estga-dev.ua.pt/PTDA_BD_04?", "PTDA_04", "Kiut684h");
             Statement stmt = con.createStatement();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void setFilmeDetails(Filme filme){
+        ResultSet resultQueryFilmeDetails;
+        ResultSet resultQueryFilmeGeneros;
+        ResultSet resultQueryFilmeAtores;
+        String queryFilmeDetails="";
+        String queryFilmeGeneros="";
+        String queryFilmeAtores="";
+        try {
+            if (stmt.execute(queryFilmeDetails)) {
+                resultQueryFilmeDetails = stmt.getResultSet();
+                filme.setTituloOriginal(resultQueryFilmeDetails.getString("tituloOriginal"));
+                filme.setPais(resultQueryFilmeDetails.getString("pais"));
+                filme.setDataEstreia(convertCalendarFromString(resultQueryFilmeDetails.getString("dataEstreia")));
+                filme.setDescricao(resultQueryFilmeDetails.getString("descricao"));
+                filme.setDistribuidor(new Distribuidor(resultQueryFilmeDetails.getString("distribuidor")));
+                filme.setRealizador(new Realizador(resultQueryFilmeDetails.getString("realizador")));
+                filme.setDuracao(resultQueryFilmeDetails.getString("duracao"));
+            }
+            if (stmt.execute(queryFilmeGeneros)){
+                resultQueryFilmeGeneros=stmt.getResultSet();
+                Genero generos[]={};
+                int i=0;
+                while (resultQueryFilmeGeneros.next()) {
+                    String genero = resultQueryFilmeGeneros.getString("genero");
+                    generos[i]=Genero.valueOf(genero);
+                    i++;
+                }
+                filme.setGeneros(generos);
+            }
+            if (stmt.execute(queryFilmeAtores)){
+                resultQueryFilmeAtores=stmt.getResultSet();
+                Ator atores[]={};
+                int i=0;
+                while (resultQueryFilmeAtores.next()) {
+                    atores[i]= new Ator(resultQueryFilmeAtores.getString("nome"));
+                    i++;
+                }
+                filme.setAtores(atores);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ArrayList<Filme> listaFilmes(Calendar dia) {
@@ -29,19 +73,7 @@ public class SbdHandler {
                 while (resultQueryFilmes.next()) {
                     String titulo = resultQueryFilmes.getString("titulo");
                     String ano =  resultQueryFilmes.getString("ano");
-                    /*String tituloOriginal = resultQueryFilmes.getString("titulo_original");
-                    Calendar dataEstreia = convertCalendarFromString(resultQueryFilmes.getString("data_estreia"));
-                    String descricao = resultQueryFilmes.getString("descricao");
-                    int duracao = Integer.parseInt(resultQueryFilmes.getString("duracao"));
-                    String pais = resultQueryFilmes.getString("nomeAtributo");
-                    String ano=dataEstreia.get(Calendar.YEAR)+"";
-                    Genero[] generos = getGeneros(titulo, ano);
-                    Realizador realizador = getRealizador(titulo, ano);
-                    Ator[] atores = getAtores(titulo, ano);
-                    Distribuidor distribuidor = getDistribuidor(titulo, ano);
-                    */
-                    listaFilmes.add(new Filme(titulo, ano,this));// tituloOriginal, generos, dataEstreia, realizador, atores,
-                            //distribuidor, pais, duracao, descricao));
+                    listaFilmes.add(new Filme(titulo, ano,this));
                 }
 
             }
@@ -51,74 +83,6 @@ public class SbdHandler {
 
 
         return listaFilmes;
-    }
-
-    public Genero[] getGeneros(String titulo, String ano) {
-        Genero[] generos={};
-        ResultSet resultQueryGeneros;
-        String queryGenero = "";//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
-        try {
-            if (stmt.execute(queryGenero)) {
-                resultQueryGeneros = stmt.getResultSet();
-                int i=0;
-                while (resultQueryGeneros.next()) {
-                    String genero = resultQueryGeneros.getString("genero");
-                    generos[i]=Genero.valueOf(genero);
-                    i++;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return generos;
-    }
-
-    public Realizador getRealizador(String titulo, String ano){
-        ResultSet resultQueryRealizadorFilmes;//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametr
-        String queryRealizadorFilme = "";
-        try {
-            if (stmt.execute(queryRealizadorFilme)) {
-                resultQueryRealizadorFilmes = stmt.getResultSet();
-                return new Realizador(resultQueryRealizadorFilmes.getString("nome_realizador"));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-
-    public Ator[] getAtores(String titulo, String ano) {
-        Ator[] atores={};
-        ResultSet resultQueryAtores;
-        String queryAtor = "";//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
-        try {
-            if (stmt.execute(queryAtor)) {
-                resultQueryAtores = stmt.getResultSet();
-                int i=0;
-                while (resultQueryAtores.next()) {
-                    atores[i]= new Ator(resultQueryAtores.getString("nome"));
-                    i++;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return atores;
-    }
-
-    public Distribuidor getDistribuidor(String titulo, String ano){
-        ResultSet resultQueryDistribuidorFilmes;//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametr
-        String queryDistribuidorFilme = "";
-        try {
-            if (stmt.execute(queryDistribuidorFilme)) {
-                resultQueryDistribuidorFilmes = stmt.getResultSet();
-                return new Distribuidor(resultQueryDistribuidorFilmes.getString("nome_distribuidor"));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
     }
 
     public String[] getHorasSessoesDoFilme(Filme filme,Calendar dia){
@@ -199,76 +163,6 @@ public class SbdHandler {
             if (stmt.execute(queryDaraHoraFimSessao)) {
                 resultQueryDaraHoraFimSessao = stmt.getResultSet();
                 return convertCalendarFromString(resultQueryDaraHoraFimSessao.getString("DaraHoraFim"));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    public String getTituloOriginal(String titulo,String ano){
-        ResultSet resultQueryTituloOriginalFilmes;
-        String queryTituloOriginalFilme = "";
-        try {
-            if (stmt.execute(queryTituloOriginalFilme)) {
-                resultQueryTituloOriginalFilmes = stmt.getResultSet();
-                return resultQueryTituloOriginalFilmes.getString("tituloOriginal");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    public Calendar getDataEstreia(String titulo,String ano){
-        ResultSet resultQueryDataEstreiaFilmes;
-        String queryDataEstreiaFilme = "";
-        try {
-            if (stmt.execute(queryDataEstreiaFilme)) {
-                resultQueryDataEstreiaFilmes = stmt.getResultSet();
-                return convertCalendarFromString(resultQueryDataEstreiaFilmes.getString("DataEstreia"));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    public String getPais(String titulo,String ano){
-        ResultSet resultQueryPaisFilmes;
-        String queryPaisFilme = "";
-        try {
-            if (stmt.execute(queryPaisFilme)) {
-                resultQueryPaisFilmes = stmt.getResultSet();
-                return resultQueryPaisFilmes.getString("DataEstreia");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    public String getDuracao(String titulo,String ano){
-        ResultSet resultQueryDuracaoFilmes;
-        String queryDuracaoFilme = "";
-        try {
-            if (stmt.execute(queryDuracaoFilme)) {
-                resultQueryDuracaoFilmes = stmt.getResultSet();
-                return resultQueryDuracaoFilmes.getString("DataEstreia");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    public String getDescricao(String titulo,String ano){
-        ResultSet resultQueryDescricaoFilmes;
-        String queryDescricaoFilme = "";
-        try {
-            if (stmt.execute(queryDescricaoFilme)) {
-                resultQueryDescricaoFilmes = stmt.getResultSet();
-                return resultQueryDescricaoFilmes.getString("DataEstreia");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
