@@ -14,10 +14,9 @@ import javax.swing.JPanel;
  */
 public class Cinema extends javax.swing.JPanel {
     public static void main(String[] args) {
-        // TODO code application logic here
-       //ImageIcon segundoFilme = new ImageIcon();
+
        //ImageIcon terceiroFilme = new ImageIcon();
-        //frame.setVisible;
+
     }
     
     /**

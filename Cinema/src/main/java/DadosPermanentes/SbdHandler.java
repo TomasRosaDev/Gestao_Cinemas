@@ -7,12 +7,12 @@ import java.util.GregorianCalendar;
 
 public class SbdHandler {
     Connection con;
-    Statement stmt = null;
+    Statement stmt= null;
 
     public SbdHandler() {
         try {
             con = DriverManager.getConnection("jdbc:mysql://estga-dev.ua.pt/PTDA_BD_04?", "PTDA_04", "Kiut684h");
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -23,9 +23,10 @@ public class SbdHandler {
         ResultSet resultQueryFilmeDetails;
         ResultSet resultQueryFilmeGeneros;
         ResultSet resultQueryFilmeAtores;
-        String queryFilmeDetails="";
-        String queryFilmeGeneros="";
-        String queryFilmeAtores="";
+        String queryFilmeDetails="SELECT titulo_original, pais, data_estreia, descricao, nome_distribuidor, nome_realizador, duracao FROM filme " +
+                                "WHERE titulo_original="+"'"+filme.getTituloOriginal()+"'"+" and ano="+ filme.getAno();
+        String queryFilmeGeneros="SELECT nome_genero FROM filme_genero WHERE titulo_original="+"'"+filme.getTituloOriginal()+"'"+" and ano="+ filme.getAno();
+        String queryFilmeAtores="SELECT nome_ator FROM filme_ator WHERE titulo_original="+"'"+filme.getTituloOriginal()+"'"+" and ano="+ filme.getAno();
         try {
             if (stmt.execute(queryFilmeDetails)) {
                 resultQueryFilmeDetails = stmt.getResultSet();
@@ -63,10 +64,10 @@ public class SbdHandler {
         }
     }
 
-    public ArrayList<Filme> listaFilmes(Calendar dia) {
+    public ArrayList<Filme> listaFilmes(Date dia) throws SQLException {
         ArrayList<Filme> listaFilmes = new ArrayList<>();
         ResultSet resultQueryFilmes;//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametr
-        String queryFilme = "";
+        String queryFilme = "select titulo, ano from filme where data_estreia="+"'"+dia+"'";
         try {
             if (stmt.execute(queryFilme)) {
                 resultQueryFilmes = stmt.getResultSet();
@@ -80,15 +81,13 @@ public class SbdHandler {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
         return listaFilmes;
     }
 
-    public String[] getHorasSessoesDoFilme(Filme filme,Calendar dia){
+    public String[] getHorasSessoesDoFilme(Filme filme,Date dia){
         String[] sessoes={};
         ResultSet resultQuerySessoes;
-        String querySessaoFilme = "";//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
+        String querySessaoFilme = "select dataHoraInicio from sessao where titulo_original_filme="+"'"+filme.getTituloOriginal()+"'"+" and ano_filme="+Date.valueOf(String.valueOf(dia.getYear()));//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
         try {
             if (stmt.execute(querySessaoFilme)) {
                 resultQuerySessoes = stmt.getResultSet();
