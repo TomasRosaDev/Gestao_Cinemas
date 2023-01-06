@@ -21,15 +21,14 @@ public class SbdHandler {
 
     public void setFilmeDetails(Filme filme){
         ResultSet resultQueryFilmeDetails;
-        ResultSet resultQueryFilmeGeneros;
-        ResultSet resultQueryFilmeAtores;
+        ResultSet resultQueryFilmeGeneros = null;
+        ResultSet resultQueryFilmeAtores = null;
         String queryFilmeDetails="SELECT titulo_original, pais, data_estreia, descricao, nome_distribuidor, nome_realizador, duracao FROM filme " +
-                                "WHERE titulo_original="+"'"+filme.getTituloOriginal()+"'"+" and ano="+ filme.getAno();
-        String queryFilmeGeneros="SELECT nome_genero FROM filme_genero WHERE titulo_original="+"'"+filme.getTituloOriginal()+"'"+" and ano="+ filme.getAno();
-        String queryFilmeAtores="SELECT nome_ator FROM filme_ator WHERE titulo_original="+"'"+filme.getTituloOriginal()+"'"+" and ano="+ filme.getAno();
+                                "WHERE titulo="+"'"+filme.getTitulo()+"'"+" and ano="+ filme.getAno();
         try {
             if (stmt.execute(queryFilmeDetails)) {
-                resultQueryFilmeDetails = stmt.getResultSet();
+                resultQueryFilmeDetails=stmt.getResultSet();
+                resultQueryFilmeDetails.next();
                 filme.setTituloOriginal(resultQueryFilmeDetails.getString("titulo_original"));
                 filme.setPais(resultQueryFilmeDetails.getString("pais"));
                 filme.setDataEstreia(convertCalendarFromString(resultQueryFilmeDetails.getString("data_estreia")));
@@ -38,24 +37,31 @@ public class SbdHandler {
                 filme.setRealizador(new Realizador(resultQueryFilmeDetails.getString("nome_realizador")));
                 filme.setDuracao(resultQueryFilmeDetails.getString("duracao"));
             }
+            String queryFilmeGeneros="SELECT nome_genero FROM filme_genero WHERE titulo_original_filme='"+filme.getTituloOriginal()+"' and ano_filme="+ filme.getAno();
             if (stmt.execute(queryFilmeGeneros)){
                 resultQueryFilmeGeneros=stmt.getResultSet();
-                Genero generos[]={};
-                int i=0;
+               // Genero generos[]=new Genero[1];//Nao da para fazer
+                ArrayList<Genero> generos= new ArrayList<>();
+                //int i=0;
                 while (resultQueryFilmeGeneros.next()) {
-                    String genero = resultQueryFilmeGeneros.getString("genero");
-                    generos[i]=Genero.valueOf(genero);
-                    i++;
+                    String genero = resultQueryFilmeGeneros.getString("nome_genero");
+                    //generos[0]= Genero.valueOf(genero);
+                    generos.add(Genero.valueOf(genero));
+                  //  i++;
                 }
                 filme.setGeneros(generos);
             }
+            String queryFilmeAtores="SELECT nome_ator FROM filme_ator WHERE titulo_original_filme='"+filme.getTituloOriginal()+"' and ano_filme="+ filme.getAno();
+
             if (stmt.execute(queryFilmeAtores)){
+
                 resultQueryFilmeAtores=stmt.getResultSet();
-                Ator atores[]={};
-                int i=0;
+               // Ator atores[]={};//Não da para fazer
+                ArrayList<Ator> atores= new ArrayList<>();
+               // int i=0;
                 while (resultQueryFilmeAtores.next()) {
-                    atores[i]= new Ator(resultQueryFilmeAtores.getString("nome"));
-                    i++;
+                    atores.add(new Ator(resultQueryFilmeAtores.getString("nome_ator")));
+                    //i++;
                 }
                 filme.setAtores(atores);
             }
@@ -85,10 +91,13 @@ public class SbdHandler {
     }
 
     public String[] getHorasSessoesDoFilme(Filme filme,Date dia){
-        String[] sessoes={};
+       // String[] sessoes= {}; //Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0
+        String[] sessoes= new String[1];
         ResultSet resultQuerySessoes;
-        String querySessaoFilme = "select dataHoraInicio from sessao where titulo_original_filme="+"'"+filme.getTituloOriginal()+"'"+" and ano_filme="+Date.valueOf(String.valueOf(dia.getYear()));//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
+        String[] diaSplit = dia.toString().split("-");
+        String querySessaoFilme = "select dataHoraInicio from sessao where titulo_original_filme="+"'"+filme.getTituloOriginal()+"'"+" and ano_filme="+Integer.parseInt(diaSplit[0]);//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
         try {
+
             if (stmt.execute(querySessaoFilme)) {
                 resultQuerySessoes = stmt.getResultSet();
                 int i=0;
@@ -198,7 +207,7 @@ public class SbdHandler {
     }
     
     public Calendar convertCalendarFromString(String date){
-        String[] date1=date.split("/");
+        String[] date1=date.split("-");
         return new GregorianCalendar(Integer.parseInt(date1[0]),Integer.parseInt(date1[1]),Integer.parseInt(date1[2]));
     }
 }

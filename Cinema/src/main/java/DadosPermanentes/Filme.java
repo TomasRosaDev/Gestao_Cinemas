@@ -4,10 +4,7 @@ package DadosPermanentes;/*
  */
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.*;
 
 /**
  *
@@ -19,10 +16,10 @@ public class Filme {
 
     private SbdHandler sbdHandler;
     private String tituloOriginal;
-    private Genero[] generos;
+    private ArrayList<Genero> generos;
     private Calendar dataEstreia;
     private Realizador realizador;
-    private Ator[] atores;
+    private ArrayList<Ator> atores;
     private Distribuidor distribuidor;
     private String pais;
     private String duracao;
@@ -48,14 +45,14 @@ public class Filme {
 
     @Override
     public String toString() {
-        String aux="Genero: "+generos[0].toString();
-        for (int i=1;i<generos.length;i++){
-            aux+=", "+generos[i].toString();
+        String aux="Genero: "+ generos.get(0).toString();
+        for (int i = 1; i< generos.size(); i++){
+            aux+=", "+ generos.get(i).toString();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd");
-        aux+="\n"+titulo+"\n"+tituloOriginal+"\n"+sdf.format(dataEstreia.getTime())+"\n"+realizador.getNome()+"\n"+atores[0].getNome();
-        for (int i=1;i<atores.length;i++){
-            aux+=", "+atores[i].getNome();
+        aux+="\n"+titulo+"\n"+tituloOriginal+"\n"+sdf.format(dataEstreia.getTime())+"\n"+realizador.getNome()+"\n"+atores.get(0).getNome();
+        for (int i=1;i<atores.size();i++){
+            aux+=", "+atores.get(i).getNome();
         }
         aux+="\nDistribuidor: "+distribuidor.getNome()+"\nPais: "+pais+"\nAno: "+ano+"\nDuração: "+duracao+"\nDescrição: "+descricao;
         return aux;
@@ -65,7 +62,7 @@ public class Filme {
         this.tituloOriginal = tituloOriginal;
     }
 
-    public void setGeneros(Genero[] generos) {
+    public void setGeneros(ArrayList<Genero> generos) {
         this.generos = generos;
     }
 
@@ -77,7 +74,7 @@ public class Filme {
         this.realizador = realizador;
     }
 
-    public void setAtores(Ator[] atores) {
+    public void setAtores(ArrayList<Ator> atores) {
         this.atores = atores;
     }
 
@@ -104,7 +101,7 @@ public class Filme {
         return tituloOriginal;
     }
 
-    public Genero[] getGeneros() {
+    public ArrayList<Genero> getGeneros() {
         if(generos==null){
             sbdHandler.setFilmeDetails(this);
         }
@@ -118,25 +115,29 @@ public class Filme {
         return dataEstreia;
     }
 
-    public Realizador getRealizador() {
+    public String getRealizador() {
         if(realizador==null){
             sbdHandler.setFilmeDetails(this);
         }
-        return realizador;
+        return realizador.getNome();
     }
 
-    public Ator[] getAtores() {
-        if(atores==null){
+    public String getAtores() {
+        String ator = "";
+        if(this.atores==null){
             sbdHandler.setFilmeDetails(this);
         }
-        return atores;
+        for (int i=1;i<atores.size();i++){
+            ator+=", "+atores.get(i).getNome();
+        }
+        return ator;
     }
 
-    public Distribuidor getDistribuidor() {
+    public String getDistribuidor() {
         if(distribuidor==null){
             sbdHandler.setFilmeDetails(this);
         }
-        return distribuidor;
+        return distribuidor.getNome();
     }
 
     public String getPais() {
