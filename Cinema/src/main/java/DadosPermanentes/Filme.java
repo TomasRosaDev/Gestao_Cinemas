@@ -50,11 +50,11 @@ public class Filme {
             aux+=", "+ generos.get(i).toString();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd");
-        aux+="\n"+titulo+"\n"+tituloOriginal+"\n"+sdf.format(dataEstreia.getTime())+"\n"+realizador.getNome()+"\n"+atores.get(0).getNome();
+        aux+="\nTitulo: "+titulo+"//\nTitulo Original: "+tituloOriginal+"//\nData Estreia: "+sdf.format(dataEstreia.getTime())+"//\nRealizador: "+realizador.getNome()+"//\nAtores "+atores.get(0).getNome();
         for (int i=1;i<atores.size();i++){
             aux+=", "+atores.get(i).getNome();
         }
-        aux+="\nDistribuidor: "+distribuidor.getNome()+"\nPais: "+pais+"\nAno: "+ano+"\nDuração: "+duracao+"\nDescrição: "+descricao;
+        aux+="//\nDistribuidor: "+distribuidor.getNome()+"//\nPais: "+pais+"//\nAno: "+ano+"//\nDuracao: "+duracao+"//\nDescricao: "+descricao;
         return aux;
     }
 
