@@ -13,7 +13,6 @@ import java.util.*;
 public class Filme {
     private String titulo;
     private int ano;
-
     private SbdHandler sbdHandler;
     private String tituloOriginal;
     private ArrayList<Genero> generos;
@@ -24,6 +23,7 @@ public class Filme {
     private String pais;
     private String duracao;
     private String descricao;
+    private int idade = 0;
 
     public Filme(String titulo,String ano,SbdHandler sbdHandler) {
         this.titulo = titulo;
@@ -94,6 +94,10 @@ public class Filme {
         this.descricao = descricao;
     }
 
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+
     public String getTituloOriginal() {
         if(tituloOriginal==null){
             sbdHandler.setFilmeDetails(this);
@@ -160,4 +164,13 @@ public class Filme {
         }
         return descricao;
     }
+
+    public int getIdade() {
+        if(idade==0){
+            sbdHandler.setFilmeDetails(this);
+        }
+        return idade;
+    }
+
+
 }

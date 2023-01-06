@@ -23,7 +23,7 @@ public class SbdHandler {
         ResultSet resultQueryFilmeDetails;
         ResultSet resultQueryFilmeGeneros = null;
         ResultSet resultQueryFilmeAtores = null;
-        String queryFilmeDetails="SELECT titulo_original, pais, data_estreia, descricao, nome_distribuidor, nome_realizador, duracao FROM filme " +
+        String queryFilmeDetails="SELECT titulo_original, pais, data_estreia, descricao, idade, nome_distribuidor, nome_realizador, duracao FROM filme " +
                                 "WHERE titulo="+"'"+filme.getTitulo()+"'"+" and ano="+ filme.getAno();
         try {
             if (stmt.execute(queryFilmeDetails)) {
@@ -33,11 +33,12 @@ public class SbdHandler {
                 filme.setPais(resultQueryFilmeDetails.getString("pais"));
                 filme.setDataEstreia(convertCalendarFromString(resultQueryFilmeDetails.getString("data_estreia")));
                 filme.setDescricao(resultQueryFilmeDetails.getString("descricao"));
+                filme.setIdade(resultQueryFilmeDetails.getInt("idade"));
                 filme.setDistribuidor(new Distribuidor(resultQueryFilmeDetails.getString("nome_distribuidor")));
                 filme.setRealizador(new Realizador(resultQueryFilmeDetails.getString("nome_realizador")));
                 filme.setDuracao(resultQueryFilmeDetails.getString("duracao"));
             }
-            String queryFilmeGeneros="SELECT nome_genero FROM filme_genero WHERE titulo_original_filme='"+filme.getTituloOriginal()+"' and ano_filme="+ filme.getAno();
+            String queryFilmeGeneros="SELECT nome_genero FROM filme_genero WHERE titulo_filme='"+filme.getTitulo()+"' and ano_filme="+ filme.getAno();
             if (stmt.execute(queryFilmeGeneros)){
                 resultQueryFilmeGeneros=stmt.getResultSet();
                // Genero generos[]=new Genero[1];//Nao da para fazer
@@ -51,7 +52,7 @@ public class SbdHandler {
                 }
                 filme.setGeneros(generos);
             }
-            String queryFilmeAtores="SELECT nome_ator FROM filme_ator WHERE titulo_original_filme='"+filme.getTituloOriginal()+"' and ano_filme="+ filme.getAno();
+            String queryFilmeAtores="SELECT nome_ator FROM filme_ator WHERE titulo_filme='"+filme.getTitulo()+"' and ano_filme="+ filme.getAno();
 
             if (stmt.execute(queryFilmeAtores)){
 
@@ -95,7 +96,7 @@ public class SbdHandler {
         String[] sessoes= new String[1];
         ResultSet resultQuerySessoes;
         String[] diaSplit = dia.toString().split("-");
-        String querySessaoFilme = "select dataHoraInicio from sessao where titulo_original_filme="+"'"+filme.getTituloOriginal()+"'"+" and ano_filme="+Integer.parseInt(diaSplit[0]);//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
+        String querySessaoFilme = "select dataHoraInicio from sessao where titulo_filme="+"'"+filme.getTitulo()+"'"+" and ano_filme="+Integer.parseInt(diaSplit[0]);//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
         try {
 
             if (stmt.execute(querySessaoFilme)) {
@@ -170,7 +171,7 @@ public class SbdHandler {
         try {
             if (stmt.execute(queryDaraHoraFimSessao)) {
                 resultQueryDaraHoraFimSessao = stmt.getResultSet();
-                return convertCalendarFromString(resultQueryDaraHoraFimSessao.getString("DaraHoraFim"));
+                return convertCalendarFromString(resultQueryDaraHoraFimSessao.getString("dataHoraFim"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -184,7 +185,7 @@ public class SbdHandler {
         try {
             if (stmt.execute(queryEstadoBilhete)) {
                 resultQueryEstadoBilhete = stmt.getResultSet();
-                return Estado.valueOf(resultQueryEstadoBilhete.getString("Estado"));
+                return Estado.valueOf(resultQueryEstadoBilhete.getString("estado"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -198,7 +199,7 @@ public class SbdHandler {
         try {
             if (stmt.execute(queryPrecoBilhete)) {
                 resultQueryPrecoBilhete = stmt.getResultSet();
-                return resultQueryPrecoBilhete.getString("Preco");
+                return resultQueryPrecoBilhete.getString("preco");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

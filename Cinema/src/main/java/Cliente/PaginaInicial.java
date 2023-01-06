@@ -41,7 +41,7 @@ public class PaginaInicial extends JFrame {
                     JPanel infoFilme1 = new JPanel();
                     JLabel titulo = new JLabel("Titulo: " + arrayFilme.getTitulo());
                     JLabel sala = new JLabel("Ano: " + arrayFilme.getAnoString());
-                    JLabel idade = new JLabel("Idade Minima: ");
+                    JLabel idade = new JLabel("Idade Minima: " + arrayFilme.getIdade());
                     JLabel categoria = new JLabel("Genero: " + arrayFilme.getGeneros());
                     JButton info = new JButton("Informacoes ->");
                     int finalY = y;
@@ -57,8 +57,8 @@ public class PaginaInicial extends JFrame {
                     infoFilme1.add(categoria);
                     infoFilme1.setPreferredSize(new Dimension(280, 200));
                     String[] sessoes = db.getHorasSessoesDoFilme(arrayFilme, Date.valueOf("2022-09-28"));
-                    for (String sessoe : sessoes) {
-                        infoFilme1.add(new JButton(sessoe));
+                    for (String sessao : sessoes) {
+                        infoFilme1.add(new JButton(sessao));
                     }
                     infoFilme1.add(info);
                     infoFilme1.setBackground(Color.gray);
