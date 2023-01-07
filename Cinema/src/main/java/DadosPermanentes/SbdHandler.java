@@ -98,7 +98,6 @@ public class SbdHandler {
         String[] diaSplit = dia.toString().split("-");
         String querySessaoFilme = "select dataHoraInicio from sessao where titulo_filme="+"'"+filme.getTitulo()+"'"+" and ano_filme="+Integer.parseInt(diaSplit[0]);//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
         try {
-
             if (stmt.execute(querySessaoFilme)) {
                 resultQuerySessoes = stmt.getResultSet();
                 int i=0;
@@ -115,14 +114,14 @@ public class SbdHandler {
 
     public Sessao getSessaoFilme(Filme filme, String dataHoraInicio) {
         ResultSet resultQuerySessao;
-        String querySessao = "";
+        String querySessao = "SELECT numero_sala, dataHoraInicio, dataHoraFim  FROM sessao WHERE titulo_filme='"+filme.getTitulo()+"' and ano_filme="+filme.getAno()+" and dataHoraInicio='"+dataHoraInicio+"'";
         try {
             if (stmt.execute(querySessao)) {
                 resultQuerySessao = stmt.getResultSet();
                 while (resultQuerySessao.next()) {
-                    Sala sala=getSala(resultQuerySessao.getString("n_sala"));
-                    Calendar dataInicio=convertCalendarFromString(resultQuerySessao.getString("data_inicio"));
-                    Calendar dataFim=convertCalendarFromString(resultQuerySessao.getString("data_fim"));
+                    Calendar dataInicio=convertCalendarFromString(resultQuerySessao.getString("dataHoraInicio"));//Erro ao chamar o metod convertCalenderFromString porque esse metodo nao formata horas
+                    Sala sala=getSala(resultQuerySessao.getString("numero_sala"));
+                    //Calendar dataFim=convertCalendarFromString(resultQuerySessao.getString("dataHoraFim"));
                     return new Sessao(filme,sala,dataInicio, this);
                 }
             }
@@ -133,18 +132,21 @@ public class SbdHandler {
     }
 
     public Sala getSala(String n_sala) {
-        ResultSet resultQuerySala = null;
-        String queryAtor = "";
+        ResultSet resultQuerySala;
+        String querySala = "SELECT numero FROM sala where numero="+n_sala;
         try {
-            if (stmt.execute(queryAtor)) {
-                String nSala = resultQuerySala.getString("numero");
-                return new Sala( Integer.parseInt(nSala),this);
+            if (stmt.execute(querySala)) {
+                resultQuerySala = stmt.getResultSet();
+                resultQuerySala.next();
+                String numSala = resultQuerySala.getString(1);
+                return new Sala( Integer.parseInt(numSala),this);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
     }
+
     public Lugar[][] getLugares(String n_sala) {
         Lugar[][] lugares = {};
         ResultSet resultQueryLugar=null;
@@ -208,7 +210,9 @@ public class SbdHandler {
     }
     
     public Calendar convertCalendarFromString(String date){
+
         String[] date1=date.split("-");
+        System.out.println(date1[1]);
         return new GregorianCalendar(Integer.parseInt(date1[0]),Integer.parseInt(date1[1]),Integer.parseInt(date1[2]));
     }
 }

@@ -1,7 +1,5 @@
 package DadosPermanentes;
 
-import java.util.Arrays;
-
 public class Sala {
     //Campos
     private int numeroSala;

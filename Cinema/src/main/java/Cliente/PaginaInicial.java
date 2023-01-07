@@ -1,7 +1,9 @@
 package Cliente;
 
 import DadosPermanentes.Filme;
+import DadosPermanentes.Sala;
 import DadosPermanentes.SbdHandler;
+import DadosPermanentes.Sessao;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,9 @@ public class PaginaInicial extends JFrame {
 
     private final JPanel panel = new JPanel();
     private ArrayList<Filme> arrayFilmes;
+    private Sessao sessao;
+
+    private Sala sala;
 
     private final SbdHandler db = new SbdHandler();
             public void PaginaInicialMain() throws SQLException {
@@ -33,6 +38,7 @@ public class PaginaInicial extends JFrame {
                 cinemaPanel.add(cinema);
                 panel.add(cinemaPanel);
                 int y=0;
+                int l=0;
                 for (Filme arrayFilme : arrayFilmes) {
                     JPanel filme = new JPanel();
                     JPanel imagemFilme1 = new JPanel();
@@ -45,6 +51,7 @@ public class PaginaInicial extends JFrame {
                     JLabel categoria = new JLabel("Genero: " + arrayFilme.getGeneros());
                     JButton info = new JButton("Informacoes ->");
                     int finalY = y;
+                    int finalL= l;
                     info.addActionListener(actionEvent -> Informacoes(finalY));//No local do zero era suposto estar i para que apontasse para o filme actual
                     filme.setLayout(new GridLayout(1, 2));
                     infoFilme1.setLayout(new GridLayout(7, 1));
@@ -57,8 +64,14 @@ public class PaginaInicial extends JFrame {
                     infoFilme1.add(categoria);
                     infoFilme1.setPreferredSize(new Dimension(280, 200));
                     String[] sessoes = db.getHorasSessoesDoFilme(arrayFilme, Date.valueOf("2022-09-28"));
-                    for (String sessao : sessoes) {
-                        infoFilme1.add(new JButton(sessao));
+                    if(sessoes.length==0){
+                        infoFilme1.add(new JLabel("Sem sessoes para o dia em questao"));
+                    } else {
+                        for (String sessao : sessoes) {
+                            JButton buttonSessao = new JButton(sessao);
+                            buttonSessao.addActionListener(actionEvent -> SalaLugares(finalY, sessoes[finalL]));
+                            infoFilme1.add(buttonSessao);
+                        }
                     }
                     infoFilme1.add(info);
                     infoFilme1.setBackground(Color.gray);
@@ -67,6 +80,7 @@ public class PaginaInicial extends JFrame {
                     panel.add(filme);
                     frame.add(panel);
                     y++;
+                    l=0;
                 }
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
@@ -119,6 +133,52 @@ public class PaginaInicial extends JFrame {
                 panel.add(filme);
                 frame.add(panel);
                 panel.add(voltar);
+                frame.setVisible(true);
+            }
+            public void SalaLugares(int finalY, String sessoe){
+                panel.removeAll();
+                frame.setVisible(true);
+                sessao=db.getSessaoFilme(arrayFilmes.get(finalY), sessoe);
+                sala=sessao.getSala();
+
+                //frame.setVisible(false);
+                frame.setSize(600, 800);
+                JPanel panelPrincipalSala = new JPanel();
+                panelPrincipalSala.setLayout(new GridLayout(2, 1));
+                panelPrincipalSala.setPreferredSize(new Dimension(570, 600));
+                JPanel cinemaPanel = new JPanel();
+                JLabel cinema= new JLabel("CINEMAS NOZ");
+                cinema.setFont(new Font("Arial", Font.PLAIN, 40));
+                cinema.setForeground(Color.white);
+                cinemaPanel.setBackground(Color.gray);
+                cinemaPanel.setSize(100, 12);
+                JButton voltar = new JButton("<- Voltar");
+                voltar.addActionListener(actionEvent -> {
+                    try {
+                        panel.removeAll();
+                        this.PaginaInicialMain();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                JPanel filme = new JPanel();
+                filme.add(new JLabel(arrayFilmes.get(finalY).getTituloOriginal()+"    Sala: "+ sala.getNumeroSala()));
+                filme.setPreferredSize(new Dimension(570, 30));
+
+                JPanel layoutSala= new JPanel();
+                layoutSala.setBackground(Color.gray);
+                panelPrincipalSala.add(layoutSala);
+                JPanel bilhetes = new JPanel();
+                bilhetes.setBackground(Color.white);
+                panelPrincipalSala.add(bilhetes);
+                cinemaPanel.add(cinema);
+                panel.add(cinemaPanel);
+                panel.add(filme);
+                panel.add(panelPrincipalSala);
+                panel.add(voltar);
+
+                frame.add(panel);
+
                 frame.setVisible(true);
             }
 }
