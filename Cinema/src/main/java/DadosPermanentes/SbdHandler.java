@@ -92,23 +92,21 @@ public class SbdHandler {
     }
 
     public String[] getHorasSessoesDoFilme(Filme filme,Date dia){
-       // String[] sessoes= {}; //Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0
-        String[] sessoes= new String[1];
+        ArrayList<String> sessoesFilme = new ArrayList<>(); //uso de ArrayList e mais pratico neste caso
         ResultSet resultQuerySessoes;
         String[] diaSplit = dia.toString().split("-");
-        String querySessaoFilme = "select dataHoraInicio from sessao where titulo_filme="+"'"+filme.getTitulo()+"'"+" and ano_filme="+Integer.parseInt(diaSplit[0]);//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
+        String querySessaoFilme = "select dataHoraInicio from sessao where titulo_filme="+"'"+filme.getTitulo()+"'"+" and ano_filme="+Integer.parseInt(diaSplit[0])+" and date(dataHoraInicio)='"+dia+"'";//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
         try {
             if (stmt.execute(querySessaoFilme)) {
                 resultQuerySessoes = stmt.getResultSet();
-                int i=0;
                 while (resultQuerySessoes.next()) {
-                    sessoes[i]= resultQuerySessoes.getString("dataHoraInicio");
-                    i++;
+                    sessoesFilme.add(resultQuerySessoes.getString("dataHoraInicio"));
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        String[] sessoes = sessoesFilme.toArray(new String[sessoesFilme.size()]); //pequena conversao de ArrayList para retornar um array normal
         return sessoes;
     }
 
