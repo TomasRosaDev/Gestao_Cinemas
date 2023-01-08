@@ -68,7 +68,9 @@ public class PaginaInicial extends JFrame {
                         infoFilme1.add(new JLabel("Sem sessoes para o dia em questao"));
                     } else {
                         for (String sessao : sessoes) {
-                            JButton buttonSessao = new JButton(sessao);
+                            String[] sessaoTemp = sessao.split(" ");
+                            String horaInicio = sessaoTemp[1].substring(0,5);
+                            JButton buttonSessao = new JButton(horaInicio);
                             buttonSessao.addActionListener(actionEvent -> SalaLugares(finalY, sessoes[finalL]));
                             infoFilme1.add(buttonSessao);
                         }
