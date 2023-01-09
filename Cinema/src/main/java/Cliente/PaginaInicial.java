@@ -166,9 +166,14 @@ public class PaginaInicial extends JFrame {
                 JPanel filme = new JPanel();
                 filme.add(new JLabel(arrayFilmes.get(finalY).getTituloOriginal()+"    Sala: "+ sala.getNumeroSala()));
                 filme.setPreferredSize(new Dimension(570, 30));
-                //lugares = db.getLugares(String.valueOf(sala.getNumeroSala()));
+                lugares = db.getLugares(String.valueOf(sala.getNumeroSala()));
                 JPanel layoutSala= new JPanel();
-                //layoutSala.add(new JLabel(lugares.toString()));
+                layoutSala.setLayout(new GridLayout(lugares.length, lugares[lugares.length-1].length));
+                for (int row = 0; row < lugares.length; row++) {
+                    for (int col = 0; col < lugares[row].length; col++) {
+                        layoutSala.add(new JButton(lugares[row][col].getNome()));
+                    }
+                }
                 layoutSala.setBackground(Color.gray);
                 panelPrincipalSala.add(layoutSala);
                 JPanel bilhetes = new JPanel();

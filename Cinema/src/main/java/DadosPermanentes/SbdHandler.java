@@ -148,10 +148,29 @@ public class SbdHandler {
     }
 
     public Lugar[][] getLugares(String n_sala) {
-        Lugar[][] lugares = {};
         ResultSet resultQueryLugar=null;
+        ResultSet resultQueryNLinhas=null;
+        ResultSet resultQueryNColunas=null;
+        Lugar[][] lugares= null;
         String queryLugar = "SELECT nome, tipo, posicao_linha, posicao_coluna FROM lugar WHERE numero_sala="+n_sala;
+        String queryNLinhas = "select count( distinct posicao_linha) from lugar where numero_sala="+n_sala;
+        String queryNColunas = "select count( distinct posicao_coluna) from lugar where numero_sala="+n_sala;
         try {
+                String nLinhas="";
+                String nColunas= "";
+                if(stmt.execute(queryNLinhas)) {
+                    resultQueryNLinhas = stmt.getResultSet();
+                    while (resultQueryNLinhas.next()) {
+                        nLinhas = resultQueryNLinhas.getString(1);
+                    }
+                }
+                if(stmt.execute(queryNColunas)){
+                    resultQueryNColunas=stmt.getResultSet();
+                    while (resultQueryNColunas.next()) {
+                        nColunas= resultQueryNColunas.getString(1);
+                    }
+                }
+                lugares = new Lugar[Integer.parseInt(nLinhas)][Integer.parseInt(nColunas)];
             if (stmt.execute(queryLugar)) {
                 resultQueryLugar = stmt.getResultSet();
                 while (resultQueryLugar.next()) {
