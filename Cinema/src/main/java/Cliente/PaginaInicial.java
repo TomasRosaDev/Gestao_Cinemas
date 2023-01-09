@@ -1,9 +1,6 @@
 package Cliente;
 
-import DadosPermanentes.Filme;
-import DadosPermanentes.Sala;
-import DadosPermanentes.SbdHandler;
-import DadosPermanentes.Sessao;
+import DadosPermanentes.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +13,8 @@ public class PaginaInicial extends JFrame {
 
     private final JPanel panel = new JPanel();
     private ArrayList<Filme> arrayFilmes;
+
+    private Lugar[][] lugares;
     private Sessao sessao;
 
     private Sala sala;
@@ -23,9 +22,8 @@ public class PaginaInicial extends JFrame {
     private final SbdHandler db = new SbdHandler();
             public void PaginaInicialMain() throws SQLException {
                 arrayFilmes = db.listaFilmes(Date.valueOf("2022-09-28"));
-
                 panel.removeAll();
-                frame.setVisible(true);
+                SwingUtilities.updateComponentTreeUI(frame);
                 panel.setBackground(Color.green);
                 frame.setSize(600, 800);
 
@@ -52,6 +50,7 @@ public class PaginaInicial extends JFrame {
                     JButton info = new JButton("Informacoes ->");
                     int finalY = y;
                     int finalL= l;
+                    info.addActionListener(actionEvent -> setVisible(false));
                     info.addActionListener(actionEvent -> Informacoes(finalY));//No local do zero era suposto estar i para que apontasse para o filme actual
                     filme.setLayout(new GridLayout(1, 2));
                     infoFilme1.setLayout(new GridLayout(7, 1));
@@ -71,8 +70,10 @@ public class PaginaInicial extends JFrame {
                             String[] sessaoTemp = sessao.split(" ");
                             String horaInicio = sessaoTemp[1].substring(0,5);
                             JButton buttonSessao = new JButton(horaInicio);
-                            buttonSessao.addActionListener(actionEvent -> SalaLugares(finalY, sessoes[finalL]));
+                            int finalL1 = finalL;
+                            buttonSessao.addActionListener(actionEvent -> SalaLugares(finalY, sessoes[finalL1]));
                             infoFilme1.add(buttonSessao);
+                            finalL++;
                         }
                     }
                     infoFilme1.add(info);
@@ -142,7 +143,6 @@ public class PaginaInicial extends JFrame {
                 frame.setVisible(true);
                 sessao=db.getSessaoFilme(arrayFilmes.get(finalY), sessoe);
                 sala=sessao.getSala();
-
                 //frame.setVisible(false);
                 frame.setSize(600, 800);
                 JPanel panelPrincipalSala = new JPanel();
@@ -166,8 +166,9 @@ public class PaginaInicial extends JFrame {
                 JPanel filme = new JPanel();
                 filme.add(new JLabel(arrayFilmes.get(finalY).getTituloOriginal()+"    Sala: "+ sala.getNumeroSala()));
                 filme.setPreferredSize(new Dimension(570, 30));
-
+                //lugares = db.getLugares(String.valueOf(sala.getNumeroSala()));
                 JPanel layoutSala= new JPanel();
+                //layoutSala.add(new JLabel(lugares.toString()));
                 layoutSala.setBackground(Color.gray);
                 panelPrincipalSala.add(layoutSala);
                 JPanel bilhetes = new JPanel();

@@ -1,6 +1,8 @@
 package DadosPermanentes;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -117,13 +119,13 @@ public class SbdHandler {
             if (stmt.execute(querySessao)) {
                 resultQuerySessao = stmt.getResultSet();
                 while (resultQuerySessao.next()) {
-                    Calendar dataInicio=convertCalendarFromString(resultQuerySessao.getString("dataHoraInicio"));//Erro ao chamar o metod convertCalenderFromString porque esse metodo nao formata horas
+                    Calendar dataInicio=convertCalendarFromStringHour(resultQuerySessao.getString("dataHoraInicio"));//Erro ao chamar o metod convertCalenderFromString porque esse metodo nao formata horas
                     Sala sala=getSala(resultQuerySessao.getString("numero_sala"));
                     //Calendar dataFim=convertCalendarFromString(resultQuerySessao.getString("dataHoraFim"));
                     return new Sessao(filme,sala,dataInicio, this);
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException e) {
             throw new RuntimeException(e);
         }
         return null;
@@ -148,9 +150,10 @@ public class SbdHandler {
     public Lugar[][] getLugares(String n_sala) {
         Lugar[][] lugares = {};
         ResultSet resultQueryLugar=null;
-        String queryLugar = "";
+        String queryLugar = "SELECT nome, tipo, posicao_linha, posicao_coluna FROM lugar WHERE numero_sala="+n_sala;
         try {
             if (stmt.execute(queryLugar)) {
+                resultQueryLugar = stmt.getResultSet();
                 while (resultQueryLugar.next()) {
                     String nome = resultQueryLugar.getString("nome");
                     TipoLugar tipo=TipoLugar.valueOf(resultQueryLugar.getString("tipo"));
@@ -208,9 +211,14 @@ public class SbdHandler {
     }
     
     public Calendar convertCalendarFromString(String date){
-
         String[] date1=date.split("-");
-        System.out.println(date1[1]);
+        //System.out.println(date);
         return new GregorianCalendar(Integer.parseInt(date1[0]),Integer.parseInt(date1[1]),Integer.parseInt(date1[2]));
+    }
+    public Calendar convertCalendarFromStringHour(String date) throws ParseException {
+        Calendar cale = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        cale.setTime(sdf.parse(date));
+        return cale;
     }
 }
