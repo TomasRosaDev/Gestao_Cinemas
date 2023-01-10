@@ -28,7 +28,7 @@ public class HomePage extends JFrame {
         dia=Date.valueOf("2022-09-28");
         frame=new JFrame();
         frame.setVisible(true);
-        frame.setSize(600, 700);
+        frame.setSize(600, 750);
         frame.setResizable(false);
         panel=new JPanel();
         panel.setLayout(new BorderLayout());

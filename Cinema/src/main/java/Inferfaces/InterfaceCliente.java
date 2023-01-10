@@ -13,7 +13,7 @@ public abstract class InterfaceCliente extends JPanel {
             bgImage= ImageIO.read(new File("Cinema/src/main/java/Imagens/BackgroundNoz.png"));
         }
         catch (Exception e){
-            this.setBackground(Color.gray);
+            //this.setBackground(Color.gray);
         }
         this.setPreferredSize(new Dimension(550,250));
     }

@@ -22,7 +22,7 @@ public class PanelFilmeIndiv extends JPanel {
         this.dia=dia;
         this.homePage=homePage;
         this.setPreferredSize(new Dimension(550,200));
-        this.setBackground(Color.darkGray);
+        //this.setBackground(Color.darkGray);
         this.setLayout(new BorderLayout());
         this.add(panelImagemFilme(),BorderLayout.WEST);
         this.add(panelCenterFilme(),BorderLayout.CENTER);
@@ -54,7 +54,7 @@ public class PanelFilmeIndiv extends JPanel {
     public JPanel panelSessoes(){
         ArrayList<Sessao> sessoes=filme.getSessoes(dia);
         JPanel panelSessoes=new JPanel();
-        panelSessoes.setPreferredSize(new Dimension(450,30));
+        panelSessoes.setPreferredSize(new Dimension(450,50));
         panelSessoes.setLayout(new BorderLayout());
         JPanel mainList = new JPanel(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -63,7 +63,6 @@ public class PanelFilmeIndiv extends JPanel {
         gbc.weighty = 1;
         mainList.add(new JPanel(), gbc);
         panelSessoes.add(new JScrollPane(mainList/*,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,JScrollPane.VERTICAL_SCROLLBAR_NEVER*/));
-        int i=0;
         for (Sessao sessao:sessoes) {
             gbcUpdate();
             JButton buttonSessao=new JButton("Sala: "+sessao.getSala().getNumeroSala()+" :: Horario: "+sessao.getHoraInicioStr());
@@ -71,7 +70,6 @@ public class PanelFilmeIndiv extends JPanel {
             mainList.add(buttonSessao,gbc,0);
             validate();
             repaint();
-            i++;
         }
         return panelSessoes;
     }
