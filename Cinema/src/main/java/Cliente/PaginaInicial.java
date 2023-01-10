@@ -3,7 +3,9 @@ package Cliente;
 import DadosPermanentes.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.io.File;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -66,9 +68,8 @@ public class PaginaInicial extends JFrame {
                     if(sessoes.length==0){
                         infoFilme1.add(new JLabel("Sem sessoes para o dia em questao"));
                     } else {
-                        for (String sessao : sessoes) {
-                            String[] sessaoTemp = sessao.split(" ");
-                            String horaInicio = sessaoTemp[1].substring(0,5);
+                        for (String sessao: sessoes) {
+                            String horaInicio = sessao.split(" ")[1].substring(0,5);
                             JButton buttonSessao = new JButton(horaInicio);
                             int finalL1 = finalL;
                             buttonSessao.addActionListener(actionEvent -> SalaLugares(finalY, sessoes[finalL1]));
@@ -86,8 +87,10 @@ public class PaginaInicial extends JFrame {
                     l=0;
                 }
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setLocationRelativeTo(null); //centrar a janela
                 frame.setVisible(true);
             }
+
             public void Informacoes(int finalY){
                 db.setFilmeDetails(arrayFilmes.get(finalY));
                 panel.removeAll();
@@ -164,14 +167,38 @@ public class PaginaInicial extends JFrame {
                     }
                 });
                 JPanel filme = new JPanel();
-                filme.add(new JLabel(arrayFilmes.get(finalY).getTituloOriginal()+"    Sala: "+ sala.getNumeroSala()));
+                filme.add(new JLabel(arrayFilmes.get(finalY).getTitulo()+"    Sala: "+ sala.getNumeroSala() + "    Sessao:  "+sessoe.split(" ")[1].substring(0,5)));
                 filme.setPreferredSize(new Dimension(570, 30));
+                JPanel ecra = new JPanel();
+                ecra.add(new JLabel("ECRA"));
+                ecra.setPreferredSize(new Dimension(570, 30));
                 lugares = db.getLugares(String.valueOf(sala.getNumeroSala()));
                 JPanel layoutSala= new JPanel();
                 layoutSala.setLayout(new GridLayout(lugares.length, lugares[lugares.length-1].length));
                 for (int row = 0; row < lugares.length; row++) {
                     for (int col = 0; col < lugares[row].length; col++) {
-                        layoutSala.add(new JButton(lugares[row][col].getNome()));
+                        Lugar lugar = lugares[row][col]; //lugar atual
+                        JButton button = new JButton(lugar.getNome() + " - " + lugar.getTipo()); //criacao do botao
+
+                        boolean existeBilhete = db.getExisteBilhete(lugar.getNome(), sessao);
+                        if(existeBilhete){ //se ja existir um registo de bilhete para este determinado lugar nesta determinada sessao, mostra como lugar ocupado
+                            button.setBackground(Color.red);
+                            button.setEnabled(false);
+                        }
+
+                        if(lugar.getTipo().equals(TipoLugar.Inexistente)){ //se o atributo tipo da relacao bilhete tiver o valor Inexistente, nao e um lugar e nao o mostramos no layout da sala
+                            button.setVisible(false);
+                        }
+
+                        button.addActionListener(actionEvent -> {
+                            if(button.getBackground().equals(Color.green)){ //se o lugar ja estiver selecionado (a verde), volta para a cor default de um botao
+                                button.setBackground(new JButton().getBackground());
+                            } else { //se o lugar nao estiver selecionado e seleciona (passa a verde)
+                                button.setBackground(Color.green);
+                            }
+                        });
+
+                        layoutSala.add(button);
                     }
                 }
                 layoutSala.setBackground(Color.gray);
@@ -182,6 +209,7 @@ public class PaginaInicial extends JFrame {
                 cinemaPanel.add(cinema);
                 panel.add(cinemaPanel);
                 panel.add(filme);
+                panel.add(ecra);
                 panel.add(panelPrincipalSala);
                 panel.add(voltar);
 

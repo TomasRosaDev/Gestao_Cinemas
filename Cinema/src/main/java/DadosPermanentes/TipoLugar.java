@@ -3,6 +3,7 @@ package DadosPermanentes;
 public enum TipoLugar {
 
     Normal,
-    Deficiente,
-    VIP
+    Incapacitado,
+    Vip,
+    Inexistente
 }

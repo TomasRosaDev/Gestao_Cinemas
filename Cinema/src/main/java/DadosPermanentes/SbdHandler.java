@@ -201,18 +201,26 @@ public class SbdHandler {
         return null;
     }
 
-    public Estado getEstadoBilhete(String posicao,Sessao sessao){
-        ResultSet resultQueryEstadoBilhete;
-        String queryEstadoBilhete = "";
+    public boolean getExisteBilhete(String posicao,Sessao sessao){
+        ResultSet resultQueryExisteBilhete;
+        String queryExisteBilhete = "select count(*) as ExisteBilhete from bilhete where numero_sala='"+sessao.getSala().getNumeroSala()+"' and nome_lugar='"+posicao+"' and titulo_filme='"+sessao.getFilme().getTitulo()+"' and ano_filme="+sessao.getFilme().getAno(); //se obter 1 registo quer dizer que existe um bilhete para esse lugar nessa sessao, logo e um lugar ja ocupado
         try {
-            if (stmt.execute(queryEstadoBilhete)) {
-                resultQueryEstadoBilhete = stmt.getResultSet();
-                return Estado.valueOf(resultQueryEstadoBilhete.getString("estado"));
+            if (stmt.execute(queryExisteBilhete)) {
+                resultQueryExisteBilhete = stmt.getResultSet();
+                resultQueryExisteBilhete.next();
+
+                if(resultQueryExisteBilhete.getInt("ExisteBilhete")==1){ //existe um registo logo este lugar esta ocupado
+                    return true;
+                } else{
+                    return false;
+                }
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+
+        return false;
     }
 
     public String getPrecoBilhete(String posicao,Sessao sessao){

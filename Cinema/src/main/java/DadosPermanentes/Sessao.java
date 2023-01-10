@@ -15,6 +15,10 @@ public class Sessao {
         return sala;
     }
 
+    public Filme getFilme() {
+        return filme;
+    }
+
     public Sessao(Filme filme, Sala sala, Calendar dataHoraInicio, SbdHandler sbdHandler) {
         this.filme=filme;
         this.sala=sala;

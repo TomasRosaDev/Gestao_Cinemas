@@ -4,20 +4,12 @@ public class Bilhete {
     private Lugar lugar;
     private Sessao sessao;
     private String preco;
-    private Estado estado;
     private SbdHandler sbdHandler;
 
     public Bilhete(Lugar lugar, Sessao sessao, SbdHandler sbdHandler){
         this.lugar = lugar;
         this.sessao = sessao;
         this.sbdHandler=sbdHandler;
-    }
-
-    public Estado getEstado() {
-        if(estado==null){
-            estado=sbdHandler.getEstadoBilhete(lugar.getNome(),sessao);
-        }
-        return estado;
     }
 
     public String getPreco() {
@@ -27,17 +19,12 @@ public class Bilhete {
         return preco;
     }
 
-
-
-
-
     public String toString() {
         String auxLugarDaSessao = "";
         auxLugarDaSessao+=sessao.toString();
         auxLugarDaSessao+="\n" + lugar.toString();
 
         auxLugarDaSessao+= "\n" + "Sala: " + String.valueOf(sessao.getSala().getNumeroSala());
-        auxLugarDaSessao+="\nEstado: " + estado.toString();
         auxLugarDaSessao+="\nPreco: " + this.preco;
 
         return auxLugarDaSessao;
