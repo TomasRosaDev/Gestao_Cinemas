@@ -1,9 +1,13 @@
 package DadosPermanentes;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class SbdHandler {
     Connection con;
@@ -21,8 +25,8 @@ public class SbdHandler {
 
     public void setFilmeDetails(Filme filme){
         ResultSet resultQueryFilmeDetails;
-        ResultSet resultQueryFilmeGeneros = null;
-        ResultSet resultQueryFilmeAtores = null;
+        ResultSet resultQueryFilmeGeneros;
+        ResultSet resultQueryFilmeAtores;
         String queryFilmeDetails="SELECT titulo_original, pais, data_estreia, descricao, nome_distribuidor, nome_realizador, duracao FROM filme " +
                                 "WHERE titulo="+"'"+filme.getTitulo()+"'"+" and ano="+ filme.getAno();
         try {
@@ -70,16 +74,32 @@ public class SbdHandler {
         }
     }
 
+    public void setFilmeHomePageDetails(Filme filme){
+        ResultSet resultqueryHomePageDetails;
+        String queryHomePageDetails="";
+
+        try {
+            if(stmt.execute(queryHomePageDetails)){
+                resultqueryHomePageDetails=stmt.getResultSet();
+                resultqueryHomePageDetails.next();
+                filme.setIdadeMinima(resultqueryHomePageDetails.getString("idade_minima"));
+                //filme.setImage(resultqueryHomePageDetails.get...);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ArrayList<Filme> listaFilmes(Date dia) throws SQLException {
         ArrayList<Filme> listaFilmes = new ArrayList<>();
-        ResultSet resultQueryFilmes;//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametr
-        String queryFilme = "select titulo, ano from filme where data_estreia="+"'"+dia+"'";
+        ResultSet resultQueryFilmes;
+        String queryFilme = "select distinct titulo_filme, ano_filme from sessao where dataHoraInicio>='"+strDay(dia)+"' and dataHoraInicio<'"+strNextDay(dia)+"'";
         try {
             if (stmt.execute(queryFilme)) {
                 resultQueryFilmes = stmt.getResultSet();
                 while (resultQueryFilmes.next()) {
-                    String titulo = resultQueryFilmes.getString("titulo");
-                    String ano =  resultQueryFilmes.getString("ano");
+                    String titulo = resultQueryFilmes.getString("titulo_filme");
+                    String ano =  resultQueryFilmes.getString("ano_filme");
                     listaFilmes.add(new Filme(titulo, ano,this));
                 }
 
@@ -90,19 +110,16 @@ public class SbdHandler {
         return listaFilmes;
     }
 
-    public String[] getHorasSessoesDoFilme(Filme filme,Date dia){
-       // String[] sessoes= {}; //Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0
-        String[] sessoes= new String[1];
+    public ArrayList<Sessao> getHorasSessoesDoFilme(Filme filme,Date dia){
+        ArrayList <Sessao> sessoes=new ArrayList<Sessao>();
         ResultSet resultQuerySessoes;
-        String[] diaSplit = dia.toString().split("-");
-        String querySessaoFilme = "select dataHoraInicio from sessao where titulo_original_filme="+"'"+filme.getTituloOriginal()+"'"+" and ano_filme="+Integer.parseInt(diaSplit[0]);//Lista Filmes ativos e corresposndetes ao dia actual ou a um dia passado por parametro
+        String querySessaoFilme = "select dataHoraInicio, numero_sala from sessao where titulo_filme='"+filme.getTitulo()+"' and ano_filme='"+filme.getAnoString()+"' and dataHoraInicio>='"+strDay(dia)+"' and dataHoraInicio<'"+strNextDay(dia)+"'";
         try {
-
             if (stmt.execute(querySessaoFilme)) {
                 resultQuerySessoes = stmt.getResultSet();
                 int i=0;
                 while (resultQuerySessoes.next()) {
-                    sessoes[i]= resultQuerySessoes.getString("dataHoraInicio");
+                    sessoes.add(new Sessao(filme,new Sala(Integer.parseInt(resultQuerySessoes.getString("numero_sala")),this),calendartoCalendarFromDateSqlString(resultQuerySessoes.getString("dataHoraInicio")),this));
                     i++;
                 }
             }
@@ -133,7 +150,7 @@ public class SbdHandler {
 
     public Sala getSala(String n_sala) {
         ResultSet resultQuerySala = null;
-        String queryAtor = "";
+        String queryAtor = "Select numero from sala where numero="+n_sala;
         try {
             if (stmt.execute(queryAtor)) {
                 String nSala = resultQuerySala.getString("numero");
@@ -209,5 +226,36 @@ public class SbdHandler {
     public Calendar convertCalendarFromString(String date){
         String[] date1=date.split("-");
         return new GregorianCalendar(Integer.parseInt(date1[0]),Integer.parseInt(date1[1]),Integer.parseInt(date1[2]));
+    }
+
+    public Calendar calendartoCalendarFromDateSqlString(String date){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Calendar retDay=Calendar.getInstance();
+        try {
+            retDay.setTime(sdf.parse(date));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return retDay;
+    }
+
+    public void closeConection(){
+        try {
+            con.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String strDay(Date dia){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        return dateFormat.format(dia);
+    }
+
+    public  String strNextDay(Date dia){
+        Date nextDay=new Date(dia.getTime()+(1000*60*60*24*1));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String str=dateFormat.format(nextDay)+" 00:00:00";
+        return str;
     }
 }

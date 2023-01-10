@@ -3,6 +3,7 @@ package DadosPermanentes;/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -13,6 +14,8 @@ import java.util.*;
 public class Filme {
     private String titulo;
     private int ano;
+    private String idadeMinima;
+    //private imagem;
 
     private SbdHandler sbdHandler;
     private String tituloOriginal;
@@ -58,6 +61,10 @@ public class Filme {
         return aux;
     }
 
+    public void setIdadeMinima(String idadeMinima) {
+        this.idadeMinima = idadeMinima;
+    }
+
     public void setTituloOriginal(String tituloOriginal) {
         this.tituloOriginal = tituloOriginal;
     }
@@ -92,6 +99,13 @@ public class Filme {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getIdadeMinima() {
+        if(idadeMinima==null){
+            sbdHandler.setFilmeHomePageDetails(this);
+        }
+        return idadeMinima;
     }
 
     public String getTituloOriginal() {
@@ -159,5 +173,9 @@ public class Filme {
             sbdHandler.setFilmeDetails(this);
         }
         return descricao;
+    }
+
+    public ArrayList<Sessao> getSessoes(Date dia){
+        return sbdHandler.getHorasSessoesDoFilme(this,dia);
     }
 }

@@ -1,5 +1,6 @@
 package DadosPermanentes;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -15,6 +16,19 @@ public class Sessao {
         return sala;
     }
 
+    public Calendar getDataHoraInicio() {
+        return dataHoraInicio;
+    }
+
+    public String getHoraInicioStr(){
+        System.out.println("one");
+        System.out.println("two");
+        String date= dataHoraInicio.get(Calendar.HOUR_OF_DAY)+":"+dataHoraInicio.get(Calendar.MINUTE);
+        System.out.println(date);
+        System.out.println("3");
+        return date;
+    }
+
     public Sessao(Filme filme, Sala sala, Calendar dataHoraInicio, SbdHandler sbdHandler) {
         this.filme=filme;
         this.sala=sala;
@@ -28,6 +42,8 @@ public class Sessao {
         }
         return dataHoraFim;
     }
+
+
 
     @Override
     public String toString() {
