@@ -21,11 +21,7 @@ public class Sessao {
     }
 
     public String getHoraInicioStr(){
-        System.out.println("one");
-        System.out.println("two");
         String date= dataHoraInicio.get(Calendar.HOUR_OF_DAY)+":"+dataHoraInicio.get(Calendar.MINUTE);
-        System.out.println(date);
-        System.out.println("3");
         return date;
     }
 
@@ -42,8 +38,6 @@ public class Sessao {
         }
         return dataHoraFim;
     }
-
-
 
     @Override
     public String toString() {

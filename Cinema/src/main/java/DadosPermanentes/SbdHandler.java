@@ -4,6 +4,8 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -37,11 +39,12 @@ public class SbdHandler {
                 filme.setPais(resultQueryFilmeDetails.getString("pais"));
                 filme.setDataEstreia(convertCalendarFromString(resultQueryFilmeDetails.getString("data_estreia")));
                 filme.setDescricao(resultQueryFilmeDetails.getString("descricao"));
+                filme.setIdade(resultQueryFilmeDetails.getInt("idade"));
                 filme.setDistribuidor(new Distribuidor(resultQueryFilmeDetails.getString("nome_distribuidor")));
                 filme.setRealizador(new Realizador(resultQueryFilmeDetails.getString("nome_realizador")));
                 filme.setDuracao(resultQueryFilmeDetails.getString("duracao"));
             }
-            String queryFilmeGeneros="SELECT nome_genero FROM filme_genero WHERE titulo_original_filme='"+filme.getTituloOriginal()+"' and ano_filme="+ filme.getAno();
+            String queryFilmeGeneros="SELECT nome_genero FROM filme_genero WHERE titulo_filme='"+filme.getTitulo()+"' and ano_filme="+ filme.getAno();
             if (stmt.execute(queryFilmeGeneros)){
                 resultQueryFilmeGeneros=stmt.getResultSet();
                // Genero generos[]=new Genero[1];//Nao da para fazer
@@ -55,7 +58,7 @@ public class SbdHandler {
                 }
                 filme.setGeneros(generos);
             }
-            String queryFilmeAtores="SELECT nome_ator FROM filme_ator WHERE titulo_original_filme='"+filme.getTituloOriginal()+"' and ano_filme="+ filme.getAno();
+            String queryFilmeAtores="SELECT nome_ator FROM filme_ator WHERE titulo_filme='"+filme.getTitulo()+"' and ano_filme="+ filme.getAno();
 
             if (stmt.execute(queryFilmeAtores)){
 
@@ -131,16 +134,32 @@ public class SbdHandler {
 
     public Sessao getSessaoFilme(Filme filme, String dataHoraInicio) {
         ResultSet resultQuerySessao;
-        String querySessao = "";
+        String querySessao = "SELECT numero_sala, dataHoraInicio, dataHoraFim  FROM sessao WHERE titulo_filme='"+filme.getTitulo()+"' and ano_filme="+filme.getAno()+" and dataHoraInicio='"+dataHoraInicio+"'";
         try {
             if (stmt.execute(querySessao)) {
                 resultQuerySessao = stmt.getResultSet();
                 while (resultQuerySessao.next()) {
-                    Sala sala=getSala(resultQuerySessao.getString("n_sala"));
-                    Calendar dataInicio=convertCalendarFromString(resultQuerySessao.getString("data_inicio"));
-                    Calendar dataFim=convertCalendarFromString(resultQuerySessao.getString("data_fim"));
+                    Calendar dataInicio=convertCalendarFromStringHour(resultQuerySessao.getString("dataHoraInicio"));//Erro ao chamar o metod convertCalenderFromString porque esse metodo nao formata horas
+                    Sala sala=getSala(resultQuerySessao.getString("numero_sala"));
+                    //Calendar dataFim=convertCalendarFromString(resultQuerySessao.getString("dataHoraFim"));
                     return new Sessao(filme,sala,dataInicio, this);
                 }
+            }
+        } catch (SQLException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Sala getSala(String n_sala) {
+        ResultSet resultQuerySala;
+        String querySala = "SELECT numero FROM sala where numero="+n_sala;
+        try {
+            if (stmt.execute(querySala)) {
+                resultQuerySala = stmt.getResultSet();
+                resultQuerySala.next();
+                String numSala = resultQuerySala.getString(1);
+                return new Sala( Integer.parseInt(numSala),this);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -148,25 +167,32 @@ public class SbdHandler {
         return null;
     }
 
-    public Sala getSala(String n_sala) {
-        ResultSet resultQuerySala = null;
-        String queryAtor = "Select numero from sala where numero="+n_sala;
-        try {
-            if (stmt.execute(queryAtor)) {
-                String nSala = resultQuerySala.getString("numero");
-                return new Sala( Integer.parseInt(nSala),this);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
     public Lugar[][] getLugares(String n_sala) {
-        Lugar[][] lugares = {};
         ResultSet resultQueryLugar=null;
-        String queryLugar = "";
+        ResultSet resultQueryNLinhas=null;
+        ResultSet resultQueryNColunas=null;
+        Lugar[][] lugares= null;
+        String queryLugar = "SELECT nome, tipo, posicao_linha, posicao_coluna FROM lugar WHERE numero_sala="+n_sala;
+        String queryNLinhas = "select count( distinct posicao_linha) from lugar where numero_sala="+n_sala;
+        String queryNColunas = "select count( distinct posicao_coluna) from lugar where numero_sala="+n_sala;
         try {
+                String nLinhas="";
+                String nColunas= "";
+                if(stmt.execute(queryNLinhas)) {
+                    resultQueryNLinhas = stmt.getResultSet();
+                    while (resultQueryNLinhas.next()) {
+                        nLinhas = resultQueryNLinhas.getString(1);
+                    }
+                }
+                if(stmt.execute(queryNColunas)){
+                    resultQueryNColunas=stmt.getResultSet();
+                    while (resultQueryNColunas.next()) {
+                        nColunas= resultQueryNColunas.getString(1);
+                    }
+                }
+                lugares = new Lugar[Integer.parseInt(nLinhas)][Integer.parseInt(nColunas)];
             if (stmt.execute(queryLugar)) {
+                resultQueryLugar = stmt.getResultSet();
                 while (resultQueryLugar.next()) {
                     String nome = resultQueryLugar.getString("nome");
                     TipoLugar tipo=TipoLugar.valueOf(resultQueryLugar.getString("tipo"));
@@ -187,7 +213,7 @@ public class SbdHandler {
         try {
             if (stmt.execute(queryDaraHoraFimSessao)) {
                 resultQueryDaraHoraFimSessao = stmt.getResultSet();
-                return convertCalendarFromString(resultQueryDaraHoraFimSessao.getString("DaraHoraFim"));
+                return convertCalendarFromString(resultQueryDaraHoraFimSessao.getString("dataHoraFim"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -195,18 +221,26 @@ public class SbdHandler {
         return null;
     }
 
-    public Estado getEstadoBilhete(String posicao,Sessao sessao){
-        ResultSet resultQueryEstadoBilhete;
-        String queryEstadoBilhete = "";
+    public boolean getExisteBilhete(String posicao,Sessao sessao){
+        ResultSet resultQueryExisteBilhete;
+        String queryExisteBilhete = "select count(*) as ExisteBilhete from bilhete where numero_sala='"+sessao.getSala().getNumeroSala()+"' and nome_lugar='"+posicao+"' and titulo_filme='"+sessao.getFilme().getTitulo()+"' and ano_filme="+sessao.getFilme().getAno(); //se obter 1 registo quer dizer que existe um bilhete para esse lugar nessa sessao, logo e um lugar ja ocupado
         try {
-            if (stmt.execute(queryEstadoBilhete)) {
-                resultQueryEstadoBilhete = stmt.getResultSet();
-                return Estado.valueOf(resultQueryEstadoBilhete.getString("Estado"));
+            if (stmt.execute(queryExisteBilhete)) {
+                resultQueryExisteBilhete = stmt.getResultSet();
+                resultQueryExisteBilhete.next();
+
+                if(resultQueryExisteBilhete.getInt("ExisteBilhete")==1){ //existe um registo logo este lugar esta ocupado
+                    return true;
+                } else{
+                    return false;
+                }
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+
+        return false;
     }
 
     public String getPrecoBilhete(String posicao,Sessao sessao){
@@ -215,7 +249,7 @@ public class SbdHandler {
         try {
             if (stmt.execute(queryPrecoBilhete)) {
                 resultQueryPrecoBilhete = stmt.getResultSet();
-                return resultQueryPrecoBilhete.getString("Preco");
+                return resultQueryPrecoBilhete.getString("preco");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

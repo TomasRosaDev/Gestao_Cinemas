@@ -33,7 +33,7 @@ public class mainAuxBilhete {
         //System.out.println(sessao.toString());
 
 
-        Bilhete obj = new Bilhete(l1, sessao, 10, Bilhete.Estado.Livre);
+        Bilhete obj = new Bilhete(l1, sessao, 10);
 
         System.out.println(obj.toString());*/
     }
