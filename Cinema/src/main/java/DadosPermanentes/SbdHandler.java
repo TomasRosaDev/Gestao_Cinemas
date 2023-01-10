@@ -39,7 +39,6 @@ public class SbdHandler {
                 filme.setPais(resultQueryFilmeDetails.getString("pais"));
                 filme.setDataEstreia(convertCalendarFromString(resultQueryFilmeDetails.getString("data_estreia")));
                 filme.setDescricao(resultQueryFilmeDetails.getString("descricao"));
-                filme.setIdade(resultQueryFilmeDetails.getInt("idade"));
                 filme.setDistribuidor(new Distribuidor(resultQueryFilmeDetails.getString("nome_distribuidor")));
                 filme.setRealizador(new Realizador(resultQueryFilmeDetails.getString("nome_realizador")));
                 filme.setDuracao(resultQueryFilmeDetails.getString("duracao"));
@@ -79,13 +78,12 @@ public class SbdHandler {
 
     public void setFilmeHomePageDetails(Filme filme){
         ResultSet resultqueryHomePageDetails;
-        String queryHomePageDetails="";
-
+        String queryHomePageDetails="select idade from filme where titulo='"+filme.getTitulo()+"' and ano="+filme.getAnoString();
         try {
             if(stmt.execute(queryHomePageDetails)){
                 resultqueryHomePageDetails=stmt.getResultSet();
                 resultqueryHomePageDetails.next();
-                filme.setIdadeMinima(resultqueryHomePageDetails.getString("idade_minima"));
+                filme.setIdadeMinima(resultqueryHomePageDetails.getString("idade"));
                 //filme.setImage(resultqueryHomePageDetails.get...);
             }
         } catch (SQLException e) {
@@ -139,13 +137,13 @@ public class SbdHandler {
             if (stmt.execute(querySessao)) {
                 resultQuerySessao = stmt.getResultSet();
                 while (resultQuerySessao.next()) {
-                    Calendar dataInicio=convertCalendarFromStringHour(resultQuerySessao.getString("dataHoraInicio"));//Erro ao chamar o metod convertCalenderFromString porque esse metodo nao formata horas
+                    Calendar dataInicio=convertCalendarFromString(resultQuerySessao.getString("dataHoraInicio"));//Erro ao chamar o metod convertCalenderFromString porque esse metodo nao formata horas
                     Sala sala=getSala(resultQuerySessao.getString("numero_sala"));
                     //Calendar dataFim=convertCalendarFromString(resultQuerySessao.getString("dataHoraFim"));
                     return new Sessao(filme,sala,dataInicio, this);
                 }
             }
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;

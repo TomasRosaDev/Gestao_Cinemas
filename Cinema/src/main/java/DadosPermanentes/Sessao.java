@@ -32,6 +32,10 @@ public class Sessao {
         this.sbdHandler=sbdHandler;
     }
 
+    public Filme getFilme() {
+        return filme;
+    }
+
     public Calendar getDataHoraFim() {
         if(dataHoraFim==null){
             dataHoraFim=sbdHandler.getDataHoraFim(filme.getTitulo(),filme.getAnoString(),sala.getNumeroSala()+"",dataHoraInicio);

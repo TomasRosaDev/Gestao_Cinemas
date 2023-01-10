@@ -47,7 +47,7 @@ public class PaginaInicial extends JFrame {
                     JPanel infoFilme1 = new JPanel();
                     JLabel titulo = new JLabel("Titulo: " + arrayFilme.getTitulo());
                     JLabel sala = new JLabel("Ano: " + arrayFilme.getAnoString());
-                    JLabel idade = new JLabel("Idade Minima: " + arrayFilme.getIdade());
+                    JLabel idade = new JLabel("Idade Minima: " + arrayFilme.getIdadeMinima());
                     JLabel categoria = new JLabel("Genero: " + arrayFilme.getGeneros());
                     JButton info = new JButton("Informacoes ->");
                     int finalY = y;
@@ -64,15 +64,15 @@ public class PaginaInicial extends JFrame {
                     infoFilme1.add(idade);
                     infoFilme1.add(categoria);
                     infoFilme1.setPreferredSize(new Dimension(280, 200));
-                    String[] sessoes = db.getHorasSessoesDoFilme(arrayFilme, Date.valueOf("2022-09-28"));
-                    if(sessoes.length==0){
+                    ArrayList<Sessao> sessoes = db.getHorasSessoesDoFilme(arrayFilme, Date.valueOf("2022-09-28"));
+                    if(sessoes.size()==0){
                         infoFilme1.add(new JLabel("Sem sessoes para o dia em questao"));
                     } else {
-                        for (String sessao: sessoes) {
-                            String horaInicio = sessao.split(" ")[1].substring(0,5);
+                        for (Sessao sessao: sessoes) {
+                            String horaInicio = sessao.getHoraInicioStr();
                             JButton buttonSessao = new JButton(horaInicio);
                             int finalL1 = finalL;
-                            buttonSessao.addActionListener(actionEvent -> SalaLugares(finalY, sessoes[finalL1]));
+                            buttonSessao.addActionListener(actionEvent -> SalaLugares(sessao));
                             infoFilme1.add(buttonSessao);
                             finalL++;
                         }
@@ -141,10 +141,9 @@ public class PaginaInicial extends JFrame {
                 panel.add(voltar);
                 frame.setVisible(true);
             }
-            public void SalaLugares(int finalY, String sessoe){
+            public void SalaLugares(Sessao sessao){
                 panel.removeAll();
                 frame.setVisible(true);
-                sessao=db.getSessaoFilme(arrayFilmes.get(finalY), sessoe);
                 sala=sessao.getSala();
                 //frame.setVisible(false);
                 frame.setSize(600, 800);
@@ -167,7 +166,7 @@ public class PaginaInicial extends JFrame {
                     }
                 });
                 JPanel filme = new JPanel();
-                filme.add(new JLabel(arrayFilmes.get(finalY).getTitulo()+"    Sala: "+ sala.getNumeroSala() + "    Sessao:  "+sessoe.split(" ")[1].substring(0,5)));
+                filme.add(new JLabel(sessao.getFilme().getTitulo()+"    Sala: "+ sala.getNumeroSala() + "    Sessao:  "+sessao.getHoraInicioStr()));
                 filme.setPreferredSize(new Dimension(570, 30));
                 JPanel ecra = new JPanel();
                 ecra.add(new JLabel("ECRA"));
