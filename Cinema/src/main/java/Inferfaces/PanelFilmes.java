@@ -20,6 +20,7 @@ public class PanelFilmes extends InterfaceCliente {
         int size=filmes.size();
         if (size>0){
             testPane();
+            this.setOpaque(false);
             for (Filme filme:filmes) {
                 gbcUpdate();
                 mainList.add(new PanelFilmeIndiv(filme,dia,homePage),gbc,0);
@@ -36,13 +37,17 @@ public class PanelFilmes extends InterfaceCliente {
     public void testPane() {
         setLayout(new BorderLayout());
         mainList = new JPanel(new GridBagLayout());
+        mainList.setOpaque(false);
         gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.weightx = 1;
         gbc.weighty = 1;
-        mainList.add(new JPanel(), gbc);
-
-        add(new JScrollPane(mainList));
+        JPanel panel20=new JPanel();
+        panel20.setOpaque(false);
+        mainList.add(panel20, gbc);
+        JScrollPane jsp=new JScrollPane(mainList);
+        jsp.setOpaque(false);
+        add(jsp);
 /*
         JButton add = new JButton("Add");
         add.addActionListener(new ActionListener() {

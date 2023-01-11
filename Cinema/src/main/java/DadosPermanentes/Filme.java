@@ -20,7 +20,7 @@ public class Filme {
     private SbdHandler sbdHandler;
     private String tituloOriginal;
     private ArrayList<Genero> generos;
-    private Calendar dataEstreia;
+    private Date dataEstreia;
     private Realizador realizador;
     private ArrayList<Ator> atores;
     private Distribuidor distribuidor;
@@ -48,16 +48,16 @@ public class Filme {
 
     @Override
     public String toString() {
-        String aux="Genero: "+ generos.get(0).toString();
+        String aux="Titulo: "+titulo+"("+ano+")//Genero: "+ generos.get(0).toString();
         for (int i = 1; i< generos.size(); i++){
             aux+=", "+ generos.get(i).toString();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd");
-        aux+="\nTitulo: "+titulo+"//\nTitulo Original: "+tituloOriginal+"//\nData Estreia: "+sdf.format(dataEstreia.getTime())+"//\nRealizador: "+realizador.getNome()+"//\nAtores "+atores.get(0).getNome();
+        aux+="//Titulo Original: "+getTituloOriginal()+"//Data Estreia: "+sdf.format(dataEstreia)+"//Realizador: "+realizador.getNome()+"//Atores: "+atores.get(0).getNome();
         for (int i=1;i<atores.size();i++){
             aux+=", "+atores.get(i).getNome();
         }
-        aux+="//\nDistribuidor: "+distribuidor.getNome()+"//\nPais: "+pais+"//\nAno: "+ano+"//\nDuracao: "+duracao+"//\nDescricao: "+descricao;
+        aux+="//Distribuidor: "+distribuidor.getNome()+"//Pais: "+pais+"//Duracao: "+duracao+"//Descricao: "+descricao;
         return aux;
     }
 
@@ -73,7 +73,7 @@ public class Filme {
         this.generos = generos;
     }
 
-    public void setDataEstreia(Calendar dataEstreia) {
+    public void setDataEstreia(Date dataEstreia) {
         this.dataEstreia = dataEstreia;
     }
 
@@ -117,12 +117,21 @@ public class Filme {
 
     public ArrayList<Genero> getGeneros() {
         if(generos==null){
-            sbdHandler.setFilmeDetails(this);
+            sbdHandler.setFilmeHomePageDetails(this);
         }
         return generos;
     }
 
-    public Calendar getDataEstreia() {
+    public String getGenerosStr(){
+        String genStr="";
+        for (Genero genero:generos) {
+            genStr+=genero.toString()+", ";
+        }
+        genStr=genStr.substring(0,genStr.length()-2);
+        return genStr;
+    }
+
+    public Date getDataEstreia() {
         if(dataEstreia==null){
             sbdHandler.setFilmeDetails(this);
         }

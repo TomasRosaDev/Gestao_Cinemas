@@ -52,4 +52,8 @@ public class Sessao {
         aux+="\nHora: "+sdf.format(dataHoraInicio.getTime());
     return aux;
     }
+
+    public SbdHandler getSbdHandler() {
+        return sbdHandler;
+    }
 }

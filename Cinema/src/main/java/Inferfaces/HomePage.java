@@ -3,6 +3,7 @@ package Inferfaces;
 import Cliente.Cliente;
 import Cliente.WatchDog;
 import DadosPermanentes.Filme;
+import DadosPermanentes.Lugar;
 import DadosPermanentes.SbdHandler;
 import DadosPermanentes.Sessao;
 
@@ -51,25 +52,36 @@ public class HomePage extends JFrame {
         interfaceFilmes();
     }
 
-    public void interfaceFilmes() throws SQLException {
-        ArrayList<Filme> filmes=sbdHandler.listaFilmes(dia);
-        body=new PanelFilmes(filmes,dia,this);
+    public void interfaceFilmes(){
+        ArrayList<Filme> filmes= null;
+        try {
+            filmes = sbdHandler.listaFilmes(dia);
+            body=new PanelFilmes(filmes,dia,this);
+        } catch (SQLException e) {
+            body=new PanelFalhaConeccao(e,0);
+        }
         footer=new PanelBotLabelEmpty();
         update();
     }
 
 
 
-    public void detailsPage(Filme filme){
+    public void detailsPage(Filme filme,JPanel butoesSessoes){
         cliente.setFilme(filme);
         watchDog.turnOn();
-        body=new PanelBotLabelEmpty();
+        body=new PanelInfoFilme(filme,butoesSessoes,this);
         footer=new PanelBotLabelEmpty();
         update();
     }
     public void sitsPage(Sessao sessao){
         cliente.setSessao(sessao);
         watchDog.turnOn();
+        body=new InterfaceSits(sessao,this);
+        update();
+    }
+
+    public void interfaceTiposBilhetes(ArrayList<Lugar> lugares,Sessao sessao){
+        //cliente.setBilhetes();
         body=new PanelBotLabelEmpty();
         update();
     }
@@ -82,6 +94,16 @@ public class HomePage extends JFrame {
         panel.removeAll();
         panel.add(header,BorderLayout.NORTH);
         panel.add(body,BorderLayout.CENTER);
+        panel.add(footer,BorderLayout.SOUTH);
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+
+    public void updateSits(InterfaceSits body){
+        panel.removeAll();
+        this.body=body;
+        panel.add(header,BorderLayout.NORTH);
+        panel.add(this.body,BorderLayout.CENTER);
         panel.add(footer,BorderLayout.SOUTH);
         frame.add(panel);
         frame.setVisible(true);

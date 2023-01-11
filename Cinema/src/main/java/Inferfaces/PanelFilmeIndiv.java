@@ -13,10 +13,11 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public class PanelFilmeIndiv extends JPanel {
-    Filme filme;
-    Date dia;
-    HomePage homePage;
+    private Filme filme;
+    private Date dia;
+    private HomePage homePage;
     private  GridBagConstraints gbc;
+    private JPanel butoesDasSessoes;
     public PanelFilmeIndiv(Filme filme,Date dia,HomePage homePage){
         this.filme=filme;
         this.dia=dia;
@@ -43,12 +44,30 @@ public class PanelFilmeIndiv extends JPanel {
         JPanel panelCentral=new JPanel();
         panelCentral.setPreferredSize(new Dimension(450,200));
         panelCentral.setLayout(new BorderLayout());
+        butoesDasSessoes=panelSessoes();
+        panelCentral.add(butoesDasSessoes,BorderLayout.SOUTH);
+        panelCentral.add(panelCenterFilmeInfo(),BorderLayout.CENTER);
+        return panelCentral;
+    }
+
+    public JPanel panelCenterFilmeInfo(){
+        JPanel info=new JPanel();
+        info.setLayout(new GridLayout(3,1));
+        JPanel nomeButt=new JPanel();
+        nomeButt.setLayout(new BorderLayout());
         JLabel nome=new JLabel(filme.getTitulo()+" ("+filme.getAnoString()+")");
         nome.setFont(new Font("Arial",Font.PLAIN, 20));
-        nome.setForeground(Color.GREEN);
-        panelCentral.add(nome,BorderLayout.CENTER);
-        panelCentral.add(panelSessoes(),BorderLayout.SOUTH);
-        return panelCentral;
+        nome.setForeground(Color.BLACK);
+        nomeButt.add(nome,BorderLayout.CENTER);
+        JButton infoInterface=new JButton("Informacoes>>");
+        infoInterface.addActionListener(actionEvent -> homePage.detailsPage(filme,butoesDasSessoes));
+        nomeButt.add(infoInterface,BorderLayout.EAST);
+        JLabel idade=new JLabel("Idade Minima: "+filme.getIdadeMinima());
+        JLabel generos=new JLabel("Generos: "+filme.getGenerosStr());
+        info.add(nomeButt);
+        info.add(idade);
+        info.add(generos);
+        return info;
     }
 
     public JPanel panelSessoes(){
