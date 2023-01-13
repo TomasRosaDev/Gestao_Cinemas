@@ -12,7 +12,5 @@ public class mainPaginaInicial {
         Class.forName("com.mysql.cj.jdbc.Driver");
         PaginaInicial pagina = new PaginaInicial();
         pagina.PaginaInicialMain();
-
-
     }
 }

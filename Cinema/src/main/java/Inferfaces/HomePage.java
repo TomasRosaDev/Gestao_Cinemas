@@ -1,5 +1,6 @@
 package Inferfaces;
 
+import Gestor.Gestor;
 import Cliente.Cliente;
 import Cliente.WatchDog;
 import DadosPermanentes.Filme;
@@ -21,6 +22,7 @@ public class HomePage extends JFrame {
     private JPanel footer;
     private WatchDog watchDog;
     private Cliente cliente;
+    private Gestor gestor;
     private SbdHandler sbdHandler;
     private Date dia;
 
@@ -51,6 +53,12 @@ public class HomePage extends JFrame {
         this.sbdHandler=sbdHandler;
         interfaceFilmes();
     }
+    /*public void newGestor(SbdHandler sbdHandler) throws SQLException {
+        header=new TopLabel();
+        gestor =new Gestor(sbdHandler);
+        this.sbdHandler=sbdHandler;
+        gestorPage();
+    }*/
 
     public void interfaceFilmes(){
         ArrayList<Filme> filmes= null;
@@ -64,8 +72,6 @@ public class HomePage extends JFrame {
         update();
     }
 
-
-
     public void detailsPage(Filme filme,JPanel butoesSessoes){
         cliente.setFilme(filme);
         watchDog.turnOn();
@@ -77,6 +83,21 @@ public class HomePage extends JFrame {
         cliente.setSessao(sessao);
         watchDog.turnOn();
         body=new InterfaceSits(sessao,this);
+        update();
+    }
+    public void gestorPage(){
+        watchDog.turnOn();
+        body=new InterfacePrincipalGestor(this);
+        update();
+    }
+    public void gestorConsultar(){
+        watchDog.turnOn();
+        body=new InterfaceGestorConsultar(this);
+        update();
+    }
+    public void gestorInserir(){
+        watchDog.turnOn();
+        body=new InterfaceGestorInserir(this);
         update();
     }
 
@@ -116,6 +137,7 @@ public class HomePage extends JFrame {
     public void resetPurchase(){
         try {
             newCliente(sbdHandler);
+            //newGestor(sbdHandler);
         } catch (SQLException e) {
             watchDog.turnOn();
         }

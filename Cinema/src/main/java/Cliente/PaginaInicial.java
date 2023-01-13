@@ -5,6 +5,8 @@ import DadosPermanentes.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -173,6 +175,8 @@ public class PaginaInicial extends JFrame {
                 ecra.setPreferredSize(new Dimension(570, 30));
                 lugares = db.getLugares(sala.getNumeroSala());
                 JPanel layoutSala= new JPanel();
+
+                JLabel numlugares=new JLabel(0+"");
                 layoutSala.setLayout(new GridLayout(lugares.length, lugares[lugares.length-1].length));
                 for (int row = 0; row < lugares.length; row++) {
                     for (int col = 0; col < lugares[row].length; col++) {
@@ -192,11 +196,26 @@ public class PaginaInicial extends JFrame {
                         button.addActionListener(actionEvent -> {
                             if(button.getBackground().equals(Color.green)){ //se o lugar ja estiver selecionado (a verde), volta para a cor default de um botao
                                 button.setBackground(new JButton().getBackground());
+                                button.addActionListener(new ActionListener() {
+                                        @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        // TODO Auto-generated method stub
+                                        numlugares.setText(Integer.parseInt(numlugares.getText())-1+"");
+                                    }
+                                });
                             } else { //se o lugar nao estiver selecionado e seleciona (passa a verde)
+
+                                button.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        // TODO Auto-generated method stub
+                                        numlugares.setText(Integer.parseInt(numlugares.getText())+1+"");
+                                    }
+                                });
                                 button.setBackground(Color.green);
                             }
                         });
-
+                        layoutSala.add(numlugares);
                         layoutSala.add(button);
                     }
                 }

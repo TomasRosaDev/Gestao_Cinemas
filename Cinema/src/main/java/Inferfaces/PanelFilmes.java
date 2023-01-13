@@ -27,6 +27,9 @@ public class PanelFilmes extends InterfaceCliente {
                 validate();
                 repaint();
             }
+            JButton gestor = new JButton("Gestor");
+            gestor.addActionListener(actionEvent -> homePage.gestorPage());
+            mainList.add(gestor);
         }
         else {
             withoutFilmes();

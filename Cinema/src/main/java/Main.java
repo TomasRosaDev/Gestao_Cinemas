@@ -16,8 +16,8 @@ public class Main {
             try{
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 sbdHandler=new SbdHandler();
-
                 homePage.newCliente(sbdHandler);
+                //homePage.newGestor(sbdHandler);
                 break;
             }
             catch (Exception e){
