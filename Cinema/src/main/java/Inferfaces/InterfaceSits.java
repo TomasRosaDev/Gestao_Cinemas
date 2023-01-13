@@ -2,10 +2,13 @@ package Inferfaces;
 
 import DadosPermanentes.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -76,41 +79,62 @@ public class InterfaceSits extends InterfaceCliente{
         return progrPanel;
     }
 
-    public JButton lugarBut(Lugar lugar){
-        JButton button=new JButton(lugar.getNome() +"-"+lugar.getTipo());
+    public JButton lugarBut(Lugar lugar) {
+        JButton button = new JButton(lugar.getNome());
+
+        if(lugar.getTipo().equals(TipoLugar.Incapacitado)){
+            button.setBackground(Color.blue);
+        }else if(lugar.getTipo().equals(TipoLugar.Vip)){
+            button.setBackground(Color.yellow);
+        }else{
+
+        }
+
         if(lugar.getTipo().equals(TipoLugar.Inexistente)){
             button.setVisible(false);
-        } else if (sessao.getSbdHandler().getExisteBilhete(lugar.getNome(),sessao)) {
+        }else if(sessao.getSbdHandler().getExisteBilhete(lugar.getNome(),sessao)) {
             button.setBackground(Color.red);
             button.setEnabled(false);
         }else {
-           button.addActionListener(new ActionListener() {
-               public void actionPerformed(ActionEvent ae) {
-                   changeButtonStage(button,lugar);
-               }
-           });
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                    changeButtonStage(button,lugar);
+                }
+            });
         }
+
         return button;
     }
 
     public void changeButtonStage(JButton but,Lugar lugar){
-        if(but.getBackground().equals(Color.green)){
+        if(but.getBackground().equals(Color.green) && lugar.getTipo().equals(TipoLugar.Normal)){
             but.setBackground(new JButton().getBackground());
-            Iterator i=lugaresSelecionados.iterator();
-            while (i.hasNext()){
-                Lugar lugar1= (Lugar) i.next();
-                if(lugar1.getNome().equals(lugar.getNome())){
-                    i.remove();
-                    break;
-                }
-            }
-        }
-        else {
+            removeLugarContador(lugar);
+
+        }else if(but.getBackground().equals(Color.GREEN) && lugar.getTipo().equals(TipoLugar.Incapacitado)){
+            but.setBackground(Color.blue);
+            removeLugarContador(lugar);
+
+        }else if(but.getBackground().equals(Color.GREEN) && lugar.getTipo().equals(TipoLugar.Vip)){
+            but.setBackground(Color.yellow);
+            removeLugarContador(lugar);
+        } else {
             but.setBackground(Color.green);
             lugaresSelecionados.add(lugar);
         }
         atualizarContLugares();
         contLug.setText(contLugares+"");
+    }
+
+    public void removeLugarContador(Lugar lugar){
+        Iterator i=lugaresSelecionados.iterator();
+        while (i.hasNext()){
+            Lugar lugar1= (Lugar) i.next();
+            if(lugar1.getNome().equals(lugar.getNome())){
+                i.remove();
+                break;
+            }
+        }
     }
 
     public void atualizarContLugares(){
