@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class PanelFilmeIndiv extends JPanel {
@@ -84,7 +85,7 @@ public class PanelFilmeIndiv extends JPanel {
         panelSessoes.add(new JScrollPane(mainList/*,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,JScrollPane.VERTICAL_SCROLLBAR_NEVER*/));
         for (Sessao sessao:sessoes) {
             gbcUpdate();
-            JButton buttonSessao=new JButton("Sala: "+sessao.getSala().getNumeroSala()+" :: Horario: "+sessao.getHoraInicioStr());
+            JButton buttonSessao=new JButton("Sala: "+sessao.getSala().getNumeroSala()+"  Horario: "+sessao.getHoraInicioStr());
             buttonSessao.addActionListener(actionEvent -> homePage.sitsPage(sessao));
             mainList.add(buttonSessao,gbc,0);
             validate();

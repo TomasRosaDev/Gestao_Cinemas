@@ -171,7 +171,7 @@ public class PaginaInicial extends JFrame {
                 JPanel ecra = new JPanel();
                 ecra.add(new JLabel("ECRA"));
                 ecra.setPreferredSize(new Dimension(570, 30));
-                lugares = db.getLugares(String.valueOf(sala.getNumeroSala()));
+                lugares = db.getLugares(sala.getNumeroSala());
                 JPanel layoutSala= new JPanel();
                 layoutSala.setLayout(new GridLayout(lugares.length, lugares[lugares.length-1].length));
                 for (int row = 0; row < lugares.length; row++) {

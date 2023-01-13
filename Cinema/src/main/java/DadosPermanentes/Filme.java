@@ -42,8 +42,8 @@ public class Filme {
         return ano;
     }
 
-    public String getAnoString() {
-        return Integer.toString(ano);
+    public int getAnoString() {
+        return ano;
     }
 
     @Override
@@ -52,12 +52,12 @@ public class Filme {
         for (int i = 1; i< generos.size(); i++){
             aux+=", "+ generos.get(i).toString();
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
         aux+="//Titulo Original: "+getTituloOriginal()+"//Data Estreia: "+sdf.format(dataEstreia)+"//Realizador: "+realizador.getNome()+"//Atores: "+atores.get(0).getNome();
         for (int i=1;i<atores.size();i++){
             aux+=", "+atores.get(i).getNome();
         }
-        aux+="//Distribuidor: "+distribuidor.getNome()+"//Pais: "+pais+"//Duracao: "+duracao+"//Descricao: "+descricao;
+        aux+="//Distribuidor: "+distribuidor.getNome()+"//Pais: "+pais+"//Duracao: "+duracao+"m"+"//Descricao: "+descricao;
         return aux;
     }
 

@@ -22,7 +22,7 @@ public class InterfaceSits extends InterfaceCliente{
         this.homePage=homePage;
         this.contLugares=0;
         this.lugaresSelecionados= new ArrayList<>();
-        this.lugares=sessao.getSbdHandler().getLugares(sessao.getSala().getNumeroSala()+"");
+        this.lugares=sessao.getSbdHandler().getLugares(sessao.getSala().getNumeroSala());
         this.setLayout(new BorderLayout());
         this.add(informacoes(),BorderLayout.NORTH);
         this.add(maisEcra(),BorderLayout.CENTER);

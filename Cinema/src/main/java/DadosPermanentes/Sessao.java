@@ -21,7 +21,7 @@ public class Sessao {
     }
 
     public String getHoraInicioStr(){
-        String date= dataHoraInicio.get(Calendar.HOUR_OF_DAY)+":"+dataHoraInicio.get(Calendar.MINUTE);
+        String date= dataHoraInicio.get(Calendar.HOUR_OF_DAY)+"h"+dataHoraInicio.get(Calendar.MINUTE);
         return date;
     }
 
@@ -38,7 +38,7 @@ public class Sessao {
 
     public Calendar getDataHoraFim() {
         if(dataHoraFim==null){
-            dataHoraFim=sbdHandler.getDataHoraFim(filme.getTitulo(),filme.getAnoString(),sala.getNumeroSala()+"",dataHoraInicio);
+            dataHoraFim=sbdHandler.getDataHoraFim(filme.getTitulo(),filme.getAnoString(),sala.getNumeroSala(),dataHoraInicio);
         }
         return dataHoraFim;
     }

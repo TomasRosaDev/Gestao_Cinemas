@@ -36,10 +36,10 @@ public class PanelInfoFilme extends InterfaceCliente{
         return imagem;
     }
 
-    public JPanel infoDetail(JPanel butoesSessoes){
+    public JPanel infoDetail(JPanel botoesSessoes){
         JPanel infoDetail=new JPanel();
         infoDetail.setLayout(new BorderLayout());
-        infoDetail.add(butoesSessoes,BorderLayout.SOUTH);
+        infoDetail.add(botoesSessoes,BorderLayout.SOUTH);
 
         JPanel infoLabels=new JPanel();
         String [] infos=filme.toString().split("//");

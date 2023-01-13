@@ -25,7 +25,7 @@ public class Sala {
 
     public Lugar[][] getLugares() {
         if(lugares==null){
-            lugares=sbdHandler.getLugares(""+numeroSala);
+            lugares=sbdHandler.getLugares(numeroSala);
         }
         return lugares;
     }
