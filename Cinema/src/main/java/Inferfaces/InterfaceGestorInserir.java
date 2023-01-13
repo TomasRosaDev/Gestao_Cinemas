@@ -21,7 +21,7 @@ public class InterfaceGestorInserir extends InterfaceGestor{
     public InterfaceGestorInserir(HomePage homePage){
         this.homePage=homePage;
         this.setLayout(new BorderLayout());
-        this.add(informacoes());
+        this.add(informacoes(),BorderLayout.NORTH);
         this.add(ecraPrincipal());
 
     }
@@ -29,7 +29,7 @@ public class InterfaceGestorInserir extends InterfaceGestor{
         JPanel info=new JPanel();
         info.setPreferredSize(new Dimension(600,25));
         info.setBackground(Color.lightGray);
-        info.add(new JLabel("Consultar dados"));
+        info.add(new JLabel("Inserir dados"));
         return info;
     }
     public JPanel ecraPrincipal(){
@@ -52,8 +52,6 @@ public class InterfaceGestorInserir extends InterfaceGestor{
     public JPanel escolha(){
         JPanel geral=new JPanel();
         geral.setOpaque(false);
-        geral.setLayout(new GridLayout(3, 1));
-        geral.add(new JLabel("Escolha o que pretende visualizar:"));
         String[] choices = { "Escolha uma opção...","Atores","Filmes", "Sessoes","Salas"};
         JComboBox<String> cb = new JComboBox <>(choices);
         JButton op = new JButton("OK");

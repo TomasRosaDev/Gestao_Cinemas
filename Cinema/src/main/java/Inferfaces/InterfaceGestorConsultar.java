@@ -19,7 +19,7 @@ public class InterfaceGestorConsultar extends InterfaceGestor{
     public InterfaceGestorConsultar(HomePage homePage){
         this.homePage=homePage;
         this.setLayout(new BorderLayout());
-        this.add(informacoes());
+        this.add(informacoes(),BorderLayout.NORTH);
         this.add(ecraPrincipal());
     }
     public JPanel informacoes(){

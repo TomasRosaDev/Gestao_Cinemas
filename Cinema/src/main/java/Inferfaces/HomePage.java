@@ -100,6 +100,11 @@ public class HomePage extends JFrame {
         body=new InterfaceGestorInserir(this);
         update();
     }
+    public void gestorEliminar(){
+        watchDog.turnOn();
+        body=new InterfaceGestorEliminar(this);
+        update();
+    }
 
     public void interfaceTiposBilhetes(ArrayList<Lugar> lugares,Sessao sessao){
         //cliente.setBilhetes();

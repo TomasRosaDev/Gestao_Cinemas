@@ -39,7 +39,9 @@ public class InterfacePrincipalGestor extends InterfaceGestor{
             JButton inserirbutt =new JButton("Inserir Dados");
             inserirbutt.addActionListener(actionEvent -> homePage.gestorInserir());
             grid.add(inserirbutt);
-            grid.add(new JButton("Eliminar Dados"));
+            JButton eliminbutt =new JButton("Inserir Dados");
+            eliminbutt.addActionListener(actionEvent -> homePage.gestorEliminar());
+            grid.add(eliminbutt);
             return grid;
         }
 
