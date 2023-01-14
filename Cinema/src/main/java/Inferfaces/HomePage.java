@@ -1,12 +1,9 @@
 package Inferfaces;
 
+import DadosPermanentes.*;
 import Gestor.Gestor;
 import Cliente.Cliente;
 import Cliente.WatchDog;
-import DadosPermanentes.Filme;
-import DadosPermanentes.Lugar;
-import DadosPermanentes.SbdHandler;
-import DadosPermanentes.Sessao;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,6 +82,11 @@ public class HomePage extends JFrame {
         body=new InterfaceSits(sessao,this);
         update();
     }
+    public void interfaceTiposBilhetes(ArrayList<Bilhete> bilhetes, Sessao sessao){
+        //cliente.setBilhetes();
+        body=new PanelBotLabelEmpty();
+        update();
+    }
     public void gestorPage(){
         watchDog.turnOn();
         body=new InterfacePrincipalGestor(this);
@@ -106,11 +108,7 @@ public class HomePage extends JFrame {
         update();
     }
 
-    public void interfaceTiposBilhetes(ArrayList<Lugar> lugares,Sessao sessao){
-        //cliente.setBilhetes();
-        body=new PanelBotLabelEmpty();
-        update();
-    }
+
     public void failConnection(Exception e,int tentativa){
         body=new PanelFalhaConeccao(e,tentativa);
         footer=new PanelBotLabelEmpty();

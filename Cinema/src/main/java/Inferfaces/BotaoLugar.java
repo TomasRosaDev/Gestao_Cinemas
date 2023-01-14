@@ -95,11 +95,11 @@ public class BotaoLugar extends JButton {
         escolhido=!escolhido;
         if(escolhido){
             imageName+="_Escolhido";
-            interfaceSits.getLugaresSelecionados().add(bilhete.getLugar());
+            interfaceSits.getBilhetesSelecionados().add(bilhete);
         }
         else {
             imageName=imageName.split("_")[0];
-            interfaceSits.removeLugarContador(bilhete.getLugar());
+            interfaceSits.removeBilheteContador(bilhete.getLugar());
         }
         setContent();
         interfaceSits.atualizarContLugares();

@@ -16,8 +16,8 @@ import java.util.Iterator;
 public class InterfaceSits extends InterfaceCliente{
 
     private Sessao sessao;
-    private Lugar[][] lugares;
-    private ArrayList<Lugar> lugaresSelecionados;
+    private Bilhete[][] bilhetes;
+    private ArrayList<Bilhete> bilhetesSelecionados;
     private HomePage homePage;
     private int contLugares;
     JLabel contLug;
@@ -25,8 +25,8 @@ public class InterfaceSits extends InterfaceCliente{
         this.sessao=sessao;
         this.homePage=homePage;
         this.contLugares=0;
-        this.lugaresSelecionados= new ArrayList<>();
-        this.lugares=sessao.getSbdHandler().getLugares(sessao.getSala().getNumeroSala());
+        this.bilhetesSelecionados= new ArrayList<>();
+        this.bilhetes=sessao.getSbdHandler().getBilhetes(sessao);
         this.setLayout(new BorderLayout());
         this.add(informacoes(),BorderLayout.NORTH);
         this.add(maisEcra(),BorderLayout.CENTER);
@@ -57,15 +57,15 @@ public class InterfaceSits extends InterfaceCliente{
 
     public JPanel lugaresPanel(){
         JPanel grid= new JPanel();
-        int width=lugares[0].length;
-        int height=lugares.length;
+        int width=bilhetes[0].length;
+        int height=bilhetes.length;
         grid.setPreferredSize(new Dimension(width*50,height*50));
-        grid.setLayout(new GridLayout(lugares.length,lugares[0].length));
+        grid.setLayout(new GridLayout(bilhetes.length,bilhetes[0].length));
         grid.setOpaque(false);
-        for (int i = 0; i < lugares.length; i++) {
-            for (int j = 0; j < lugares[0].length; j++) {
+        for (int i = 0; i < bilhetes.length; i++) {
+            for (int j = 0; j < bilhetes[0].length; j++) {
                 //grid.add(lugarBut(lugares[i][j]));
-                grid.add(new BotaoLugar(new Bilhete(lugares[i][j],sessao, sessao.getSbdHandler()),this));
+                grid.add(new BotaoLugar(bilhetes[i][j],this));
             }
         }
         return grid;
@@ -84,8 +84,8 @@ public class InterfaceSits extends InterfaceCliente{
         return progrPanel;
     }
 
-    public void removeLugarContador(Lugar lugar){
-        Iterator i=lugaresSelecionados.iterator();
+    public void removeBilheteContador(Lugar lugar){
+        Iterator i=bilhetesSelecionados.iterator();
         while (i.hasNext()){
             Lugar lugar1= (Lugar) i.next();
             if(lugar1.getNome().equals(lugar.getNome())){
@@ -96,7 +96,7 @@ public class InterfaceSits extends InterfaceCliente{
     }
 
     public void atualizarContLugares(){
-        contLugares=lugaresSelecionados.size();
+        contLugares=bilhetesSelecionados.size();
         //homePage.update();
         contLug.setText(contLugares+"");
     }
@@ -109,11 +109,11 @@ public class InterfaceSits extends InterfaceCliente{
 
     public JButton butSeguinte(){
         JButton buttonVoltar=new JButton("Seguinte>>");
-        buttonVoltar.addActionListener(actionEvent -> homePage.interfaceTiposBilhetes(lugaresSelecionados,sessao));
+        buttonVoltar.addActionListener(actionEvent -> homePage.interfaceTiposBilhetes(bilhetesSelecionados,sessao));
         return buttonVoltar;
     }
 
-    public ArrayList<Lugar> getLugaresSelecionados() {
-        return lugaresSelecionados;
+    public ArrayList<Bilhete> getBilhetesSelecionados() {
+        return bilhetesSelecionados;
     }
 }

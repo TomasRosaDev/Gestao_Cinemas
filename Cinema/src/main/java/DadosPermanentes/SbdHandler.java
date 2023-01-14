@@ -210,11 +210,12 @@ public class SbdHandler {
         return null;
     }
 
-    public Lugar[][] getLugares(int n_sala) {
+    public Bilhete[][] getBilhetes(Sessao sessao) {
         ResultSet resultQueryLugar=null;
         ResultSet resultQueryNLinhas=null;
         ResultSet resultQueryNColunas=null;
-        Lugar[][] lugares= null;
+        Bilhete[][] bilhetes= null;
+        int n_sala=sessao.getSala().getNumeroSala();
 
         try {
                 cstmt = con.prepareCall("{call nLinhas(?)}");
@@ -237,7 +238,55 @@ public class SbdHandler {
                         nColunas= resultQueryNColunas.getInt(1);
                     }
                 }
-                lugares = new Lugar[nLinhas][nColunas];
+                bilhetes = new Bilhete[nLinhas][nColunas];
+
+            cstmt = con.prepareCall("{call lugares(?)}");
+            cstmt.setInt(1, n_sala);
+
+            if (cstmt.execute()) {
+                resultQueryLugar = cstmt.getResultSet();
+                while (resultQueryLugar.next()) {
+                    String nome = resultQueryLugar.getString("nome");
+                    TipoLugar tipo=TipoLugar.valueOf(resultQueryLugar.getString("tipo"));
+                    int linha =resultQueryLugar.getInt("posicao_linha");
+                    int coluna =resultQueryLugar.getInt("posicao_coluna");
+                    bilhetes[linha][coluna]=new Bilhete(new Lugar(nome,tipo),sessao,this);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return bilhetes;
+    }
+
+    public Lugar[][] getLugares(int n_sala) {
+        ResultSet resultQueryLugar=null;
+        ResultSet resultQueryNLinhas=null;
+        ResultSet resultQueryNColunas=null;
+        Lugar[][] lugares= null;
+
+        try {
+            cstmt = con.prepareCall("{call nLinhas(?)}");
+            cstmt.setInt(1, n_sala);
+
+            int nLinhas = 0;
+            int nColunas = 0;
+            if(cstmt.execute()) {
+                resultQueryNLinhas = cstmt.getResultSet();
+                while (resultQueryNLinhas.next()) {
+                    nLinhas = resultQueryNLinhas.getInt(1);
+                }
+            }
+
+            cstmt = con.prepareCall("{call nColunas(?)}");
+            cstmt.setInt(1, n_sala);
+            if(cstmt.execute()){
+                resultQueryNColunas=cstmt.getResultSet();
+                while (resultQueryNColunas.next()) {
+                    nColunas= resultQueryNColunas.getInt(1);
+                }
+            }
+            lugares = new Lugar[nLinhas][nColunas];
 
             cstmt = con.prepareCall("{call lugares(?)}");
             cstmt.setInt(1, n_sala);
