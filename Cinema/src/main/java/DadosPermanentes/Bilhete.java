@@ -7,11 +7,10 @@ public class Bilhete {
     private boolean ocupado;
     private SbdHandler sbdHandler;
 
-    public Bilhete(Lugar lugar, Sessao sessao/*,boolean ocupado*/, SbdHandler sbdHandler){
+    public Bilhete(Lugar lugar, Sessao sessao,boolean ocupado, SbdHandler sbdHandler){
         this.lugar = lugar;
         this.sessao = sessao;
         this.sbdHandler=sbdHandler;
-        //this.ocupado=ocupado;
     }
 
 

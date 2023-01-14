@@ -58,13 +58,7 @@ public class HomePage extends JFrame {
     }*/
 
     public void interfaceFilmes(){
-        ArrayList<Filme> filmes= null;
-        try {
-            filmes = sbdHandler.listaFilmes(dia);
-            body=new PanelFilmes(filmes,dia,this);
-        } catch (SQLException e) {
-            body=new PanelFalhaConeccao(e,0);
-        }
+        body=new PanelFilmes(cliente.getFilmes(dia),dia,this);
         footer=new PanelBotLabelEmpty();
         update();
     }

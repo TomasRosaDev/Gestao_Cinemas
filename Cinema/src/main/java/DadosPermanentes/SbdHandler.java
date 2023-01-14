@@ -250,7 +250,8 @@ public class SbdHandler {
                     TipoLugar tipo=TipoLugar.valueOf(resultQueryLugar.getString("tipo"));
                     int linha =resultQueryLugar.getInt("posicao_linha");
                     int coluna =resultQueryLugar.getInt("posicao_coluna");
-                    bilhetes[linha][coluna]=new Bilhete(new Lugar(nome,tipo),sessao,this);
+                    //boolean ocupado=result
+                    bilhetes[linha][coluna]=new Bilhete(new Lugar(nome,tipo),sessao,false,this);
                 }
             }
         } catch (SQLException e) {
