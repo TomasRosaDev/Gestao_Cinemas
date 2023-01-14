@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class PanelFilmeIndiv extends JPanel {
         this.filme=filme;
         this.dia=dia;
         this.homePage=homePage;
-        this.setPreferredSize(new Dimension(550,200));
+        this.setPreferredSize(new Dimension(550,210));
         //this.setBackground(Color.darkGray);
         this.setLayout(new BorderLayout());
         this.add(panelImagemFilme(),BorderLayout.WEST);
@@ -32,18 +33,22 @@ public class PanelFilmeIndiv extends JPanel {
 
     public JPanel panelImagemFilme(){
         JPanel panelImagem=new JPanel();
-        panelImagem.setPreferredSize(new Dimension(100,200));
-        panelImagem.setBackground(Color.PINK);
-        JLabel imagemLabel=new JLabel("Imagem Filme");
-        imagemLabel.setForeground(Color.GRAY);
-        imagemLabel.setFont(new Font("Arial",Font.PLAIN,10));
-        panelImagem.add(imagemLabel);
+        panelImagem.setPreferredSize(new Dimension(140,210));
+        try{
+            panelImagem.add(new JLabel(new ImageIcon(getScaledImage(filme.getImagem(),140,210))));
+        }catch (Exception e){
+            panelImagem.setBackground(Color.PINK);
+            JLabel imagemLabel=new JLabel("Imagem Filme");
+            imagemLabel.setForeground(Color.GRAY);
+            imagemLabel.setFont(new Font("Arial",Font.PLAIN,10));
+            panelImagem.add(imagemLabel);
+        }
         return panelImagem;
     }
 
     public JPanel panelCenterFilme(){
         JPanel panelCentral=new JPanel();
-        panelCentral.setPreferredSize(new Dimension(450,200));
+        panelCentral.setPreferredSize(new Dimension(450,210));
         panelCentral.setLayout(new BorderLayout());
         butoesDasSessoes=panelSessoes();
         panelCentral.add(butoesDasSessoes,BorderLayout.SOUTH);
@@ -99,5 +104,15 @@ public class PanelFilmeIndiv extends JPanel {
         gbc.gridheight = GridBagConstraints.REMAINDER;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.VERTICAL;
+    }
+    private Image getScaledImage(Image srcImg, int w, int h){
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+
+        return resizedImg;
     }
 }

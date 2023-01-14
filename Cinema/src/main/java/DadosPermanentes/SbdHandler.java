@@ -1,15 +1,16 @@
 package DadosPermanentes;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 public class SbdHandler {
     Connection con;
@@ -89,6 +90,19 @@ public class SbdHandler {
                     generos.add(Genero.valueOf(genero));
                 }
                 filme.setGeneros(generos);
+            }
+            //Blob immAsBlob = rs.getBlob();
+            //byte[] immAsBytes = immAsBlob.getBytes(1, (int)immAsBlob.length()))
+            System.out.println();
+
+            byte[] immAsBytes = Base64.getDecoder().decode(encoder("Avatar.jpg"));
+
+            InputStream in = new ByteArrayInputStream(immAsBytes);
+            try {
+                BufferedImage imgFromDb = ImageIO.read(in);
+                filme.setImagem(imgFromDb);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -337,5 +351,54 @@ public class SbdHandler {
 
     public Date convertStringtoDatesql(String datestr){
         return Date.valueOf(datestr);
+    }
+
+    public String temporarioMetodo(){
+        try {/*
+            BufferedImage imm = ImageIO.read(new File("Avatar.jpeg"));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            ImageIO.write(imm, "jpg", baos );
+            baos.flush();
+            byte[] immAsBytes = baos.toByteArray();
+            baos.close();
+            return immAsBytes;*/
+            String imgPath = "Avatar.jpeg";
+            FileInputStream stream = new FileInputStream(imgPath);
+            int bufLength = 2048;
+            byte[] buffer = new byte[2048];
+            byte[] data;
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            int readLength;
+            while ((readLength = stream.read(buffer, 0, bufLength)) != -1) {
+                out.write(buffer, 0, readLength);
+            }
+
+            data = out.toByteArray();
+            String imageString = Base64.getEncoder().withoutPadding().encodeToString(data);
+
+            out.close();
+            stream.close();
+            return  imageString;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public String encoder(String imagePath) {
+        String base64Image = "";
+        File file = new File(imagePath);
+        try (FileInputStream imageInFile = new FileInputStream(file)) {
+            // Reading a Image file from file system
+            byte imageData[] = new byte[(int) file.length()];
+            imageInFile.read(imageData);
+            base64Image = Base64.getEncoder().encodeToString(imageData);
+        } catch (FileNotFoundException e) {
+            System.out.println("Image not found" + e);
+        } catch (IOException ioe) {
+            System.out.println("Exception while reading the Image " + ioe);
+        }
+        return base64Image;
     }
 }

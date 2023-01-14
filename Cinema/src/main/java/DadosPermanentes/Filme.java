@@ -3,6 +3,9 @@ package DadosPermanentes;/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,7 +18,7 @@ public class Filme {
     private String titulo;
     private int ano;
     private String idadeMinima;
-    //private imagem;
+    private BufferedImage imagem;
 
     private SbdHandler sbdHandler;
     private String tituloOriginal;
@@ -64,6 +67,7 @@ public class Filme {
     public void setIdadeMinima(String idadeMinima) {
         this.idadeMinima = idadeMinima;
     }
+    public void setImagem(BufferedImage imagem){this.imagem=imagem;}
 
     public void setTituloOriginal(String tituloOriginal) {
         this.tituloOriginal = tituloOriginal;
@@ -182,6 +186,13 @@ public class Filme {
             sbdHandler.setFilmeDetails(this);
         }
         return descricao;
+    }
+
+    public BufferedImage getImagem(){
+        if(imagem==null){
+            sbdHandler.setFilmeHomePageDetails(this);
+        }
+        return imagem;
     }
 
     public ArrayList<Sessao> getSessoes(Date dia){

@@ -4,13 +4,16 @@ public class Bilhete {
     private Lugar lugar;
     private Sessao sessao;
     private String preco;
+    private boolean ocupado;
     private SbdHandler sbdHandler;
 
-    public Bilhete(Lugar lugar, Sessao sessao, SbdHandler sbdHandler){
+    public Bilhete(Lugar lugar, Sessao sessao/*,boolean ocupado*/, SbdHandler sbdHandler){
         this.lugar = lugar;
         this.sessao = sessao;
         this.sbdHandler=sbdHandler;
+        //this.ocupado=ocupado;
     }
+
 
     public String getPreco() {
         if(preco==null){
@@ -30,4 +33,15 @@ public class Bilhete {
         return auxLugarDaSessao;
     }
 
+    public Lugar getLugar() {
+        return lugar;
+    }
+
+    public void setOcupado(boolean ocupado) {
+        this.ocupado = ocupado;
+    }
+
+    public boolean isOcupado() {
+        return ocupado;
+    }
 }

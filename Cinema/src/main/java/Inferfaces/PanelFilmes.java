@@ -69,7 +69,7 @@ public class PanelFilmes extends InterfaceCliente {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(200, 200);
+        return new Dimension(200, 210);
     }
 
     public void withoutFilmes(){

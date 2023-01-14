@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,11 +57,16 @@ public class InterfaceSits extends InterfaceCliente{
 
     public JPanel lugaresPanel(){
         JPanel grid= new JPanel();
-        grid.setPreferredSize(new Dimension(lugares.length*100,lugares[0].length*50));
+        int width=lugares[0].length;
+        int height=lugares.length;
+        System.out.println("w:"+width+"--h:"+height);
+        grid.setPreferredSize(new Dimension(width*50,height*50));
         grid.setLayout(new GridLayout(lugares.length,lugares[0].length));
+        grid.setOpaque(false);
         for (int i = 0; i < lugares.length; i++) {
             for (int j = 0; j < lugares[0].length; j++) {
-                grid.add(lugarBut(lugares[i][j]));
+                //grid.add(lugarBut(lugares[i][j]));
+                grid.add(new BotaoLugar(new Bilhete(lugares[i][j],sessao, sessao.getSbdHandler()),this));
             }
         }
         return grid;
@@ -79,53 +85,6 @@ public class InterfaceSits extends InterfaceCliente{
         return progrPanel;
     }
 
-    public JButton lugarBut(Lugar lugar) {
-        JButton button = new JButton(lugar.getNome());
-
-        if(lugar.getTipo().equals(TipoLugar.Incapacitado)){
-            button.setBackground(Color.blue);
-        }else if(lugar.getTipo().equals(TipoLugar.Vip)){
-            button.setBackground(Color.yellow);
-        }else{
-
-        }
-
-        if(lugar.getTipo().equals(TipoLugar.Inexistente)){
-            button.setVisible(false);
-        }else if(sessao.getSbdHandler().getExisteBilhete(lugar.getNome(),sessao)) {
-            button.setBackground(Color.red);
-            button.setEnabled(false);
-        }else {
-            button.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent ae) {
-                    changeButtonStage(button,lugar);
-                }
-            });
-        }
-
-        return button;
-    }
-
-    public void changeButtonStage(JButton but,Lugar lugar){
-        if(but.getBackground().equals(Color.green) && lugar.getTipo().equals(TipoLugar.Normal)){
-            but.setBackground(new JButton().getBackground());
-            removeLugarContador(lugar);
-
-        }else if(but.getBackground().equals(Color.GREEN) && lugar.getTipo().equals(TipoLugar.Incapacitado)){
-            but.setBackground(Color.blue);
-            removeLugarContador(lugar);
-
-        }else if(but.getBackground().equals(Color.GREEN) && lugar.getTipo().equals(TipoLugar.Vip)){
-            but.setBackground(Color.yellow);
-            removeLugarContador(lugar);
-        } else {
-            but.setBackground(Color.green);
-            lugaresSelecionados.add(lugar);
-        }
-        atualizarContLugares();
-        contLug.setText(contLugares+"");
-    }
-
     public void removeLugarContador(Lugar lugar){
         Iterator i=lugaresSelecionados.iterator();
         while (i.hasNext()){
@@ -139,7 +98,8 @@ public class InterfaceSits extends InterfaceCliente{
 
     public void atualizarContLugares(){
         contLugares=lugaresSelecionados.size();
-        homePage.update();
+        //homePage.update();
+        contLug.setText(contLugares+"");
     }
 
     public JButton butVoltar(){
@@ -152,5 +112,9 @@ public class InterfaceSits extends InterfaceCliente{
         JButton buttonVoltar=new JButton("Seguinte>>");
         buttonVoltar.addActionListener(actionEvent -> homePage.interfaceTiposBilhetes(lugaresSelecionados,sessao));
         return buttonVoltar;
+    }
+
+    public ArrayList<Lugar> getLugaresSelecionados() {
+        return lugaresSelecionados;
     }
 }
