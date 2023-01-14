@@ -125,16 +125,6 @@ public class HomePage extends JFrame {
         frame.setVisible(true);
     }
 
-    public void updateSits(InterfaceSits body){
-        panel.removeAll();
-        this.body=body;
-        panel.add(header,BorderLayout.NORTH);
-        panel.add(this.body,BorderLayout.CENTER);
-        panel.add(footer,BorderLayout.SOUTH);
-        frame.add(panel);
-        frame.setVisible(true);
-    }
-
     public SbdHandler getSbdHandler(){
         return sbdHandler;
     }
@@ -146,5 +136,10 @@ public class HomePage extends JFrame {
         } catch (SQLException e) {
             watchDog.turnOn();
         }
+    }
+
+    public void updateClock(Date date){
+        header=new TopLabelClock(date);
+        update();
     }
 }

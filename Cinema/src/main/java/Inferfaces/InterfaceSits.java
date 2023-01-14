@@ -59,7 +59,6 @@ public class InterfaceSits extends InterfaceCliente{
         JPanel grid= new JPanel();
         int width=lugares[0].length;
         int height=lugares.length;
-        System.out.println("w:"+width+"--h:"+height);
         grid.setPreferredSize(new Dimension(width*50,height*50));
         grid.setLayout(new GridLayout(lugares.length,lugares[0].length));
         grid.setOpaque(false);

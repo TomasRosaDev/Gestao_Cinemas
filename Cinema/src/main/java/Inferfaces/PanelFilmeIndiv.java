@@ -77,6 +77,7 @@ public class PanelFilmeIndiv extends JPanel {
     }
 
     public JPanel panelSessoes(){
+
         ArrayList<Sessao> sessoes=filme.getSessoes(dia);
         JPanel panelSessoes=new JPanel();
         panelSessoes.setPreferredSize(new Dimension(450,50));

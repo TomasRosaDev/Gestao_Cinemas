@@ -1,13 +1,13 @@
 package DadosPermanentes;
 
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class Sessao {
 
-    private Calendar dataHoraInicio;
-    private Calendar dataHoraFim;
+    private Date dataHoraInicio;
+    private Date dataHoraFim;
     private Filme filme;
     private Sala sala;
     private SbdHandler sbdHandler;
@@ -16,16 +16,18 @@ public class Sessao {
         return sala;
     }
 
-    public Calendar getDataHoraInicio() {
+    public Date getDataHoraInicio() {
         return dataHoraInicio;
     }
 
     public String getHoraInicioStr(){
-        String date= dataHoraInicio.get(Calendar.HOUR_OF_DAY)+"h"+dataHoraInicio.get(Calendar.MINUTE);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String date= dateFormat.format(dataHoraInicio).split(" ")[1].substring(0,5);
+
         return date;
     }
 
-    public Sessao(Filme filme, Sala sala, Calendar dataHoraInicio, SbdHandler sbdHandler) {
+    public Sessao(Filme filme, Sala sala, Date dataHoraInicio, SbdHandler sbdHandler) {
         this.filme=filme;
         this.sala=sala;
         this.dataHoraInicio=dataHoraInicio;
@@ -36,7 +38,7 @@ public class Sessao {
         return filme;
     }
 
-    public Calendar getDataHoraFim() {
+    public Date getDataHoraFim() {
         if(dataHoraFim==null){
             dataHoraFim=sbdHandler.getDataHoraFim(filme.getTitulo(),filme.getAnoString(),sala.getNumeroSala(),dataHoraInicio);
         }
@@ -49,7 +51,7 @@ public class Sessao {
         aux+="Filme\n"+filme.toString();
         aux+="\nSala\n" +sala.toString();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        aux+="\nHora: "+sdf.format(dataHoraInicio.getTime());
+        aux+="\nHora: "+sdf.format(dataHoraInicio);
     return aux;
     }
 

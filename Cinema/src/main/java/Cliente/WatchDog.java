@@ -2,11 +2,14 @@ package Cliente;
 
 import Inferfaces.HomePage;
 
+import java.sql.Date;
+
 public class WatchDog extends Thread{
     private boolean on;
     private int contador;
     private int minutos;
     private HomePage homePage;
+    private Date date;
     public WatchDog(HomePage homePage,int minutos){
         this.homePage=homePage;
         this.minutos=minutos;
@@ -30,7 +33,8 @@ public class WatchDog extends Thread{
         while (true){
             try {
                 this.sleep(1000);
-                //clock
+                date=new java.sql.Date(System.currentTimeMillis());
+                homePage.updateClock(date);
                 if(on){
                     contador--;
                     if (contador==0){

@@ -22,6 +22,7 @@ public class SbdHandler {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        //uploadImagem("Sorri");
     }
 
     public void setFilmeDetails(Filme filme){
@@ -65,6 +66,8 @@ public class SbdHandler {
     public void setFilmeHomePageDetails(Filme filme){
         ResultSet resultqueryHomePageDetails;
         ResultSet resultQueryFilmeGeneros;
+        ResultSet resultQueryFilmeImagem;
+        String imageName="";
 
         try {
             cstmt = con.prepareCall("{call paginaInicialDetalhes(?, ?)}");
@@ -75,7 +78,7 @@ public class SbdHandler {
                 resultqueryHomePageDetails=cstmt.getResultSet();
                 resultqueryHomePageDetails.next();
                 filme.setIdadeMinima(resultqueryHomePageDetails.getString("idade"));
-                //filme.setImage(resultqueryHomePageDetails.get...);
+                imageName=resultqueryHomePageDetails.getString("nome_imagem");
             }
 
             cstmt = con.prepareCall("{call filmeGeneros(?, ?)}");
@@ -91,19 +94,28 @@ public class SbdHandler {
                 }
                 filme.setGeneros(generos);
             }
+
+            cstmt=con.prepareCall("{call imagem(?)}");
+            cstmt.setString(1,imageName);
+
+            if(cstmt.execute()){
+                resultQueryFilmeImagem=cstmt.getResultSet();
+                resultQueryFilmeImagem.next();
+                Blob immAsBlob = resultQueryFilmeImagem.getBlob("imagem");
+                byte[] immAsBytes = immAsBlob.getBytes(1, (int)immAsBlob.length());
+
+                InputStream in = new ByteArrayInputStream(immAsBytes);
+                try {
+                    BufferedImage imgFromDb = ImageIO.read(in);
+                    filme.setImagem(imgFromDb);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             //Blob immAsBlob = rs.getBlob();
             //byte[] immAsBytes = immAsBlob.getBytes(1, (int)immAsBlob.length()))
-            System.out.println();
 
-            byte[] immAsBytes = Base64.getDecoder().decode(encoder("Avatar.jpg"));
 
-            InputStream in = new ByteArrayInputStream(immAsBytes);
-            try {
-                BufferedImage imgFromDb = ImageIO.read(in);
-                filme.setImagem(imgFromDb);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -140,12 +152,12 @@ public class SbdHandler {
             cstmt = con.prepareCall("{call filmeSessoes(?, ?, ?)}");
             cstmt.setString(1, filme.getTitulo());
             cstmt.setInt(2, filme.getAno());
-            cstmt.setString(3, strDay(dia));
+            cstmt.setDate(3, dia);
 
             if (cstmt.execute()) {
                 resultQuerySessoes = cstmt.getResultSet();
                 while (resultQuerySessoes.next()) {
-                    sessoes.add(new Sessao(filme,new Sala(resultQuerySessoes.getInt("numero_sala"),this),calendartoCalendarFromDateSqlString(resultQuerySessoes.getString("dataHoraInicio")),this));
+                    sessoes.add(new Sessao(filme,new Sala(resultQuerySessoes.getInt("numero_sala"),this),resultQuerySessoes.getDate("dataHoraInicio"),this));
                 }
             }
         } catch (SQLException e) {
@@ -167,7 +179,7 @@ public class SbdHandler {
             if (cstmt.execute()) {
                 resultQuerySessao = cstmt.getResultSet();
                 while (resultQuerySessao.next()) {
-                    Calendar dataInicio=convertCalendarFromString(resultQuerySessao.getString("dataHoraInicio"));//Erro ao chamar o metod convertCalenderFromString porque esse metodo nao formata horas
+                    Date dataInicio=convertStringtoDatesql(resultQuerySessao.getString("dataHoraInicio"));//Erro ao chamar o metod convertCalenderFromString porque esse metodo nao formata horas
                     Sala sala=getSala(resultQuerySessao.getInt("numero_sala"));
                     //Calendar dataFim=convertCalendarFromString(resultQuerySessao.getString("dataHoraFim"));
                     return new Sessao(filme,sala,dataInicio, this);
@@ -273,19 +285,20 @@ public class SbdHandler {
         return false;
     }
 
-    public Calendar getDataHoraFim(String titulo,int ano,int nSala,Calendar dataHoraInicio){
+    public Date getDataHoraFim(String titulo, int ano, int nSala, Date dataHoraInicio){
         ResultSet resultQueryDaraHoraFimSessao;
+
 
         try {
             cstmt = con.prepareCall("{call sessaoDataHoraFim(?, ?, ?)}");
             cstmt.setString(1, titulo);
             cstmt.setInt(2, ano);
             cstmt.setInt(3, nSala);
-            cstmt.setString(4, String.valueOf(dataHoraInicio));
+            cstmt.setString(4, strDay(dataHoraInicio));
 
             if (cstmt.execute()) {
                 resultQueryDaraHoraFimSessao = cstmt.getResultSet();
-                return convertCalendarFromString(resultQueryDaraHoraFimSessao.getString("dataHoraFim"));
+                return convertStringtoDatesql(resultQueryDaraHoraFimSessao.getString("dataHoraFim"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -353,52 +366,42 @@ public class SbdHandler {
         return Date.valueOf(datestr);
     }
 
-    public String temporarioMetodo(){
-        try {/*
-            BufferedImage imm = ImageIO.read(new File("Avatar.jpeg"));
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            ImageIO.write(imm, "jpg", baos );
-            baos.flush();
-            byte[] immAsBytes = baos.toByteArray();
-            baos.close();
-            return immAsBytes;*/
-            String imgPath = "Avatar.jpeg";
-            FileInputStream stream = new FileInputStream(imgPath);
-            int bufLength = 2048;
-            byte[] buffer = new byte[2048];
-            byte[] data;
-
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            int readLength;
-            while ((readLength = stream.read(buffer, 0, bufLength)) != -1) {
-                out.write(buffer, 0, readLength);
-            }
-
-            data = out.toByteArray();
-            String imageString = Base64.getEncoder().withoutPadding().encodeToString(data);
-
-            out.close();
-            stream.close();
-            return  imageString;
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public String encoder(String imagePath) {
-        String base64Image = "";
+    public byte[] encoder(String imagePath) {
+        //String base64Image = "";
+        byte[] imageData={};
         File file = new File(imagePath);
         try (FileInputStream imageInFile = new FileInputStream(file)) {
             // Reading a Image file from file system
-            byte imageData[] = new byte[(int) file.length()];
+            imageData = new byte[(int) file.length()];
             imageInFile.read(imageData);
-            base64Image = Base64.getEncoder().encodeToString(imageData);
+            //base64Image = Base64.getEncoder().encodeToString(imageData);
         } catch (FileNotFoundException e) {
             System.out.println("Image not found" + e);
         } catch (IOException ioe) {
             System.out.println("Exception while reading the Image " + ioe);
         }
-        return base64Image;
+        //return base64Image;
+        return imageData;
+    }
+
+    public void uploadImagem(String fileStr) {
+
+        try {
+            cstmt = con.prepareCall("{call adicionarImagem(?,?)}");
+            //String[] nomearray=fileStr.split("/");
+            //String nome=nomearray[nomearray.length-1];
+            //nome=nome.split(".")[0];
+            String nome=fileStr/*.split(".")[0]*/;
+            System.out.println(nome);
+            cstmt.setString(1, nome);
+            byte[] imagemByte=encoder(fileStr+".jpg");
+            ByteArrayInputStream bais = new ByteArrayInputStream(imagemByte);
+
+            cstmt.setBinaryStream(2,bais,imagemByte.length);
+            cstmt.executeUpdate();
+            cstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

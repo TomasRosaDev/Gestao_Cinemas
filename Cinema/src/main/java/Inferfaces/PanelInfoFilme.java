@@ -44,7 +44,7 @@ public class PanelInfoFilme extends InterfaceCliente{
         infoDetail.add(botoesSessoes,BorderLayout.SOUTH);
 
         JPanel infoLabels=new JPanel();
-        String [] infos=filme.toString().split("//");
+        String[] infos=filme.toString().split("//");
         for (int i=0;i<infos.length;i++) {
             JLabel label=new JLabel("<html>"+infos[i]+"<html>");
             if(i==0){
