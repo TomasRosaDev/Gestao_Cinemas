@@ -25,9 +25,9 @@ public class Sessao {
     public String getHoraInicioStr(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date= dateFormat.format(dataHoraInicio).split(" ")[1].substring(0,5);
-
         return date;
     }
+
 
     public Sessao(Filme filme, Sala sala, Date dataHoraInicio, SbdHandler sbdHandler) {
         this.filme=filme;

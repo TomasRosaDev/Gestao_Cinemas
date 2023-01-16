@@ -96,8 +96,8 @@ public class HomePage extends JFrame {
         body=new InterfaceResumo(cliente.getSessao(),cliente.getBilhetes(),cliente.getTipoDeBilhetes(),this);
         update();
     }
-    public void concluirCompra(){
-        //cliente.saveBilhetes;
+    public void concluirCompra(ArrayList<Bilhete> bilhetes){
+        sbdHandler.concluirCompra(bilhetes);
         resetPurchase();
     }
     public void gestorPage(){

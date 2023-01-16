@@ -162,7 +162,6 @@ public class SbdHandler {
                         String data = resultQuerySessoes.getString("dataHoraInicio");
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         java.util.Date date = dateFormat.parse(data);
-                        DecimalFormat formatMinutos = new DecimalFormat("00");
                         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
                         sessoes.add(new Sessao(filme,new Sala(resultQuerySessoes.getInt("numero_sala"),this),sqlDate,this));
@@ -253,8 +252,11 @@ public class SbdHandler {
                 }
                 bilhetes = new Bilhete[nLinhas][nColunas];
 
-            cstmt = con.prepareCall("{call lugares(?)}");
+            cstmt = con.prepareCall("{call bilhetes(?, ?, ?, ?)}");
             cstmt.setInt(1, n_sala);
+            cstmt.setString(2, sessao.getFilme().getTitulo());
+            cstmt.setInt (3, sessao.getFilme().getAno());
+            cstmt.setString(4, strDay(sessao.getDataHoraInicio()));
 
             if (cstmt.execute()) {
                 resultQueryLugar = cstmt.getResultSet();
@@ -263,8 +265,8 @@ public class SbdHandler {
                     TipoLugar tipo=TipoLugar.valueOf(resultQueryLugar.getString("tipo"));
                     int linha =resultQueryLugar.getInt("posicao_linha");
                     int coluna =resultQueryLugar.getInt("posicao_coluna");
-                    //boolean ocupado=result
-                    bilhetes[linha][coluna]=new Bilhete(new Lugar(nome,tipo),sessao,false,this);
+                    boolean ocupado=(1==resultQueryLugar.getInt("ocupado"));
+                    bilhetes[linha][coluna]=new Bilhete(new Lugar(nome,tipo),sessao,ocupado,this);
                 }
             }
         } catch (SQLException e) {
@@ -350,8 +352,6 @@ public class SbdHandler {
 
     public Date getDataHoraFim(String titulo, int ano, int nSala, Date dataHoraInicio){
         ResultSet resultQueryDaraHoraFimSessao;
-
-
         try {
             cstmt = con.prepareCall("{call sessaoDataHoraFim(?, ?, ?)}");
             cstmt.setString(1, titulo);
@@ -367,6 +367,21 @@ public class SbdHandler {
             throw new RuntimeException(e);
         }
         return null;
+    }
+    public void concluirCompra(ArrayList<Bilhete> bilhetes){
+        try {
+            for (Bilhete bilhete:bilhetes) {
+                cstmt = con.prepareCall("{call concluirCompra(?, ?, ?, ?, ?)}");
+                cstmt.setInt(1, bilhete.getSessao().getSala().getNumeroSala());
+                cstmt.setString(2, bilhete.getLugar().getNome());
+                cstmt.setString(3, bilhete.getSessao().getFilme().getTitulo());
+                cstmt.setInt(4, bilhete.getSessao().getFilme().getAno());
+                cstmt.setString(5, strDay(bilhete.getSessao().getDataHoraInicio()));
+                cstmt.execute();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getPrecoBilhete(String posicao,Sessao sessao){
@@ -414,7 +429,7 @@ public class SbdHandler {
     }
 
     public String strDay(Date dia){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.format(dia);
     }
 

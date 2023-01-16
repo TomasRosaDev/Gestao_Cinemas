@@ -36,7 +36,8 @@ public class BotaoLugar extends JButton {
         }else {
             if(bilhete.isOcupado()){
                 imageName+="_Ocupado";
-                setEnabled(false);
+                //setEnabled(false);
+                setContent();
             }
             else {
                 setContent();

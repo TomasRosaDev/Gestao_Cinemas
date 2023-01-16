@@ -44,4 +44,8 @@ public class Bilhete {
     public boolean isOcupado() {
         return ocupado;
     }
+
+    public Sessao getSessao() {
+        return sessao;
+    }
 }

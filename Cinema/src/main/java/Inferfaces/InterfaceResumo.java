@@ -94,7 +94,7 @@ public class InterfaceResumo extends InterfaceCliente{
     }
     public JButton butSeguinte(){
         JButton buttonSeguinte=new JButton("Concluir>>");
-        buttonSeguinte.addActionListener(actionEvent -> homePage.concluirCompra());
+        buttonSeguinte.addActionListener(actionEvent -> homePage.concluirCompra(bilhetes));
         return buttonSeguinte;
     }
     public JPanel footer(){
