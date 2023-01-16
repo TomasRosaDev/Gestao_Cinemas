@@ -5,12 +5,11 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class SbdHandler {
     Connection con;
@@ -157,7 +156,21 @@ public class SbdHandler {
             if (cstmt.execute()) {
                 resultQuerySessoes = cstmt.getResultSet();
                 while (resultQuerySessoes.next()) {
-                    sessoes.add(new Sessao(filme,new Sala(resultQuerySessoes.getInt("numero_sala"),this),resultQuerySessoes.getDate("dataHoraInicio"),this));
+
+
+                    try {
+                        String data = resultQuerySessoes.getString("dataHoraInicio");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        java.util.Date date = dateFormat.parse(data);
+                        DecimalFormat formatMinutos = new DecimalFormat("00");
+                        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                        sessoes.add(new Sessao(filme,new Sala(resultQuerySessoes.getInt("numero_sala"),this),sqlDate,this));
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
                 }
             }
         } catch (SQLException e) {
@@ -376,9 +389,9 @@ public class SbdHandler {
         return null;
     }
     
-    public Calendar convertCalendarFromString(String date){
-        String[] date1=date.split("-");
-        return new GregorianCalendar(Integer.parseInt(date1[0]),Integer.parseInt(date1[1]),Integer.parseInt(date1[2]));
+    public Date convertCalendarFromString(String date) throws ParseException {
+        Date date1 = (Date) new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
+        return date1;
     }
 
     public Calendar calendartoCalendarFromDateSqlString(String date){

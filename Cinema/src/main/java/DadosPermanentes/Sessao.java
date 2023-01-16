@@ -2,7 +2,9 @@ package DadosPermanentes;
 
 import java.sql.Date;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+
 
 public class Sessao {
 
@@ -21,7 +23,7 @@ public class Sessao {
     }
 
     public String getHoraInicioStr(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date= dateFormat.format(dataHoraInicio).split(" ")[1].substring(0,5);
 
         return date;

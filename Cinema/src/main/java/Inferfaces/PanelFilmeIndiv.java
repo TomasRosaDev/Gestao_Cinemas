@@ -91,8 +91,10 @@ public class PanelFilmeIndiv extends JPanel {
         for (Sessao sessao:sessoes) {
             gbcUpdate();
             JButton buttonSessao=new JButton("Sala: "+sessao.getSala().getNumeroSala()+"  Horario: "+sessao.getHoraInicioStr());
+
             buttonSessao.addActionListener(actionEvent -> homePage.sitsPage(sessao));
             mainList.add(buttonSessao,gbc,0);
+
             validate();
             repaint();
         }
