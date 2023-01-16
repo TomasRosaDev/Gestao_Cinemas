@@ -99,7 +99,7 @@ public class BotaoLugar extends JButton {
         }
         else {
             imageName=imageName.split("_")[0];
-            interfaceSits.removeBilheteContador(bilhete.getLugar());
+            interfaceSits.removeBilheteContador(bilhete);
         }
         setContent();
         interfaceSits.atualizarContLugares();

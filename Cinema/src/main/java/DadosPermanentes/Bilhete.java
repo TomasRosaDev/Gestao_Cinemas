@@ -11,6 +11,7 @@ public class Bilhete {
         this.lugar = lugar;
         this.sessao = sessao;
         this.sbdHandler=sbdHandler;
+        setOcupado(ocupado);
     }
 
 

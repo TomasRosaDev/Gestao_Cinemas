@@ -2,6 +2,7 @@ package Cliente;
 
 import DadosPermanentes.*;
 
+import javax.swing.*;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -11,12 +12,13 @@ import java.util.ArrayList;
 public class Cliente {
     private SbdHandler sbdHandler;
     private int NumeroCliente;
-    private Bilhete [] bilhetes={};
+    private ArrayList<Bilhete> bilhetes;
     private Float despeza;
     private Sessao sessao;
     private Filme filme;
-    ArrayList<Filme> filmes=new ArrayList<>();
-    Date dia;
+    private JLabel[] tipoBilhetes;
+    private ArrayList<Filme> filmes=new ArrayList<>();
+    private Date dia;
 
     public Cliente(SbdHandler sbdHandler){
         this.sbdHandler=sbdHandler;
@@ -36,11 +38,11 @@ public class Cliente {
         return this.sessao;
     }
 
-    public void setBilhetes(Bilhete[] bilhetes){
+    public void setBilhetes(ArrayList<Bilhete> bilhetes){
         this.bilhetes=bilhetes;
     }
 
-    public Bilhete[] getBilhetes(){
+    public ArrayList<Bilhete> getBilhetes(){
         return bilhetes;
     }
 
@@ -62,6 +64,15 @@ public class Cliente {
             }
         }
         return filmes;
+    }
+
+    public void setTiposDeBilhetes(JLabel[] tipoBilhetes){
+        this.tipoBilhetes=tipoBilhetes;
+        this.despeza=Integer.parseInt(tipoBilhetes[0].getText())*5.6f+Integer.parseInt(tipoBilhetes[1].getText())*2.3f+Integer.parseInt(tipoBilhetes[2].getText())*4f;
+    }
+
+    public JLabel[] getTipoDeBilhetes(){
+        return tipoBilhetes;
     }
 
     public String strDay(Date dia){

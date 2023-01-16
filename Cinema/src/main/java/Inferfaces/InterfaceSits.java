@@ -84,11 +84,11 @@ public class InterfaceSits extends InterfaceCliente{
         return progrPanel;
     }
 
-    public void removeBilheteContador(Lugar lugar){
+    public void removeBilheteContador(Bilhete bilhete){
         Iterator i=bilhetesSelecionados.iterator();
         while (i.hasNext()){
-            Lugar lugar1= (Lugar) i.next();
-            if(lugar1.getNome().equals(lugar.getNome())){
+            Bilhete bilhete1= (Bilhete) i.next();
+            if(bilhete1.getLugar().getNome().equals(bilhete.getLugar().getNome())){
                 i.remove();
                 break;
             }
@@ -109,7 +109,7 @@ public class InterfaceSits extends InterfaceCliente{
 
     public JButton butSeguinte(){
         JButton buttonVoltar=new JButton("Seguinte>>");
-        buttonVoltar.addActionListener(actionEvent -> homePage.interfaceTiposBilhetes(bilhetesSelecionados,sessao));
+        buttonVoltar.addActionListener(actionEvent -> homePage.interfaceTiposBilhetesNew(bilhetesSelecionados));
         return buttonVoltar;
     }
 

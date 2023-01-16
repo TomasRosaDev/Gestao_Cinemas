@@ -37,11 +37,11 @@ public class HomePage extends JFrame {
         header=new TopLabel();
         body=new LoadingPanel();
         footer=new PanelBotLabelEmpty();
-        update();
         frame.add(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         watchDog=new WatchDog(this,5);
         watchDog.start();
+        update();
     }
 
     public void newCliente(SbdHandler sbdHandler) throws SQLException {
@@ -72,14 +72,33 @@ public class HomePage extends JFrame {
     }
     public void sitsPage(Sessao sessao){
         cliente.setSessao(sessao);
+        interfaceSits();
+    }
+    public void interfaceSits(){
         watchDog.turnOn();
-        body=new InterfaceSits(sessao,this);
+        body=new InterfaceSits(cliente.getSessao(),this);
         update();
     }
-    public void interfaceTiposBilhetes(ArrayList<Bilhete> bilhetes, Sessao sessao){
-        //cliente.setBilhetes();
-        body=new PanelBotLabelEmpty();
+    public void interfaceTiposBilhetesNew(ArrayList<Bilhete> bilhetes){
+        cliente.setBilhetes(bilhetes);
+        interfaceTiposBilhetes();
+    }
+
+    public void interfaceTiposBilhetes(){
+        body=new InterfaceTipoBilhete(cliente.getBilhetes(),this);
         update();
+    }
+    public void interfaceResumoNew(JLabel[] tipoBilhetes){
+        cliente.setTiposDeBilhetes(tipoBilhetes);
+        interfaceResumo();
+    }
+    public void interfaceResumo(){
+        body=new InterfaceResumo(cliente.getSessao(),cliente.getBilhetes(),cliente.getTipoDeBilhetes(),this);
+        update();
+    }
+    public void concluirCompra(){
+        //cliente.saveBilhetes;
+        resetPurchase();
     }
     public void gestorPage(){
         watchDog.turnOn();
@@ -109,6 +128,7 @@ public class HomePage extends JFrame {
         update();
     }
     public void update(){
+        watchDog.resetCont();
         panel.removeAll();
         panel.add(header,BorderLayout.NORTH);
         panel.add(body,BorderLayout.CENTER);

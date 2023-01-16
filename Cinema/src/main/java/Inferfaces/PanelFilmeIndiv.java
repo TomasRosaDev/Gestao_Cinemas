@@ -25,7 +25,6 @@ public class PanelFilmeIndiv extends JPanel {
         this.dia=dia;
         this.homePage=homePage;
         this.setPreferredSize(new Dimension(550,210));
-        //this.setBackground(Color.darkGray);
         this.setLayout(new BorderLayout());
         this.add(panelImagemFilme(),BorderLayout.WEST);
         this.add(panelCenterFilme(),BorderLayout.CENTER);
