@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class HomePage extends JFrame {
@@ -22,6 +24,7 @@ public class HomePage extends JFrame {
     private Gestor gestor;
     private SbdHandler sbdHandler;
     private Date dia;
+    private JLabel hourLabel;
 
     public HomePage(){
         //dia=new java.sql.Date(System.currentTimeMillis());
@@ -45,7 +48,7 @@ public class HomePage extends JFrame {
     }
 
     public void newCliente(SbdHandler sbdHandler) throws SQLException {
-        header=new TopLabel();
+        //header=new TopLabel();
         cliente =new Cliente(sbdHandler);
         this.sbdHandler=sbdHandler;
         interfaceFilmes();
@@ -128,6 +131,7 @@ public class HomePage extends JFrame {
         update();
     }
     public void update(){
+        System.out.println("update");
         watchDog.resetCont();
         panel.removeAll();
         panel.add(header,BorderLayout.NORTH);
@@ -151,7 +155,23 @@ public class HomePage extends JFrame {
     }
 
     public void updateClock(Date date){
-        header=new TopLabelClock(date);
+        if(hourLabel==null){
+            setToplabelClock(date);
+            System.out.println("null");
+        }
+        else {
+            hourLabel.setText(strDay(date).split(" ")[1]);
+            System.out.println("not null");
+        }
+    }
+    public void setToplabelClock(Date date){
+        TopLabelClock label2=new TopLabelClock(date);
+        header=label2;
+        hourLabel=label2.getHourLabel();
         update();
+    }
+    public String strDay(Date dia){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(dia);
     }
 }

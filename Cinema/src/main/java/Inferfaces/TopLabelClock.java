@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TopLabelClock extends TopLabel{
+    JLabel hourLabel;
     TopLabelClock(Date date){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MMM-dd hh:mm:ss");
         String[]dateStr=sdf.format(date).split(" ");
@@ -15,9 +16,13 @@ public class TopLabelClock extends TopLabel{
         dayLabel.setForeground(Color.white);
         add(dayLabel,BorderLayout.WEST);
         String hour=dateStr[1];
-        JLabel hourLabel= new JLabel(hour);
+        hourLabel= new JLabel(hour);
         hourLabel.setFont(new Font("Arial",Font.PLAIN, 15));
         hourLabel.setForeground(Color.white);
         add(hourLabel,BorderLayout.EAST);
+    }
+
+    public JLabel getHourLabel() {
+        return hourLabel;
     }
 }
