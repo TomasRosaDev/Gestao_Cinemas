@@ -131,7 +131,6 @@ public class HomePage extends JFrame {
         update();
     }
     public void update(){
-        System.out.println("update");
         watchDog.resetCont();
         panel.removeAll();
         panel.add(header,BorderLayout.NORTH);
@@ -157,11 +156,9 @@ public class HomePage extends JFrame {
     public void updateClock(Date date){
         if(hourLabel==null){
             setToplabelClock(date);
-            System.out.println("null");
         }
         else {
             hourLabel.setText(strDay(date).split(" ")[1]);
-            System.out.println("not null");
         }
     }
     public void setToplabelClock(Date date){
