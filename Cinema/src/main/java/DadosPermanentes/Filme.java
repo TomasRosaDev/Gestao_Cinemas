@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.*;
 
 /**
@@ -19,7 +20,6 @@ public class Filme {
     private int ano;
     private String idadeMinima;
     private BufferedImage imagem;
-
     private SbdHandler sbdHandler;
     private String tituloOriginal;
     private ArrayList<Genero> generos;
@@ -32,9 +32,13 @@ public class Filme {
     private String descricao;
 
     public Filme(String titulo,String ano,SbdHandler sbdHandler) {
-        this.titulo = titulo;
-        this.ano = Integer.parseInt(ano);
-        this.sbdHandler=sbdHandler;
+        setTitulo(titulo);
+        setAno(ano);
+        if(sbdHandler!=null) {
+            this.sbdHandler = sbdHandler;
+        }else{
+            throw new RuntimeException("Handler invalido");
+        }
     }
 
     public String getTitulo() {
@@ -65,20 +69,51 @@ public class Filme {
     }
 
     public void setIdadeMinima(String idadeMinima) {
-        this.idadeMinima = idadeMinima;
+        int idade = Integer.parseInt(idadeMinima);
+        if(idade>=0 && idade<=18) {
+            this.idadeMinima = idadeMinima;
+        }else{
+            throw new RuntimeException("Idade minima invalida");
+        }
     }
     public void setImagem(BufferedImage imagem){this.imagem=imagem;}
 
     public void setTituloOriginal(String tituloOriginal) {
-        this.tituloOriginal = tituloOriginal;
+        if (tituloOriginal == null) {
+            this.tituloOriginal=getTitulo();
+        }else if (tituloOriginal.length() <= 100) {
+            this.tituloOriginal = tituloOriginal;
+        }else{
+            throw new RuntimeException("Titulo original invalido");
+        }
     }
 
     public void setGeneros(ArrayList<Genero> generos) {
-        this.generos = generos;
+        if(generos.size()==0){
+            throw new RuntimeException("Genero invalido");
+        }
+        this.generos=new ArrayList<>();
+        for (Genero genero: generos) {
+            if( !this.generos.contains(genero) && genero!=null){
+                this.generos.add(genero);
+            }
+        }
+        if(this.generos.size()==0){
+            this.generos=null;
+            throw new RuntimeException("Genero invalido");
+        }
+
     }
 
     public void setDataEstreia(Date dataEstreia) {
-        this.dataEstreia = dataEstreia;
+
+        if(dataEstreia.getYear()+1900 == getAno()){
+
+            this.dataEstreia = dataEstreia;
+        }else{
+            throw new RuntimeException("Ano invalido");
+        }
+
     }
 
     public void setRealizador(Realizador realizador) {
@@ -87,6 +122,28 @@ public class Filme {
 
     public void setAtores(ArrayList<Ator> atores) {
         this.atores = atores;
+    }
+
+    public SbdHandler getSbdHandler() {
+        return sbdHandler;
+    }
+
+    public void setAno(String ano) {
+        int anoPara = Integer.parseInt(ano);
+        int anoatual= Year.now().getValue();
+        if(anoPara<=anoatual+1 && anoPara>=1888) {
+            this.ano = anoPara;
+        }else{
+            throw new RuntimeException("Ano invalido");
+        }
+    }
+
+    public void setTitulo(String titulo) {
+        if(titulo.length() <= 100 ){
+            this.titulo = titulo;
+        }else{
+            throw new RuntimeException("Titulo invalido");
+        }
     }
 
     public void setDistribuidor(Distribuidor distribuidor) {
@@ -193,6 +250,15 @@ public class Filme {
             sbdHandler.setFilmeHomePageDetails(this);
         }
         return imagem;
+    }
+    public BufferedImage getImagemAux(){
+        return imagem;
+    }
+    public String getTituloOriginalAux(){
+        return tituloOriginal;
+    }
+    public Date getDataEstreiaAux(){
+        return dataEstreia;
     }
 
     public ArrayList<Sessao> getSessoes(Date dia){

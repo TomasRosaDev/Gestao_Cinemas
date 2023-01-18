@@ -8,9 +8,13 @@ public class Sala {
 
 
     //Construtor
-    public Sala(int numeroSala, SbdHandler sbdHandler) {
+    public Sala(int numeroSala, SbdHandler sbdHandler){
         setNumeroSala(numeroSala); // Verifica o se o numero é válido.
-        this.sbdHandler=sbdHandler;
+        if(sbdHandler!=null) {
+            this.sbdHandler = sbdHandler;
+        }else{
+            throw new RuntimeException("Handler invalido");
+        }
     }
 
     //Getters
@@ -19,8 +23,15 @@ public class Sala {
     }
 
     //Setters
-    private void setNumeroSala(int numeroSala) {
-        this.numeroSala = numeroSala;
+    private void setNumeroSala(int numeroSala){
+        if(numeroSala>0 && numeroSala<31) {
+            this.numeroSala = numeroSala;
+        }else{
+            throw new RuntimeException("Numero sala invalido");
+        }
+    }
+    public Lugar[][] getLugaresAux() {
+        return lugares;
     }
 
     public Lugar[][] getLugares() {
@@ -37,8 +48,10 @@ public class Sala {
                 aux+="\n"+lugares[i][j].toString();
             }
         }
-
         return aux;
+    }
+    public SbdHandler getSbdHandler(){
+        return this.sbdHandler;
     }
 
 }

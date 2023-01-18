@@ -24,19 +24,22 @@ class AtorTest {
     @Test
     void testAtorConstrutorInvalidoExiesteNaoLetras(){
         Exception expectedException=new Exception("Nome invalido");
-        Exception atualExection =assertThrows(Exception.class, () -> new Ator("Anto32nio Bandeiras"),"Tipo de exception nao esperado");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Ator("Anto32nio Bandeiras"),"Tipo de exception nao esperado");
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
     }
     @Test
     void testAtorConstrutorInvalidoEspacos(){
         Exception expectedException=new Exception("Nome invalido");
-        Exception atualExection =assertThrows(Exception.class, () -> new Ator("        "),"Tipo de exception nao esperado");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Ator("        "),"Tipo de exception nao esperado");
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
     }
     @Test
     void testAtorConstrutorInvalidoComprimentoExcedido(){
         Exception expectedException=new Exception("Nome invalido");
-        Exception atualExection =assertThrows(Exception.class, () -> new Ator("Joao Silva Ferraira Oliveira de Jesus"),"Tipo de exception nao esperado");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Ator("Joao Silva Ferraira Oliveira de Jesus"),"Tipo de exception nao esperado");
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
     }
 }

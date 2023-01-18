@@ -46,7 +46,14 @@ public class SbdHandlerFantoche extends SbdHandler{
 
     @Override
     public Lugar[][] getLugares(int n_sala) {
-        return new Lugar[0][];
+        Lugar[][] lugares = new Lugar[3][3];
+        String[] letras= {"A","B","C"};
+        for(int i=0;i< lugares.length;i++){
+            for(int j=0;j<lugares[0].length;j++){
+                lugares[i][j]= new Lugar(letras[i]+(j+1), TipoLugar.Normal);
+            }
+        }
+        return lugares;
     }
 
     @Override
