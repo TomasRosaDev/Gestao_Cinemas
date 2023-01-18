@@ -45,6 +45,13 @@ public class HomePage extends JFrame {
         watchDog=new WatchDog(this,5);
         watchDog.start();
         update();
+        /*addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                sbdHandler.closeConection();
+                System.out.println("close");
+                System.exit(0);
+            }
+        });*/
     }
 
     public void newCliente(SbdHandler sbdHandler) throws SQLException {
@@ -171,4 +178,6 @@ public class HomePage extends JFrame {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.format(dia);
     }
+
+
 }

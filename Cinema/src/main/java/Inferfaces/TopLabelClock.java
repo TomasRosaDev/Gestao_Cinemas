@@ -8,7 +8,7 @@ import java.util.Date;
 public class TopLabelClock extends TopLabel{
     JLabel hourLabel;
     TopLabelClock(Date date){
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MMM-dd hh:mm:ss");
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
         String[]dateStr=sdf.format(date).split(" ");
         String day=dateStr[0];
         JLabel dayLabel= new JLabel(day);

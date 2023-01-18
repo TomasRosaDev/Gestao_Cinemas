@@ -20,7 +20,8 @@ public class InterfaceSits extends InterfaceCliente{
     private ArrayList<Bilhete> bilhetesSelecionados;
     private HomePage homePage;
     private int contLugares;
-    JLabel contLug;
+    private JLabel contLug;
+    private JButton buttonSeguinte;
     public InterfaceSits(Sessao sessao, HomePage homePage){
         this.sessao=sessao;
         this.homePage=homePage;
@@ -80,7 +81,8 @@ public class InterfaceSits extends InterfaceCliente{
         contLug=new JLabel(contLugares+"");
         contLug.setForeground(Color.white);
         progrPanel.add(contLug,BorderLayout.CENTER);
-        progrPanel.add(butSeguinte(),BorderLayout.EAST);
+        butSeguinte();
+        progrPanel.add(buttonSeguinte,BorderLayout.EAST);
         return progrPanel;
     }
 
@@ -96,7 +98,12 @@ public class InterfaceSits extends InterfaceCliente{
     }
 
     public void atualizarContLugares(){
-        contLugares=bilhetesSelecionados.size();
+        if((contLugares=bilhetesSelecionados.size())==0){
+            buttonSeguinte.setEnabled(false);
+        }
+        else {
+            buttonSeguinte.setEnabled(true);
+        }
         //homePage.update();
         contLug.setText(contLugares+"");
     }
@@ -107,10 +114,10 @@ public class InterfaceSits extends InterfaceCliente{
         return buttonVoltar;
     }
 
-    public JButton butSeguinte(){
-        JButton buttonVoltar=new JButton("Seguinte>>");
-        buttonVoltar.addActionListener(actionEvent -> homePage.interfaceTiposBilhetesNew(bilhetesSelecionados));
-        return buttonVoltar;
+    public void butSeguinte(){
+        buttonSeguinte=new JButton("Seguinte>>");
+        buttonSeguinte.setEnabled(false);
+        buttonSeguinte.addActionListener(actionEvent -> homePage.interfaceTiposBilhetesNew(bilhetesSelecionados));
     }
 
     public ArrayList<Bilhete> getBilhetesSelecionados() {

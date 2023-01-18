@@ -15,7 +15,7 @@ public class Main {
         while(true){
             try{
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                sbdHandler=new SbdHandler();
+                sbdHandler=new SbdHandlerNormal();
                 homePage.newCliente(sbdHandler);
                 //homePage.newGestor(sbdHandler);
                 break;
@@ -30,6 +30,7 @@ public class Main {
                 }
             }
         }
+
 
         /*
 
