@@ -63,9 +63,38 @@ public class SbdHandlerFantoche extends SbdHandler{
     public void concluirCompra(ArrayList<Bilhete> bilhetes) {
 
     }
-
     @Override
     public String getPrecoBilhete(String posicao, Sessao sessao) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Sessao> getSessoes() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Filme> getFilmes() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Distribuidor> getDistribuidores() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Realizador> getRealizadores() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Genero> getGeneros() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Ator> getAtores() {
         return null;
     }
 

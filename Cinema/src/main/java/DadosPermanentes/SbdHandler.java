@@ -18,6 +18,12 @@ public abstract class SbdHandler {
     public abstract Date getDataHoraFim(String titulo, int ano, int nSala, Date dataHoraInicio);
     public abstract void concluirCompra(ArrayList<Bilhete> bilhetes);
     public abstract String getPrecoBilhete(String posicao,Sessao sessao);
+    public abstract ArrayList<Sessao> getSessoes();
+    public abstract ArrayList<Filme> getFilmes();
+    public abstract ArrayList<Distribuidor> getDistribuidores();
+    public abstract ArrayList<Realizador> getRealizadores();
+    public abstract ArrayList<Genero> getGeneros();
+    public abstract ArrayList<Ator> getAtores();
     public abstract void uploadImagem(String fileStr);
     public abstract void closeConection();
 }
