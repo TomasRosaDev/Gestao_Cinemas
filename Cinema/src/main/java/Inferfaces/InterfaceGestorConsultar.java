@@ -17,11 +17,12 @@ public class InterfaceGestorConsultar extends InterfaceGestor{
     private SbdHandler sbd;
     private JLabel consul;
 
-    public InterfaceGestorConsultar(HomePage homePage){
+    public InterfaceGestorConsultar(HomePage homePage, SbdHandler handler){
         this.homePage=homePage;
         this.setLayout(new BorderLayout());
         this.add(informacoes(),BorderLayout.NORTH);
         this.add(ecraPrincipal());
+        this.sbd= handler;
     }
     public JPanel informacoes(){
         JPanel info=new JPanel();
@@ -67,11 +68,11 @@ public class InterfaceGestorConsultar extends InterfaceGestor{
                     geral.add(label);
 
                 } else if (cb.getItemAt(cb.getSelectedIndex()).equals("Realizadores")) {
-                    consul.setText("TODOS OS REALIZADORES");
+                    //consul.setText("TODOS OS REALIZADORES");
                     ArrayList<Realizador> realizadores = sbd.getRealizadores();
 
                     for(Realizador realizador : realizadores){
-                        geral.add(new JLabel(realizador.getNome()));
+                        consul.setText(consul.getText()+" "+realizador.getNome());
                     }
 
                 } else if (cb.getItemAt(cb.getSelectedIndex()).equals("Distribuidores")) {

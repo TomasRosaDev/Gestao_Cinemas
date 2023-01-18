@@ -110,7 +110,7 @@ public class HomePage extends JFrame {
     }
     public void gestorConsultar(){
         watchDog.turnOn();
-        body=new InterfaceGestorConsultar(this);
+        body=new InterfaceGestorConsultar(this, sbdHandler);
         update();
     }
     public void gestorInserir(){

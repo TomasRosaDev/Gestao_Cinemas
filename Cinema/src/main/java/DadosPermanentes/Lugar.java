@@ -30,8 +30,7 @@ public class Lugar {
     public void setNome(String nome) {
         Pattern pattern = Pattern.compile("^[A-Z][0-99]{0,2}$");//Admite apenas formato LetraMaiuscula-Numero-Numero
         Matcher matcher = pattern.matcher(nome);
-
-            if (matcher.find()){
+            if (matcher.find() || nome.matches("Coluna")){
                     this.nome = nome;
             }else{
             throw new RuntimeException("Nome invalido");
@@ -39,13 +38,10 @@ public class Lugar {
     }
 
     public void setTipo(TipoLugar tipo) {
-        TipoLugar[] values = TipoLugar.values();
-        try {
-            if (Arrays.asList(values).contains(tipo)) {
+        if (!tipo.equals(null)) {
                 this.tipo = tipo;
-            }
-        }catch(Exception e){
-            throw new RuntimeException("Tipo invalido");
+        }else{
+            throw new RuntimeException("Tipo nulo");
         }
     }
 

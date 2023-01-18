@@ -123,7 +123,6 @@ public class SbdHandler {
     public ArrayList<Filme> listaFilmes(Date dia) throws SQLException {
         ArrayList<Filme> listaFilmes = new ArrayList<>();
         ResultSet resultQueryFilmes;
-        System.out.println(dia);
         try {
             cstmt = con.prepareCall("{call sessoesDia(?)}");
             cstmt.setString(1, strDay(dia));
