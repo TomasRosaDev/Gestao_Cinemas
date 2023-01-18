@@ -191,9 +191,8 @@ public class SbdHandler {
             if (cstmt.execute()) {
                 resultQuerySessao = cstmt.getResultSet();
                 while (resultQuerySessao.next()) {
-                    Date dataInicio=convertStringtoDatesql(resultQuerySessao.getString("dataHoraInicio"));//Erro ao chamar o metod convertCalenderFromString porque esse metodo nao formata horas
+                    Date dataInicio=convertStringtoDatesql(resultQuerySessao.getString("dataHoraInicio"));
                     Sala sala=getSala(resultQuerySessao.getInt("numero_sala"));
-                    //Calendar dataFim=convertCalendarFromString(resultQuerySessao.getString("dataHoraFim"));
                     return new Sessao(filme,sala,dataInicio, this);
                 }
             }
@@ -402,22 +401,6 @@ public class SbdHandler {
             throw new RuntimeException(e);
         }
         return null;
-    }
-    
-    public Date convertCalendarFromString(String date) throws ParseException {
-        Date date1 = (Date) new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
-        return date1;
-    }
-
-    public Calendar calendartoCalendarFromDateSqlString(String date){
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Calendar retDay=Calendar.getInstance();
-        try {
-            retDay.setTime(sdf.parse(date));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return retDay;
     }
 
     public void closeConection(){

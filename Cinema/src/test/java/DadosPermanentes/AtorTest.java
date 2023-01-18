@@ -7,18 +7,36 @@ import static org.junit.jupiter.api.Assertions.*;
 class AtorTest {
 
     @Test
-    void setNome() {
-
-        Ator ator=new Ator("");
+    void getNomeAtor() {
+        Ator ator = new Ator("Joao Silva");
+        String expectedAtorName="Joao Silva";
+        String actualAtorName = ator.getNome();
+        assertEquals(expectedAtorName, actualAtorName, "Ator nao esperado");
     }
 
-    @Test
-    void getNome() {
 
+    @Test
+    void testAtorConstrutorValido(){
+        String expectedAtorName="Antonio Bandeiras";
+        Ator ator=new Ator("Antonio Bandeiras");
+        assertEquals(expectedAtorName,ator.getNome(),"O nome e invalido");
     }
-
     @Test
-    void construtor(){
-
+    void testAtorConstrutorInvalidoExiesteNaoLetras(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Ator("Anto32nio Bandeiras"),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testAtorConstrutorInvalidoEspacos(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Ator("        "),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testAtorConstrutorInvalidoComprimentoExcedido(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Ator("Joao Silva Ferraira Oliveira de Jesus"),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
     }
 }

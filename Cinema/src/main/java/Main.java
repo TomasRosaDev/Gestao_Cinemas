@@ -12,17 +12,16 @@ public class Main {
         int tentativa=0;
         HomePage homePage=new HomePage();
         SbdHandler sbdHandler;
-        while(true){
-            try{
+        while(true) {
+            try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                sbdHandler=new SbdHandler();
+                sbdHandler = new SbdHandler();
                 homePage.newCliente(sbdHandler);
                 //homePage.newGestor(sbdHandler);
                 break;
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 tentativa++;
-                homePage.failConnection(e,tentativa);
+                homePage.failConnection(e, tentativa);
                 try {
                     TimeUnit.SECONDS.sleep(3);
                 } catch (InterruptedException ex) {
@@ -30,7 +29,6 @@ public class Main {
                 }
             }
         }
-
         /*
 
 

@@ -1,5 +1,9 @@
 package DadosPermanentes;
 
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Lugar {
     // Campos
     private String nome;
@@ -7,8 +11,8 @@ public class Lugar {
 
     //Construtor
     public Lugar(String posicao, TipoLugar lugar){
-        this.nome = posicao;
-        this.tipo = lugar;
+        setNome(posicao);
+        setTipo(lugar);
     }
 
     //Getters
@@ -18,6 +22,31 @@ public class Lugar {
 
     public TipoLugar getTipo() {
         return tipo;
+    }
+
+    //Setters
+
+
+    public void setNome(String nome) {
+        Pattern pattern = Pattern.compile("^[A-Z][0-99]{0,2}$");//Admite apenas formato LetraMaiuscula-Numero-Numero
+        Matcher matcher = pattern.matcher(nome);
+
+            if (matcher.find()){
+                    this.nome = nome;
+            }else{
+            throw new RuntimeException("Nome invalido");
+        }
+    }
+
+    public void setTipo(TipoLugar tipo) {
+        TipoLugar[] values = TipoLugar.values();
+        try {
+            if (Arrays.asList(values).contains(tipo)) {
+                this.tipo = tipo;
+            }
+        }catch(Exception e){
+            throw new RuntimeException("Tipo invalido");
+        }
     }
 
     public String toString(){
