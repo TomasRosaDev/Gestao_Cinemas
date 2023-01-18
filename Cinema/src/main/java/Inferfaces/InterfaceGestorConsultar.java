@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class InterfaceGestorConsultar extends InterfaceGestor{
     private HomePage homePage;
@@ -15,12 +16,13 @@ public class InterfaceGestorConsultar extends InterfaceGestor{
     private Sala[] salas;
     private SbdHandler sbd;
     private JLabel consul;
-    private SbdHandler sb;
-    public InterfaceGestorConsultar(HomePage homePage){
+
+    public InterfaceGestorConsultar(HomePage homePage, SbdHandler handler){
         this.homePage=homePage;
         this.setLayout(new BorderLayout());
         this.add(informacoes(),BorderLayout.NORTH);
         this.add(ecraPrincipal());
+        this.sbd= handler;
     }
     public JPanel informacoes(){
         JPanel info=new JPanel();
@@ -48,25 +50,48 @@ public class InterfaceGestorConsultar extends InterfaceGestor{
     public JPanel escolha(){
         JPanel geral=new JPanel();
         geral.setOpaque(false);
-        String[] choices = { "Escolha uma opção...","Atores","Filmes", "Sessoes","Salas"};
+        String[] choices = { "Escolha uma opção...","Generos","Atores","Realizadores","Distribuidores","Filmes", "Sessoes","Salas"};
         JComboBox<String> cb = new JComboBox <>(choices);
         JButton op = new JButton("OK");
         op.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(cb.getItemAt(cb.getSelectedIndex()).equals("Atores")){
+                if (cb.getItemAt(cb.getSelectedIndex()).equals("Generos")) {
+                    consul.setText("TODOS OS GENEROS");
+                    JLabel label = new JLabel(sbd.getGeneros().toString());
+                    geral.add(label);
+
+                } else if (cb.getItemAt(cb.getSelectedIndex()).equals("Atores")) {
                     consul.setText("TODOS OS ATORES");
-                }else{
-                    if(cb.getItemAt(cb.getSelectedIndex()).equals("Filmes")){
-                        consul.setText("TODOS OS FILMES");
-                    }else{
-                        if(cb.getItemAt(cb.getSelectedIndex()).equals("Sessoes")){
-                            consul.setText("TODOS AS SESSOES");
-                        }else{
-                            consul.setText("TODOS AS SALAS");
-                        }
+
+                    JLabel label = new JLabel(sbd.getAtores().toString());
+                    geral.add(label);
+
+                } else if (cb.getItemAt(cb.getSelectedIndex()).equals("Realizadores")) {
+                    //consul.setText("TODOS OS REALIZADORES");
+                    ArrayList<Realizador> realizadores = sbd.getRealizadores();
+
+                    for(Realizador realizador : realizadores){
+                        consul.setText(consul.getText()+" "+realizador.getNome());
+                    }
+
+                } else if (cb.getItemAt(cb.getSelectedIndex()).equals("Distribuidores")) {
+                    consul.setText("TODOS OS DISTRIBUIDORES");
+
+                    JLabel label = new JLabel(sbd.getRealizadores().toString());
+                    geral.add(label);
+                } else if (cb.getItemAt(cb.getSelectedIndex()).equals("Filmes")) {
+                    consul.setText("TODOS OS FILMES");
+
+                    JLabel label = new JLabel(sbd.getRealizadores().toString());
+                    geral.add(label);
+                } else if (cb.getItemAt(cb.getSelectedIndex()).equals("Sessoes")) {
+                    consul.setText("TODOS AS SESSOES");
+
+                    JLabel label = new JLabel(sbd.getSessoes().toString());
+                    geral.add(label);
                 }
-                }
+
                 //String opca = "Selecionaste: " + cb.getItemAt(cb.getSelectedIndex());
                 //consul.setText(opca);
             }

@@ -4,6 +4,9 @@
  */
 package DadosPermanentes;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  *
  * @author Jorge Vieira
@@ -16,7 +19,11 @@ public class Realizador {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        if (nome.matches("^[A-Z][A-z\\s]{0,29}$")){
+            this.nome = nome;
+        }else{
+            throw new RuntimeException("Nome invalido");
+        }
     }
 
     public String getNome() {
