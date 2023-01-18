@@ -123,9 +123,9 @@ public class SbdHandler {
     public ArrayList<Filme> listaFilmes(Date dia) throws SQLException {
         ArrayList<Filme> listaFilmes = new ArrayList<>();
         ResultSet resultQueryFilmes;
-
+        System.out.println(dia);
         try {
-            cstmt = con.prepareCall("{call filmes(?)}");
+            cstmt = con.prepareCall("{call sessoesDia(?)}");
             cstmt.setString(1, strDay(dia));
 
             if (cstmt.execute()) {
@@ -322,33 +322,6 @@ public class SbdHandler {
         return lugares;
     }
 
-    public boolean getExisteBilhete(String posicao,Sessao sessao){
-        ResultSet resultQueryExisteBilhete;
-
-        try {
-            cstmt = con.prepareCall("{call existeBilhete(?, ?, ?, ?)}");
-            cstmt.setInt(1, sessao.getSala().getNumeroSala());
-            cstmt.setString(2, posicao);
-            cstmt.setString(3, sessao.getFilme().getTitulo());
-            cstmt.setInt(4, sessao.getFilme().getAno());
-
-            if (cstmt.execute()) {
-                resultQueryExisteBilhete = cstmt.getResultSet();
-                resultQueryExisteBilhete.next();
-
-                if(resultQueryExisteBilhete.getInt("ExisteBilhete")==1){ //existe um registo logo este lugar esta ocupado
-                    return true;
-                } else{
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return false;
-    }
-
     public Date getDataHoraFim(String titulo, int ano, int nSala, Date dataHoraInicio){
         ResultSet resultQueryDaraHoraFimSessao;
         try {
@@ -401,6 +374,141 @@ public class SbdHandler {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public ArrayList<Ator> getAtores(){
+        ArrayList <Ator> atores = new ArrayList<>();
+        ResultSet resultQueryAtores;
+
+        try{
+            cstmt = con.prepareCall("{call atores()}");
+
+            if(cstmt.execute()){
+                resultQueryAtores = cstmt.getResultSet();
+
+                while(resultQueryAtores.next()){
+                    atores.add(new Ator(resultQueryAtores.getString("nome")));
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return atores;
+    }
+
+    public ArrayList<Genero> getGeneros(){
+        ArrayList <Genero> generos = new ArrayList<>();
+        ResultSet resultQueryGeneros;
+
+        try{
+            cstmt = con.prepareCall("{call generos()}");
+
+            if(cstmt.execute()){
+                resultQueryGeneros = cstmt.getResultSet();
+
+                while(resultQueryGeneros.next()){
+                    generos.add(Genero.valueOf(resultQueryGeneros.getString("nome")));
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return generos;
+    }
+
+    public ArrayList<Realizador> getRealizadores(){
+        ArrayList <Realizador> realizadores = new ArrayList<>();
+        ResultSet resultQueryRealizadores;
+
+        try{
+            cstmt = con.prepareCall("{call realizadores()}");
+
+            if(cstmt.execute()){
+                resultQueryRealizadores = cstmt.getResultSet();
+
+                while(resultQueryRealizadores.next()){
+                    realizadores.add(new Realizador(resultQueryRealizadores.getString("nome")));
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return realizadores;
+    }
+
+    public ArrayList<Distribuidor> getDistribuidores(){
+        ArrayList <Distribuidor> distribuidores = new ArrayList<>();
+        ResultSet resultQueryDistribuidores;
+
+        try{
+            cstmt = con.prepareCall("{call distribuidores()}");
+
+            if(cstmt.execute()){
+                resultQueryDistribuidores = cstmt.getResultSet();
+
+                while(resultQueryDistribuidores.next()){
+                    distribuidores.add(new Distribuidor(resultQueryDistribuidores.getString("nome")));
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return distribuidores;
+    }
+
+    public ArrayList<Filme> getFilmes(){
+        ArrayList <Filme> filmes = new ArrayList<>();
+        ResultSet resultQueryFilmes;
+
+        try{
+            cstmt = con.prepareCall("{call filmes()}");
+
+            if(cstmt.execute()){
+                resultQueryFilmes = cstmt.getResultSet();
+
+                while(resultQueryFilmes.next()){
+                    filmes.add(new Filme(resultQueryFilmes.getString("nome"), resultQueryFilmes.getString("ano"), this));
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return filmes;
+    }
+
+    public ArrayList<Sessao> getSessoes(){
+        ArrayList <Sessao> sessoes = new ArrayList<>();
+        ResultSet resultQuerySessoes;
+
+        try{
+            cstmt = con.prepareCall("{call sessoes()}");
+
+            if(cstmt.execute()){
+                resultQuerySessoes = cstmt.getResultSet();
+
+                while(resultQuerySessoes.next()){
+                    sessoes.add(new Sessao(new Filme(resultQuerySessoes.getString("titulo_filme"),
+                            resultQuerySessoes.getString("ano_filme"),this),
+                            new Sala(resultQuerySessoes.getInt("numero_sala"),this),
+                            resultQuerySessoes.getDate("dataHoraInicio"),this));
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return sessoes;
     }
 
     public void closeConection(){
