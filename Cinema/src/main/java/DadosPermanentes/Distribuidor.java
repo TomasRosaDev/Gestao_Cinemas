@@ -19,7 +19,7 @@ public class Distribuidor {
     }
 
     public void setNome(String nome) {
-        if (nome.matches("^[A-Z][A-z\\s]{0,29}$")){
+        if (nome!=null && nome.matches("^[A-Z][A-z\\s]{0,29}$")){
             this.nome = nome;
         }else{
             throw new RuntimeException("Nome invalido");

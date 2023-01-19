@@ -41,5 +41,29 @@ class RealizadorTest {
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
     }
 
+    @Test
+    void testRealizadorConstrutorInvalidoComprimentoZero(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Realizador(""),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testRealizadorConstrutorInvalidoNomeNull(){
+        String nomeRealizador = null;
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Realizador(nomeRealizador),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+
+    @Test
+    void testRealizadorConstrutorInvalidoNomeMinusculo(){
+        String nomeRealizador = "oliver Stone";
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Realizador(nomeRealizador),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
 
 }

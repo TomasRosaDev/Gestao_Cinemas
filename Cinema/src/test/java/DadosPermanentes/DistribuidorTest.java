@@ -40,4 +40,28 @@ class DistribuidorTest {
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
     }
 
+    @Test
+    void testDistribuidorConstrutorInvalidoComprimentoZero(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Distribuidor(""),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testDistribuidorConstrutorInvalidoNomeNull(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Distribuidor(null),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+
+    @Test
+    void testDistribuidorConstrutorInvalidoNomeMinusculo(){
+        String nomeDistribuidor = "oliver Stone";
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Distribuidor(nomeDistribuidor),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+
 }

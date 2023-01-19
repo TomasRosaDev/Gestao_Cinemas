@@ -15,7 +15,7 @@ public class Lugar {
         setTipo(lugar);
     }
 
-    //Getters
+    //Getters.00000000000000
     public String getNome() {
         return this.nome;
     }
