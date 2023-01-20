@@ -12,7 +12,6 @@ import java.time.Year;
 import java.util.*;
 
 /**
- *
  * @author Jorge Vieira
  */
 public class Filme {
@@ -31,12 +30,12 @@ public class Filme {
     private String duracao;
     private String descricao;
 
-    public Filme(String titulo,String ano,SbdHandler sbdHandler) {
+    public Filme(String titulo, String ano, SbdHandler sbdHandler) {
         setTitulo(titulo);
         setAno(ano);
-        if(sbdHandler!=null) {
+        if (sbdHandler != null) {
             this.sbdHandler = sbdHandler;
-        }else{
+        } else {
             throw new RuntimeException("Handler invalido");
         }
     }
@@ -50,56 +49,59 @@ public class Filme {
     }
 
     public String getAnoString() {
-        return getAno()+"";
+        return getAno() + "";
     }
 
     @Override
     public String toString() {
-        String aux="Titulo: "+titulo+"("+ano+")//Genero: "+ generos.get(0).toString();
-        for (int i = 1; i< generos.size(); i++){
-            aux+=", "+ generos.get(i).toString();
+        String aux = "Titulo: " + titulo + "(" + ano + ")//Genero: " + getGeneros().get(0).toString();
+        for (int i = 1; i < generos.size(); i++) {
+            aux += ", " + generos.get(i).toString();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
-        aux+="//Titulo Original: "+getTituloOriginal()+"//Data Estreia: "+sdf.format(dataEstreia)+"//Realizador: "+realizador.getNome()+"//Atores: "+atores.get(0).getNome();
-        for (int i=1;i<atores.size();i++){
-            aux+=", "+atores.get(i).getNome();
+        aux += "//Titulo Original: " + getTituloOriginal() + "//Data Estreia: " + sdf.format(dataEstreia) + "//Realizador: " + realizador.getNome() + "//Atores: " + atores.get(0).getNome();
+        for (int i = 1; i < atores.size(); i++) {
+            aux += ", " + atores.get(i).getNome();
         }
-        aux+="//Distribuidor: "+distribuidor.getNome()+"//Pais: "+pais+"//Duracao: "+duracao+"m"+"//Descricao: "+descricao;
+        aux += "//Distribuidor: " + distribuidor.getNome() + "//Pais: " + pais + "//Duracao: " + duracao + "m" + "//Descricao: " + descricao;
         return aux;
     }
 
     public void setIdadeMinima(String idadeMinima) {
         int idade = Integer.parseInt(idadeMinima);
-        if(idade>=0 && idade<=18) {
+        if (idade >= 0 && idade <= 18) {
             this.idadeMinima = idadeMinima;
-        }else{
+        } else {
             throw new RuntimeException("Idade minima invalida");
         }
     }
-    public void setImagem(BufferedImage imagem){this.imagem=imagem;}
+
+    public void setImagem(BufferedImage imagem) {
+        this.imagem = imagem;
+    }
 
     public void setTituloOriginal(String tituloOriginal) {
         if (tituloOriginal == null) {
-            this.tituloOriginal=getTitulo();
-        }else if (tituloOriginal.length() <= 100) {
+            this.tituloOriginal = getTitulo();
+        } else if (tituloOriginal.length() <= 100) {
             this.tituloOriginal = tituloOriginal;
-        }else{
+        } else {
             throw new RuntimeException("Titulo original invalido");
         }
     }
 
     public void setGeneros(ArrayList<Genero> generos) {
-        if(generos.size()==0){
+        if (generos.size() == 0) {
             throw new RuntimeException("Genero invalido");
         }
-        this.generos=new ArrayList<>();
-        for (Genero genero: generos) {
-            if( !this.generos.contains(genero) && genero!=null){
+        this.generos = new ArrayList<>();
+        for (Genero genero : generos) {
+            if (!this.generos.contains(genero) && genero != null) {
                 this.generos.add(genero);
             }
         }
-        if(this.generos.size()==0){
-            this.generos=null;
+        if (this.generos.size() == 0) {
+            this.generos = null;
             throw new RuntimeException("Genero invalido");
         }
 
@@ -107,10 +109,10 @@ public class Filme {
 
     public void setDataEstreia(Date dataEstreia) {
 
-        if(dataEstreia.getYear()+1900 == getAno()){
+        if (dataEstreia.getYear() + 1900 == getAno()) {
 
             this.dataEstreia = dataEstreia;
-        }else{
+        } else {
             throw new RuntimeException("Ano invalido");
         }
 
@@ -130,18 +132,18 @@ public class Filme {
 
     public void setAno(String ano) {
         int anoPara = Integer.parseInt(ano);
-        int anoatual= Year.now().getValue();
-        if(anoPara<=anoatual+1 && anoPara>=1888) {
+        int anoatual = Year.now().getValue();
+        if (anoPara <= anoatual + 1 && anoPara >= 1888) {
             this.ano = anoPara;
-        }else{
+        } else {
             throw new RuntimeException("Ano invalido");
         }
     }
 
     public void setTitulo(String titulo) {
-        if(titulo.length() <= 100 ){
+        if (titulo.length() <= 100) {
             this.titulo = titulo;
-        }else{
+        } else {
             throw new RuntimeException("Titulo invalido");
         }
     }
@@ -163,44 +165,44 @@ public class Filme {
     }
 
     public String getIdadeMinima() {
-        if(idadeMinima==null){
+        if (idadeMinima == null) {
             sbdHandler.setFilmeHomePageDetails(this);
         }
         return idadeMinima;
     }
 
     public String getTituloOriginal() {
-        if(tituloOriginal==null){
+        if (tituloOriginal == null) {
             sbdHandler.setFilmeDetails(this);
         }
         return tituloOriginal;
     }
 
     public ArrayList<Genero> getGeneros() {
-        if(generos==null){
+        if (generos == null) {
             sbdHandler.setFilmeHomePageDetails(this);
         }
         return generos;
     }
 
-    public String getGenerosStr(){
-        String genStr="";
-        for (Genero genero:getGeneros()) {
-            genStr+=genero.toString()+", ";
+    public String getGenerosStr() {
+        String genStr = "";
+        for (Genero genero : getGeneros()) {
+            genStr += genero.toString() + ", ";
         }
-        genStr=genStr.substring(0,genStr.length()-2);
+        genStr = genStr.substring(0, genStr.length() - 2);
         return genStr;
     }
 
     public Date getDataEstreia() {
-        if(dataEstreia==null){
+        if (dataEstreia == null) {
             sbdHandler.setFilmeDetails(this);
         }
         return dataEstreia;
     }
 
     public String getRealizador() {
-        if(realizador==null){
+        if (realizador == null) {
             sbdHandler.setFilmeDetails(this);
         }
         return realizador.getNome();
@@ -208,56 +210,59 @@ public class Filme {
 
     public String getAtores() {
         String ator = "";
-        if(this.atores==null){
+        if (this.atores == null) {
             sbdHandler.setFilmeDetails(this);
         }
-        for (int i=1;i<atores.size();i++){
-            ator+=", "+atores.get(i).getNome();
+        for (int i = 1; i < atores.size(); i++) {
+            ator += ", " + atores.get(i).getNome();
         }
         return ator;
     }
 
     public String getDistribuidor() {
-        if(distribuidor==null){
+        if (distribuidor == null) {
             sbdHandler.setFilmeDetails(this);
         }
         return distribuidor.getNome();
     }
 
     public String getPais() {
-        if(pais==null){
+        if (pais == null) {
             sbdHandler.setFilmeDetails(this);
         }
         return pais;
     }
 
     public String getDuracao() {
-        if(duracao==null){
+        if (duracao == null) {
             sbdHandler.setFilmeDetails(this);
         }
         return duracao;
     }
 
     public String getDescricao() {
-        if(descricao==null){
+        if (descricao == null) {
             sbdHandler.setFilmeDetails(this);
         }
         return descricao;
     }
 
-    public BufferedImage getImagem(){
-        if(imagem==null){
+    public BufferedImage getImagem() {
+        if (imagem == null) {
             sbdHandler.setFilmeHomePageDetails(this);
         }
         return imagem;
     }
-    public BufferedImage getImagemAux(){
+
+    public BufferedImage getImagemAux() {
         return imagem;
     }
-    public String getTituloOriginalAux(){
+
+    public String getTituloOriginalAux() {
         return tituloOriginal;
     }
-    public Date getDataEstreiaAux(){
+
+    public Date getDataEstreiaAux() {
         return dataEstreia;
     }
 }
