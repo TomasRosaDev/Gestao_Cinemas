@@ -10,7 +10,11 @@ public class Bilhete {
     public Bilhete(Lugar lugar, Sessao sessao,boolean ocupado, SbdHandler sbdHandler){
         this.lugar = lugar;
         this.sessao = sessao;
-        this.sbdHandler=sbdHandler;
+        if(sbdHandler!=null) {
+            this.sbdHandler = sbdHandler;
+        }else {
+            throw new RuntimeException("Handler invalido");
+        }
         setOcupado(ocupado);
     }
 
@@ -38,7 +42,7 @@ public class Bilhete {
     }
 
     public void setOcupado(boolean ocupado) {
-        this.ocupado = ocupado;
+            this.ocupado = ocupado;
     }
 
     public boolean isOcupado() {
@@ -47,5 +51,9 @@ public class Bilhete {
 
     public Sessao getSessao() {
         return sessao;
+    }
+
+    public SbdHandler getSbdHandler() {
+        return sbdHandler;
     }
 }
