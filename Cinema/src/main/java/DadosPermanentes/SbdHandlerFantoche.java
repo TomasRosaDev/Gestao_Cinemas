@@ -2,7 +2,7 @@ package DadosPermanentes;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -23,16 +23,16 @@ public class SbdHandlerFantoche extends SbdHandler{
 
     @Override
     public ArrayList<Filme> listaFilmes(Date dia) throws SQLException {
-        return null;
+        ArrayList<Filme> filmes = new ArrayList<>();
+        Filme filme=new Filme("Cars", "2023", this);
+        Filme filme2=new Filme("Carss", "2022", this);
+        filmes.add(0, filme);
+        filmes.add(1, filme2);
+        return filmes;
     }
 
     @Override
     public ArrayList<Sessao> getHorasSessoesDoFilme(Filme filme, Date dia) {
-        return null;
-    }
-
-    @Override
-    public Sessao getSessaoFilme(Filme filme, String dataHoraInicio, int nSala) {
         return null;
     }
 
@@ -59,24 +59,7 @@ public class SbdHandlerFantoche extends SbdHandler{
     }
 
     @Override
-    public boolean getExisteBilhete(String posicao, Sessao sessao) {
-        return false;
-    }
-
-    @Override
     public Date getDataHoraFim(Sessao sessao) {
-        if(sessao.getFilme().getTitulo().equals("Cars")){
-            String dateFim= "2023-01-20 18:00:00";
-            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            java.util.Date data1 = null;
-            try {
-                data1 = dateFormat1.parse(dateFim);
-            } catch (ParseException e) {
-                throw new RuntimeException("Erro a fazer fantoche");
-            }
-            java.sql.Date sqlDateFim = new java.sql.Date(data1.getTime());
-            return sqlDateFim;
-        }
         return null;
     }
 
@@ -86,8 +69,8 @@ public class SbdHandlerFantoche extends SbdHandler{
 
     }
     @Override
-    public String getPrecoBilhete(String posicao, Sessao sessao) {
-        return null;
+    public float getPrecoBilhete(String nome) {
+        return 0;
     }
 
     @Override
@@ -128,6 +111,10 @@ public class SbdHandlerFantoche extends SbdHandler{
     @Override
     public void closeConection() {
 
+    }
+    public String strDay(Date dia){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(dia);
     }
 
 }

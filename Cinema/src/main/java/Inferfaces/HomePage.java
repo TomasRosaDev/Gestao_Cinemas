@@ -25,6 +25,9 @@ public class HomePage extends JFrame {
     private SbdHandler sbdHandler;
     private Date dia;
     private JLabel hourLabel;
+    private float precoNormal;
+    private float precoCrianca;
+    private float precoEstudante;
 
     public HomePage(){
         //dia=new java.sql.Date(System.currentTimeMillis());
@@ -45,19 +48,15 @@ public class HomePage extends JFrame {
         watchDog=new WatchDog(this,5);
         watchDog.start();
         update();
-        /*addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                sbdHandler.closeConection();
-                System.out.println("close");
-                System.exit(0);
-            }
-        });*/
     }
 
     public void newCliente(SbdHandler sbdHandler) throws SQLException {
         //header=new TopLabel();
         cliente =new Cliente(sbdHandler);
         this.sbdHandler=sbdHandler;
+        precoNormal = sbdHandler.getPrecoBilhete("Normal");
+        precoCrianca = sbdHandler.getPrecoBilhete("Crianca");
+        precoEstudante = sbdHandler.getPrecoBilhete("Estudante");
         interfaceFilmes();
     }
     /*public void newGestor(SbdHandler sbdHandler) throws SQLException {
@@ -103,7 +102,7 @@ public class HomePage extends JFrame {
         interfaceResumo();
     }
     public void interfaceResumo(){
-        body=new InterfaceResumo(cliente.getSessao(),cliente.getBilhetes(),cliente.getTipoDeBilhetes(),this);
+        body=new InterfaceResumo(cliente.getSessao(),cliente.getBilhetes(),cliente.getTipoDeBilhetes(),this, precoNormal, precoCrianca, precoEstudante);
         update();
     }
     public void concluirCompra(ArrayList<Bilhete> bilhetes){
@@ -125,12 +124,6 @@ public class HomePage extends JFrame {
         body=new InterfaceGestorInserir(this);
         update();
     }
-    public void gestorEliminar(){
-        watchDog.turnOn();
-        body=new InterfaceGestorEliminar(this);
-        update();
-    }
-
 
     public void failConnection(Exception e,int tentativa){
         body=new PanelFalhaConeccao(e,tentativa);

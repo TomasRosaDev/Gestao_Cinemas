@@ -177,30 +177,6 @@ public class SbdHandlerNormal extends SbdHandler{
         return sessoes;
     }
 
-    public Sessao getSessaoFilme(Filme filme, String dataHoraInicio, int nSala) {
-        ResultSet resultQuerySessao;
-
-        try {
-            cstmt = con.prepareCall("{call sessao(?, ?, ?, ?)}");
-            cstmt.setString(1, filme.getTitulo());
-            cstmt.setInt(2, filme.getAno());
-            cstmt.setInt(3, nSala);
-            cstmt.setString(4, dataHoraInicio);
-
-            if (cstmt.execute()) {
-                resultQuerySessao = cstmt.getResultSet();
-                while (resultQuerySessao.next()) {
-                    Date dataInicio=convertStringtoDatesql(resultQuerySessao.getString("dataHoraInicio"));
-                    Sala sala=getSala(resultQuerySessao.getInt("numero_sala"));
-                    return new Sessao(filme,sala,dataInicio, this);
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
     public Sala getSala(int n_sala) {
         ResultSet resultQuerySala;
 
@@ -321,33 +297,6 @@ public class SbdHandlerNormal extends SbdHandler{
         return lugares;
     }
 
-    public boolean getExisteBilhete(String posicao,Sessao sessao){
-        ResultSet resultQueryExisteBilhete;
-
-        try {
-            cstmt = con.prepareCall("{call existeBilhete(?, ?, ?, ?)}");
-            cstmt.setInt(1, sessao.getSala().getNumeroSala());
-            cstmt.setString(2, posicao);
-            cstmt.setString(3, sessao.getFilme().getTitulo());
-            cstmt.setInt(4, sessao.getFilme().getAno());
-
-            if (cstmt.execute()) {
-                resultQueryExisteBilhete = cstmt.getResultSet();
-                resultQueryExisteBilhete.next();
-
-                if(resultQueryExisteBilhete.getInt("ExisteBilhete")==1){
-                    return true;
-                } else{
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return false;
-    }
-
     public Date getDataHoraFim(Sessao sessao){
         ResultSet resultQueryDaraHoraFimSessao;
         try {
@@ -382,24 +331,23 @@ public class SbdHandlerNormal extends SbdHandler{
         }
     }
 
-    public String getPrecoBilhete(String posicao,Sessao sessao){
+    public float getPrecoBilhete(String nome){
         ResultSet resultQueryPrecoBilhete;
 
         try {
-            cstmt = con.prepareCall("{call precoBilhete(?, ?, ?, ?)}");
-            cstmt.setInt(1, sessao.getSala().getNumeroSala());
-            cstmt.setString(2, posicao);
-            cstmt.setString(3, sessao.getFilme().getTitulo());
-            cstmt.setInt(4, sessao.getFilme().getAno());
+            cstmt = con.prepareCall("{call precoTipoBilhete(?)}");
+            cstmt.setString(1, nome);
 
             if (cstmt.execute()) {
                 resultQueryPrecoBilhete = cstmt.getResultSet();
-                return resultQueryPrecoBilhete.getString("preco");
+                if(resultQueryPrecoBilhete.next()) {
+                    return resultQueryPrecoBilhete.getFloat("preco");
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return 0;
     }
 
     public ArrayList<Ator> getAtores(){

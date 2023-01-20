@@ -17,7 +17,7 @@ public class Bilhete {
 
     public String getPreco() {
         if(preco==null){
-            preco=sbdHandler.getPrecoBilhete(lugar.getNome(),sessao);
+            preco= String.valueOf(sbdHandler.getPrecoBilhete(lugar.getNome()));
         }
         return preco;
     }
