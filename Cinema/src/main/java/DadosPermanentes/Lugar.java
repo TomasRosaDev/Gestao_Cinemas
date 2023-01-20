@@ -28,6 +28,9 @@ public class Lugar {
 
 
     public void setNome(String nome) {
+        if( nome== null){
+            throw new RuntimeException("Nome nulo");
+        }
         Pattern pattern = Pattern.compile("(^[A-Z][1-9][0-9]{0,1}|^ND[1-9][0-9]{0,1})$");//Admite apenas formato LetraMaiuscula-Numero-Numero
         Matcher matcher = pattern.matcher(nome);
         if (matcher.find()){

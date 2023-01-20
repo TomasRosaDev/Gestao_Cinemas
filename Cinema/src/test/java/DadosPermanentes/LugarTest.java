@@ -58,4 +58,86 @@ class LugarTest {
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
     }
        */
+    @Test
+    void testLugarNomeNull(){
+        Exception expectedException=new Exception("Nome nulo");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar(null, TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeSize0(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeNotLetter(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("111", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeJustLetter(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("A", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeLetterSymbol(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("A-", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeLetterZero(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("A0", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeLetterNumberSymbol(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("A1-", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeLetterNumber(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("A1", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeLetterNumberNumberNumberSymbol(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("A111*", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeLetterLetter(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("AA", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeLetterLetterZero(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("AA0", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeND64(){
+        Lugar lugar=new Lugar("ND64", TipoLugar.Vip);
+        assertEquals("ND64",lugar.getNome(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeND6(){
+        Lugar lugar=new Lugar("ND6", TipoLugar.Vip);
+        assertEquals("ND64",lugar.getNome(),"Mensagem da exception nao esperada");
+    }
+    @Test
+    void testLugarNomeND6Symbol(){
+        Exception expectedException=new Exception("Nome invalido");
+        Exception atualExection =assertThrows(Exception.class, () -> new Lugar("ND6*", TipoLugar.Vip),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Mensagem da exception nao esperada");
+    }
 }

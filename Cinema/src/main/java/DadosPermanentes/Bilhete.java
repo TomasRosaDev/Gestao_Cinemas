@@ -8,13 +8,9 @@ public class Bilhete {
     private SbdHandler sbdHandler;
 
     public Bilhete(Lugar lugar, Sessao sessao,boolean ocupado, SbdHandler sbdHandler){
-        this.lugar = lugar;
-        this.sessao = sessao;
-        if(sbdHandler!=null) {
-            this.sbdHandler = sbdHandler;
-        }else {
-            throw new RuntimeException("Handler invalido");
-        }
+        setLugar(lugar);
+        setSessao(sessao);
+        setSbdHandler(sbdHandler);
         setOcupado(ocupado);
     }
 
@@ -55,5 +51,28 @@ public class Bilhete {
 
     public SbdHandler getSbdHandler() {
         return sbdHandler;
+    }
+    public void setSbdHandler(SbdHandler sbdHandler) {
+        if (sbdHandler != null) {
+            this.sbdHandler = sbdHandler;
+        } else {
+            throw new RuntimeException("Handler invalido");
+        }
+    }
+
+    public void setSessao(Sessao sessao) {
+        if(sessao != null) {
+            this.sessao = sessao;
+        }else {
+            throw new RuntimeException("Sessao invalida");
+        }
+    }
+
+    private void setLugar(Lugar lugar) {
+        if(lugar != null) {
+            this.lugar = lugar;
+        }else {
+            throw new RuntimeException("Lugar invalido");
+        }
     }
 }

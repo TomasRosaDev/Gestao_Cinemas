@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BilheteTest {
-
     @Test
     void testBilheteConstrutorValido(){
         SbdHandler sbd = new SbdHandlerFantoche();
@@ -56,4 +55,53 @@ class BilheteTest {
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"O handler e invalido");
     }
 
+    @Test
+    void testBilheteConstrutorSessaoInvalida(){
+        SbdHandler sbd = new SbdHandlerFantoche();
+        Sala sala= new Sala(1, sbd);
+        Filme filme = new Filme("Cars", "2022", sbd);
+        Lugar lugar = new Lugar("A11", TipoLugar.Normal);
+        String date= "2023-01-20 15:00:00";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date data = null;
+        try {
+            data = dateFormat.parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        java.sql.Date sqlDate = new java.sql.Date(data.getTime());
+        Sessao sessao= null;
+
+        Exception expectedException=new Exception("Sessao invalida");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Bilhete(lugar, sessao, false, sbd),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Sessao invalida");
+
+    }
+
+    @Test
+    void testBilheteConstrutorLugarInvalido(){
+        SbdHandler sbd = new SbdHandlerFantoche();
+        Sala sala= new Sala(1, sbd);
+        Filme filme = new Filme("Cars", "2022", sbd);
+        Lugar lugar = null;
+
+        String date= "2023-01-20 15:00:00";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date data = null;
+        try {
+            data = dateFormat.parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        java.sql.Date sqlDate = new java.sql.Date(data.getTime());
+        Sessao sessao= new Sessao(filme, sala, sqlDate, sbd);
+
+        Exception expectedException=new Exception("Lugar invalido");
+        Exception atualExection =assertThrows(Exception.class, () ->
+                new Bilhete(lugar, sessao, false, sbd),"Tipo de exception nao esperado");
+        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Lugar invalido");
+
+
+    }
 }
