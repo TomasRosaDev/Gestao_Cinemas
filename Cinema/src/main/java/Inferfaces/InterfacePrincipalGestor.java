@@ -32,16 +32,13 @@ public class InterfacePrincipalGestor extends InterfaceGestor{
         public JPanel opcoesPanel(){
             JPanel grid= new JPanel();
             grid.setPreferredSize(new Dimension(500,300));
-            grid.setLayout(new GridLayout(3,1));
+            grid.setLayout(new GridLayout(2,1));
             JButton consultarbutt = new JButton("Consultar");
             consultarbutt.addActionListener(actionEvent -> homePage.gestorConsultar());
             grid.add(consultarbutt);
             JButton inserirbutt =new JButton("Inserir Dados");
             inserirbutt.addActionListener(actionEvent -> homePage.gestorInserir());
             grid.add(inserirbutt);
-            JButton eliminbutt =new JButton("Inserir Dados");
-            eliminbutt.addActionListener(actionEvent -> homePage.gestorEliminar());
-            grid.add(eliminbutt);
             return grid;
         }
 

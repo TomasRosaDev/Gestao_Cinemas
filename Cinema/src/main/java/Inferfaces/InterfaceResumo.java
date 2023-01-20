@@ -1,8 +1,6 @@
 package Inferfaces;
 
-import DadosPermanentes.Bilhete;
-import DadosPermanentes.Filme;
-import DadosPermanentes.Sessao;
+import DadosPermanentes.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +14,14 @@ public class InterfaceResumo extends InterfaceCliente{
     private ArrayList<Bilhete> bilhetes;
     private HomePage homePage;
     private JLabel[] tipoBilhetes;
-    public InterfaceResumo(Sessao sessao,ArrayList<Bilhete> bilhetes,JLabel[] tipoBilhetes,HomePage homePage){
+    private float precoNormal;
+    private float precoCrianca;
+    private float precoEstudante;
+
+    public InterfaceResumo(Sessao sessao,ArrayList<Bilhete> bilhetes,JLabel[] tipoBilhetes,HomePage homePage, float precoNormal, float precoCrianca, float precoEstudante){
+        this.precoNormal = precoNormal;
+        this.precoCrianca = precoCrianca;
+        this.precoEstudante = precoEstudante;
         this.sessao=sessao;
         this.filme=sessao.getFilme();
         this.bilhetes=bilhetes;
@@ -120,22 +125,22 @@ public class InterfaceResumo extends InterfaceCliente{
                 float preco;
                 if(i==0){
                     text="Bilhetes Normais: ";
-                    preco=5.6f;
+                    preco=precoNormal;
                 }
                 else if(i==1){
                     text="Bilhetes Crianca: ";
-                    preco=2.3f;
+                    preco=precoCrianca;
                 }else {
                     text="Bilhetes Estudante: ";
-                    preco=4f;
+                    preco=precoEstudante;
                 }
                 float preco2=preco*cont;
                 despesa+=preco2;
-                JLabel panelTipo=new JLabel(text+cont+" * "+preco+"EU = "+preco2+"EU");
+                JLabel panelTipo=new JLabel(text+cont+" * "+preco+"\u20ac = "+preco2+"\u20ac");
                 panel.add(panelTipo);
             }
         }
-        JLabel despesaLabel=new JLabel("Despesa Total: "+despesa+"EU");
+        JLabel despesaLabel=new JLabel("Despesa Total: "+despesa+"\u20ac");
         panel.add(despesaLabel);
         return panel;
     }

@@ -32,11 +32,6 @@ public class SbdHandlerFantoche extends SbdHandler{
     }
 
     @Override
-    public Sessao getSessaoFilme(Filme filme, String dataHoraInicio, int nSala) {
-        return null;
-    }
-
-    @Override
     public Sala getSala(int n_sala) {
         return null;
     }
@@ -56,11 +51,6 @@ public class SbdHandlerFantoche extends SbdHandler{
             }
         }
         return lugares;
-    }
-
-    @Override
-    public boolean getExisteBilhete(String posicao, Sessao sessao) {
-        return false;
     }
 
     @Override
@@ -86,8 +76,8 @@ public class SbdHandlerFantoche extends SbdHandler{
 
     }
     @Override
-    public String getPrecoBilhete(String posicao, Sessao sessao) {
-        return null;
+    public float getPrecoBilhete(String nome) {
+        return 0;
     }
 
     @Override
