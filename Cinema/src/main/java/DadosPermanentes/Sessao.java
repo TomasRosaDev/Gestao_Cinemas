@@ -30,10 +30,10 @@ public class Sessao {
 
 
     public Sessao(Filme filme, Sala sala, Date dataHoraInicio, SbdHandler sbdHandler) {
-        this.filme=filme;
-        this.sala=sala;
-        this.dataHoraInicio=dataHoraInicio;
-        this.sbdHandler=sbdHandler;
+        setFilme(filme);
+        setSala(sala);
+        setDataHoraInicio(dataHoraInicio);
+        setSbdHandler(sbdHandler);
     }
 
     public Filme getFilme() {
@@ -59,5 +59,41 @@ public class Sessao {
 
     public SbdHandler getSbdHandler() {
         return sbdHandler;
+    }
+
+    public void setDataHoraInicio(Date dataHoraInicio) {
+        if(dataHoraInicio!=null) {
+            this.dataHoraInicio=dataHoraInicio;
+        }else{
+            throw new RuntimeException("Data invalida");
+        }
+    }
+
+    public void setDataHoraFim(Date dataHoraFim) {
+        this.dataHoraFim = dataHoraFim;
+    }
+
+    public void setFilme(Filme filme) {
+        if(filme!=null) {
+            this.filme=filme;
+        }else{
+            throw new RuntimeException("Filme invalido");
+        }
+    }
+
+    public void setSala(Sala sala) {
+        if(sala!=null) {
+            this.sala=sala;
+        }else{
+            throw new RuntimeException("Sala invalida");
+        }
+    }
+
+    public void setSbdHandler(SbdHandler sbdHandler) {
+        if(sbdHandler!=null) {
+            this.sbdHandler = sbdHandler;
+        }else{
+            throw new RuntimeException("Handler invalido");
+        }
     }
 }

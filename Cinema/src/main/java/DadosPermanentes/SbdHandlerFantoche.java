@@ -2,6 +2,8 @@ package DadosPermanentes;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class SbdHandlerFantoche extends SbdHandler{
@@ -63,6 +65,18 @@ public class SbdHandlerFantoche extends SbdHandler{
 
     @Override
     public Date getDataHoraFim(Sessao sessao) {
+        if(sessao.getFilme().getTitulo().equals("Cars")){
+            String dateFim= "2023-01-20 18:00:00";
+            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            java.util.Date data1 = null;
+            try {
+                data1 = dateFormat1.parse(dateFim);
+            } catch (ParseException e) {
+                throw new RuntimeException("Erro a fazer fantoche");
+            }
+            java.sql.Date sqlDateFim = new java.sql.Date(data1.getTime());
+            return sqlDateFim;
+        }
         return null;
     }
 
