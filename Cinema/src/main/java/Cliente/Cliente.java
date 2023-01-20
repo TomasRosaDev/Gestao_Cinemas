@@ -26,6 +26,10 @@ public class Cliente {
         setDespeza(0.0f);
     }
 
+    public void setDia(Date dia) {
+        this.dia = dia;
+    }
+
     public void setDespeza(Float despeza) {
         this.despeza = despeza;
     }
@@ -36,6 +40,10 @@ public class Cliente {
 
     public Sessao getSessao(){
         return this.sessao;
+    }
+
+    public Float getDespeza() {
+        return despeza;
     }
 
     public void setBilhetes(ArrayList<Bilhete> bilhetes){
@@ -50,6 +58,10 @@ public class Cliente {
         this.filme = filme;
     }
 
+    public Filme getFilme() {
+        return filme;
+    }
+
     public  void setFilmesArray(ArrayList<Filme> filmes){
         this.filmes=filmes;
     }
@@ -60,7 +72,7 @@ public class Cliente {
             try {
                 this.filmes=sbdHandler.listaFilmes(dia);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Tipo de exception nao esperado");
             }
         }
         return filmes;
