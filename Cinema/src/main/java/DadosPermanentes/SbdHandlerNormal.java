@@ -41,7 +41,7 @@ public class SbdHandlerNormal extends SbdHandler{
                 filme.setDescricao(resultQueryFilmeDetails.getString("descricao"));
                 filme.setDistribuidor(new Distribuidor(resultQueryFilmeDetails.getString("nome_distribuidor")));
                 filme.setRealizador(new Realizador(resultQueryFilmeDetails.getString("nome_realizador")));
-                filme.setDuracao(resultQueryFilmeDetails.getString("duracao"));
+                filme.setDuracao(resultQueryFilmeDetails.getInt("duracao"));
             }
 
             cstmt = con.prepareCall("{call filmeAtores(?, ?)}");
@@ -75,7 +75,7 @@ public class SbdHandlerNormal extends SbdHandler{
             if(cstmt.execute()){
                 resultqueryHomePageDetails=cstmt.getResultSet();
                 resultqueryHomePageDetails.next();
-                filme.setIdadeMinima(resultqueryHomePageDetails.getString("idade"));
+                filme.setIdadeMinima(resultqueryHomePageDetails.getInt("idade"));
                 imageName=resultqueryHomePageDetails.getString("nome_imagem");
             }
 

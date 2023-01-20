@@ -18,7 +18,7 @@ import java.util.*;
 public class Filme {
     private String titulo;
     private int ano;
-    private String idadeMinima;
+    private int idadeMinima;
     private BufferedImage imagem;
     private SbdHandler sbdHandler;
     private String tituloOriginal;
@@ -28,7 +28,7 @@ public class Filme {
     private ArrayList<Ator> atores;
     private Distribuidor distribuidor;
     private String pais;
-    private String duracao;
+    private int duracao;
     private String descricao;
 
     public Filme(String titulo,String ano,SbdHandler sbdHandler) {
@@ -68,9 +68,9 @@ public class Filme {
         return aux;
     }
 
-    public void setIdadeMinima(String idadeMinima) {
-        int idade = Integer.parseInt(idadeMinima);
-        if(idade>=0 && idade<=18) {
+    public void setIdadeMinima(int idadeMinima) {
+
+        if(idadeMinima>=0 && idadeMinima<=18) {
             this.idadeMinima = idadeMinima;
         }else{
             throw new RuntimeException("Idade minima invalida");
@@ -154,7 +154,7 @@ public class Filme {
         this.pais = pais;
     }
 
-    public void setDuracao(String duracao) {
+    public void setDuracao(int duracao) {
         this.duracao = duracao;
     }
 
@@ -162,10 +162,7 @@ public class Filme {
         this.descricao = descricao;
     }
 
-    public String getIdadeMinima() {
-        if(idadeMinima==null){
-            sbdHandler.setFilmeHomePageDetails(this);
-        }
+    public int getIdadeMinima() {
         return idadeMinima;
     }
 
@@ -231,8 +228,8 @@ public class Filme {
         return pais;
     }
 
-    public String getDuracao() {
-        if(duracao==null){
+    public int getDuracao() {
+        if(duracao==0){
             sbdHandler.setFilmeDetails(this);
         }
         return duracao;

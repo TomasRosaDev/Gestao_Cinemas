@@ -49,23 +49,14 @@ class FilmeTest {
                 new Filme("Cars", "2022", sbd),"Tipo de exception nao esperado");
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"O handler e invalido");
     }
-    @Test
-    void testFilmeSetIdadeNull(){
-        SbdHandler sbd = new SbdHandlerFantoche();
-        Filme filme=new Filme("Cars", "2022", sbd);
-        String qq= null;
-        Exception expectedException=new Exception("Cannot parse null string");
-        Exception atualExection =assertThrows(Exception.class, () ->
-                filme.setIdadeMinima(qq),"Tipo de exception nao esperado");
-        assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Idade minima invalida");
-    }
+
     @Test
     void testFilmeSetIdadeMaior(){
         SbdHandler sbd = new SbdHandlerFantoche();
         Filme filme=new Filme("Cars", "2022", sbd);
         Exception expectedException=new Exception("Idade minima invalida");
         Exception atualExection =assertThrows(Exception.class, () ->
-                filme.setIdadeMinima("25"),"Tipo de exception nao esperado");
+                filme.setIdadeMinima(25),"Tipo de exception nao esperado");
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Idade minima invalida");
     }
     @Test
@@ -74,15 +65,15 @@ class FilmeTest {
         Filme filme=new Filme("Cars", "2022", sbd);
         Exception expectedException=new Exception("Idade minima invalida");
         Exception atualExection =assertThrows(Exception.class, () ->
-                filme.setIdadeMinima("-3"),"Tipo de exception nao esperado");
+                filme.setIdadeMinima(-3),"Tipo de exception nao esperado");
         assertEquals(expectedException.getMessage(),atualExection.getMessage(),"Idade minima invalida");
     }
     @Test
     void testFilmeSetIdadeValida(){
         SbdHandler sbd = new SbdHandlerFantoche();
         Filme filme=new Filme("Cars", "2022", sbd);
-        filme.setIdadeMinima("12");
-        assertEquals("12",filme.getIdadeMinima(),"Idade minima invalida");
+        filme.setIdadeMinima(12);
+        assertEquals(12,filme.getIdadeMinima(),"Idade minima invalida");
     }
     @Test
     void testFilmeSetImagemNull(){
