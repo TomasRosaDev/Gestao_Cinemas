@@ -62,9 +62,10 @@ public class SbdHandlerFantoche extends SbdHandler{
     }
 
     @Override
-    public Date getDataHoraFim(String titulo, int ano, int nSala, Date dataHoraInicio) {
+    public Date getDataHoraFim(Sessao sessao) {
         return null;
     }
+
 
     @Override
     public void concluirCompra(ArrayList<Bilhete> bilhetes) {

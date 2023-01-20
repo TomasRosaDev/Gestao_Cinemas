@@ -77,7 +77,7 @@ public class PanelFilmeIndiv extends JPanel {
 
     public JPanel panelSessoes(){
 
-        ArrayList<Sessao> sessoes=filme.getSessoes(dia);
+        ArrayList<Sessao> sessoes=filme.getSbdHandler().getHorasSessoesDoFilme(filme,dia);
         JPanel panelSessoes=new JPanel();
         panelSessoes.setPreferredSize(new Dimension(450,50));
         panelSessoes.setLayout(new BorderLayout());

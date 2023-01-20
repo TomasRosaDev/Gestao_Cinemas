@@ -28,11 +28,11 @@ public class Lugar {
 
 
     public void setNome(String nome) {
-        Pattern pattern = Pattern.compile("^[A-Z][0-99]{0,2}$");//Admite apenas formato LetraMaiuscula-Numero-Numero
+        Pattern pattern = Pattern.compile("(^[A-Z][1-9][0-9]{0,1}|^ND[1-9][0-9]{0,1})$");//Admite apenas formato LetraMaiuscula-Numero-Numero
         Matcher matcher = pattern.matcher(nome);
-            if (matcher.find() || nome.matches("Coluna")){
-                    this.nome = nome;
-            }else{
+        if (matcher.find()){
+            this.nome = nome;
+        }else{
             throw new RuntimeException("Nome invalido");
         }
     }

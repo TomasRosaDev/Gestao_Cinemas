@@ -67,7 +67,7 @@ public class BotaoLugar extends JButton {
             setContentAreaFilled(false);
             setBorderPainted(false);
             Image image= ImageIO.read(new File("Cinema/src/main/java/Imagens/"+imageName+".png"));
-            Icon i=new ImageIcon(getScaledImage(image,50,50));
+            Icon i=new ImageIcon(getScaledImage(image,30,30));
             setIcon(i);
         } catch (IOException e) {
             if(bilhete.isOcupado()){

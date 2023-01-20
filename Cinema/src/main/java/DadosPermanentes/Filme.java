@@ -49,8 +49,8 @@ public class Filme {
         return ano;
     }
 
-    public int getAnoString() {
-        return ano;
+    public String getAnoString() {
+        return getAno()+"";
     }
 
     @Override
@@ -185,7 +185,7 @@ public class Filme {
 
     public String getGenerosStr(){
         String genStr="";
-        for (Genero genero:generos) {
+        for (Genero genero:getGeneros()) {
             genStr+=genero.toString()+", ";
         }
         genStr=genStr.substring(0,genStr.length()-2);
@@ -259,9 +259,5 @@ public class Filme {
     }
     public Date getDataEstreiaAux(){
         return dataEstreia;
-    }
-
-    public ArrayList<Sessao> getSessoes(Date dia){
-        return sbdHandler.getHorasSessoesDoFilme(this,dia);
     }
 }

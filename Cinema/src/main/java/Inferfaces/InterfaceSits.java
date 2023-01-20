@@ -60,7 +60,7 @@ public class InterfaceSits extends InterfaceCliente{
         JPanel grid= new JPanel();
         int width=bilhetes[0].length;
         int height=bilhetes.length;
-        grid.setPreferredSize(new Dimension(width*50,height*50));
+        grid.setPreferredSize(new Dimension(width*30,height*30));
         grid.setLayout(new GridLayout(bilhetes.length,bilhetes[0].length));
         grid.setOpaque(false);
         for (int i = 0; i < bilhetes.length; i++) {

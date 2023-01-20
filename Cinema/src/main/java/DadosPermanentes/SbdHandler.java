@@ -15,7 +15,7 @@ public abstract class SbdHandler {
     public abstract Bilhete[][] getBilhetes(Sessao sessao);
     public abstract Lugar[][] getLugares(int n_sala);
     public abstract boolean getExisteBilhete(String posicao,Sessao sessao);
-    public abstract Date getDataHoraFim(String titulo, int ano, int nSala, Date dataHoraInicio);
+    public abstract Date getDataHoraFim(Sessao sessao);
     public abstract void concluirCompra(ArrayList<Bilhete> bilhetes);
     public abstract String getPrecoBilhete(String posicao,Sessao sessao);
     public abstract ArrayList<Sessao> getSessoes();

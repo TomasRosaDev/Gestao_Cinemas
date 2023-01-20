@@ -335,7 +335,7 @@ public class SbdHandlerNormal extends SbdHandler{
                 resultQueryExisteBilhete = cstmt.getResultSet();
                 resultQueryExisteBilhete.next();
 
-                if(resultQueryExisteBilhete.getInt("ExisteBilhete")==1){ //existe um registo logo este lugar esta ocupado
+                if(resultQueryExisteBilhete.getInt("ExisteBilhete")==1){
                     return true;
                 } else{
                     return false;
@@ -348,14 +348,14 @@ public class SbdHandlerNormal extends SbdHandler{
         return false;
     }
 
-    public Date getDataHoraFim(String titulo, int ano, int nSala, Date dataHoraInicio){
+    public Date getDataHoraFim(Sessao sessao){
         ResultSet resultQueryDaraHoraFimSessao;
         try {
             cstmt = con.prepareCall("{call sessaoDataHoraFim(?, ?, ?)}");
-            cstmt.setString(1, titulo);
-            cstmt.setInt(2, ano);
-            cstmt.setInt(3, nSala);
-            cstmt.setString(4, strDay(dataHoraInicio));
+            cstmt.setString(1, sessao.getFilme().getTitulo());
+            cstmt.setInt(2, sessao.getFilme().getAno());
+            cstmt.setInt(3, sessao.getSala().getNumeroSala());
+            cstmt.setString(4, sessao.getHoraInicioStr());
 
             if (cstmt.execute()) {
                 resultQueryDaraHoraFimSessao = cstmt.getResultSet();
@@ -401,22 +401,7 @@ public class SbdHandlerNormal extends SbdHandler{
         }
         return null;
     }
-    
-    public Date convertCalendarFromString(String date) throws ParseException {
-        Date date1 = (Date) new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
-        return date1;
-    }
 
-    public Calendar calendartoCalendarFromDateSqlString(String date){
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Calendar retDay=Calendar.getInstance();
-        try {
-            retDay.setTime(sdf.parse(date));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return retDay;
-    }
     public ArrayList<Ator> getAtores(){
         ArrayList <Ator> atores = new ArrayList<>();
         ResultSet resultQueryAtores;
@@ -581,7 +566,6 @@ public class SbdHandlerNormal extends SbdHandler{
         byte[] imageData={};
         File file = new File(imagePath);
         try (FileInputStream imageInFile = new FileInputStream(file)) {
-            // Reading a Image file from file system
             imageData = new byte[(int) file.length()];
             imageInFile.read(imageData);
             //base64Image = Base64.getEncoder().encodeToString(imageData);

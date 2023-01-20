@@ -42,7 +42,7 @@ public class Sessao {
 
     public Date getDataHoraFim() {
         if(dataHoraFim==null){
-            dataHoraFim=sbdHandler.getDataHoraFim(filme.getTitulo(),filme.getAnoString(),sala.getNumeroSala(),dataHoraInicio);
+            dataHoraFim=sbdHandler.getDataHoraFim(this);
         }
         return dataHoraFim;
     }
