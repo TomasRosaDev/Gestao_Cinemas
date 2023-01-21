@@ -18,7 +18,7 @@ import java.util.*;
 public class Filme {
     private String titulo;
     private int ano;
-    private String idadeMinima;
+    private int idadeMinima;
     private BufferedImage imagem;
     private SbdHandler sbdHandler;
     private String tituloOriginal;
@@ -28,7 +28,7 @@ public class Filme {
     private ArrayList<Ator> atores;
     private Distribuidor distribuidor;
     private String pais;
-    private String duracao;
+    private int duracao;
     private String descricao;
 
     public Filme(String titulo,String ano,SbdHandler sbdHandler) {
@@ -68,8 +68,8 @@ public class Filme {
         return aux;
     }
 
-    public void setIdadeMinima(String idadeMinima) {
-        int idade = Integer.parseInt(idadeMinima);
+    public void setIdadeMinima(int idadeMinima) {
+        int idade = idadeMinima;
         if (idade >= 0 && idade <= 18) {
             this.idadeMinima = idadeMinima;
         }else{
@@ -163,8 +163,7 @@ public class Filme {
     }
 
     public int getIdadeMinima() {
-    public String getIdadeMinima() {
-        if (idadeMinima == null) {
+        if (idadeMinima == 0) {
             sbdHandler.setFilmeHomePageDetails(this);
         }
         return idadeMinima;
